@@ -1,0 +1,30 @@
+{
+  "quotes": {
+    "Q-GW-1": {
+      "subtotal": 1380,
+      "freight": 185,
+      "total": 1565,
+      "codes": [
+        "HIDDEN_FREIGHT"
+      ]
+    },
+    "Q-KC-1": {
+      "subtotal": 653,
+      "freight": 60,
+      "total": 713,
+      "codes": []
+    },
+    "Q-MH-1": {
+      "subtotal": 2620,
+      "freight": 0,
+      "total": 2620,
+      "codes": [
+        "QUOTE_EXPIRED"
+      ]
+    }
+  },
+  "total": 4898,
+  "approvers": [
+    "Facilities Manager"
+  ]
+}

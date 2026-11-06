@@ -1,0 +1,19 @@
+{
+  "invoices": {
+    "INV-GW-5521": {
+      "result": "MATCH",
+      "codes": []
+    },
+    "INV-KC-3307": {
+      "result": "HOLD",
+      "codes": [
+        "PRICE_MISMATCH",
+        "QTY_MISMATCH"
+      ],
+      "billed": 872,
+      "expected": 713,
+      "difference": 159
+    }
+  },
+  "payment_approver": "Finance"
+}

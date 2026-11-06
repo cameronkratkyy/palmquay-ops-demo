@@ -1,0 +1,16 @@
+{
+  "PASS": [
+    "1",
+    "3",
+    "6",
+    "7",
+    "8"
+  ],
+  "FAIL": {
+    "2": "TOO_WIDE",
+    "4": "FINISH_MISMATCH"
+  },
+  "NEEDS_PERSON": [
+    "5"
+  ]
+}

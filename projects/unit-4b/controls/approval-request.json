@@ -1,0 +1,43 @@
+{
+  "project": "unit-4b",
+  "order": "PQ-1042",
+  "type": "Standard purchase",
+  "total": 4898,
+  "budget_line": "FAC-TURN-2026",
+  "available": 5200,
+  "left_after_order": 302,
+  "funds_short": false,
+  "lines_checked": [
+    "GW-BED-Q",
+    "MH-DR-60",
+    "MH-SOF-118"
+  ],
+  "flags": {
+    "MH-SOF-118": "LOWEST_NOT_SELECTED",
+    "GW-BED-Q": "SINGLE_SOURCE",
+    "MH-DR-60": "SINGLE_SOURCE"
+  },
+  "lowest": {
+    "MH-SOF-118": {
+      "lowest_sku": "GW-SOF-210",
+      "lowest_price": 1450,
+      "selected_price": 1520,
+      "difference": 70,
+      "reason_on_record": "LATE_ITEM"
+    }
+  },
+  "needs_person": [
+    "GW-BED-Q",
+    "MH-DR-60"
+  ],
+  "status": "NEEDS_JUSTIFICATION",
+  "approvers": [
+    "Facilities Manager"
+  ],
+  "certified": false,
+  "run": {
+    "by": "procurement-assistant",
+    "at": "2026-11-06T10:19:04",
+    "tool": "tools/controls.py request"
+  }
+}

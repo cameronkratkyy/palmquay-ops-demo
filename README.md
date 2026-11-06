@@ -1,0 +1,133 @@
+# Vendor onboarding demo: an AI operations system for a fictional company
+
+*Designed and directed by this repo's owner; the code was written with Claude Code. No real names appear in these files on purpose (privacy check C6).*
+
+**Palmquay Properties is fictional.** It's a Sarasota company that manages 14 buildings and brings on contractors (HVAC, roofing, electrical, and more). Every company, person, policy, license, and tax ID here is fake. Email addresses use `.example`, a reserved domain that can't receive mail.
+
+**The pitch:** an AI operations system that runs vendor onboarding. It reads the paperwork, finds what's missing, drafts the follow-ups, builds the approval packet, checks its own work, and keeps an audit trail. A person approves and sends everything.
+
+It copies the shape of the author's own working AI operations system (a private one that runs a small business), moved onto fake data so it can be shown.
+
+## Status
+| Phase | What | State |
+|---|---|---|
+| 1 | Company rules, folders, 8 fake vendors with planted problems, locked answer key, pass/fail check | Built 11/5/2026 |
+| 2 | Skills (`/intake` `/chase` `/route` `/status`), compliance checker, audit log; 1 vendor end to end, then all 8 | Built 11/5/2026 (results: `docs/phase2-results.md`) |
+| 3a | Buying for a furnishing project: scope, suppliers, quotes, product approval, change control, deliveries, invoices (7 skills, 13 problems planted across the 7 steps, a separate procurement log) | Built 11/5/2026 (results: `docs/phase3a-results.md`) |
+| 3b | Dashboard, one-page diagram, 2-minute video script, plain-English explainer (covering onboarding and buying) | Built 11/6/2026 (results: `docs/phase3b-results.md`) |
+| 3c | Controls copied from a real public-agency procurement packet: conflict-of-interest disclosures, an exclusion check, quotes required by dollar size, the approval request with funding and a certification, running totals and a two-signature close-out | Built 11/6/2026 (results: `docs/phase3c-results.md`) |
+
+**How it was made:** the author designed and directed this system. An AI coding assistant (Claude Code) wrote the files to that design, and every result is checked by the pass/fail scripts below, not taken on trust.
+
+## Phase 3a: after a vendor is approved, buying what a project needs
+**SEAK Interiors is the author's real business; the partnership and every project detail are fictional.**
+
+When Palmquay furnishes a unit, it sometimes brings in a design partner for the furnishing plan (measured layout, concept, products by line). The design partner only designs and specifies; Palmquay buys. This phase is the buying side, request to invoice, for one fictional project (`projects/unit-4b/`, Bayfront Commons Unit 4B), with one problem planted per activity:
+| Activity | Skill | What a real team calls it | Planted problem the system must catch |
+|---|---|---|---|
+| Requirements and scope | `/scope` | Project brief, requirements gathering | A wall length left blank; a king bed requested for a 10 ft wall |
+| Supplier coordination | `/source` | Lead-time and schedule check | A sofa that arrives 27 days after the install date |
+| Quote and purchase preparation | `/quote` | Quote comparison, purchase requisition | A $185 delivery charge hidden in a footnote; an expired quote |
+| Product approval | `/approve` | Specification review, submittal review | A rug 2 in too wide; chrome lamps where the plan says brushed nickel; a chair whose fabric isn't stated (sent to a person) |
+| Budget and change control | `/change` | Change order, baseline management | A backorder substitute that puts the project $108 over budget |
+| Delivery and exceptions | `/deliver` | Expediting, exception management | A bed frame 5 days late; a dresser addressed to the wrong unit |
+| Invoice tracking | `/match` | Three-way match, accounts payable review | An invoice for 3 lamps at $139 against an order for 2 at $129 |
+Industry names for the whole chain: **procure-to-pay (P2P)**, and for furniture in real estate and hospitality, **FF&E procurement** (furniture, fixtures, and equipment). The AI never orders, approves, sends, or pays; people do (`company/people.md`).
+
+Run the Phase 3a check: `python -I -X utf8 tests/check_phase3a.py` (add `--selftest` to prove it can fail).
+
+## Phase 3b: showing it
+- **Dashboard:** double-click `dashboard/index.html` (no server, no internet). Six tabs: Overview, Onboarding, Buying, Checks, Audit log (with a replay), Map. Rebuild with `python -I -X utf8 dashboard/build.py`. Rules and proof: `dashboard/README.md`.
+- **One-page diagram:** `docs/diagram.png` (for LinkedIn Featured) and `docs/diagram.pdf` (for email), both made from `docs/diagram.html`.
+- **2-minute video script:** `docs/video-script.md`, recorded in one window with Snipping Tool.
+- **Explainer:** `docs/explainer.md` and `docs/explainer.pdf`, one page to talk from.
+- Re-make the pictures: `python -I -X utf8 tools/render.py`. Check everything: `python -I -X utf8 tests/check_phase3b.py` (add `--selftest` to prove it can fail).
+
+## Phase 3c: controls from a real procurement packet
+The author ran public-agency procurement by hand; this phase copies the controls in that real approval packet (its structure only; every name, number, and document here is made up). Inputs live in new places (`vendors/*/disclosures/`, `company/exclusion-list.md`, `projects/unit-4b/funding.md`, `projects/unit-4b/closeout/`), outputs in `vendors/*/screen.json`, `controls/`, and `projects/unit-4b/controls/`, and every action goes in its own hash-chained `audit/controls-log.csv`. No Phase 1-3a record changes (checked by hash).
+
+| Control | Skill | What a real team calls it | Planted problem the system must catch |
+|---|---|---|---|
+| Conflict-of-interest disclosure | `/screen` | Vendor disclosure, recusal | An owner is the brother of the vendor's only approver: she's recused, Legal reviews, the Procurement Lead signs |
+| Exclusion check | `/screen` | Debarment screening | The company named on a vendor's insurance is on the exclusion list: hold its follow-up, Legal reviews |
+| Quotes required by dollar size | `/request` | Competitive procurement thresholds, sole-source justification | Two order lines have one supplier; the sofa picked isn't the lowest price (the record shows the cheaper one was 27 days late) |
+| Approval request | `/request` | Purchase requisition with funding and certification | Procurement type, purpose, budget line, and a certification the approver signs (left blank) |
+| Running totals + close-out | `/closeout` | Contract accounting, completion certificate | A supplier says everything was delivered; the receipt shows 2 items weren't |
+
+Run the Phase 3c check: `python -I -X utf8 tests/check_phase3c.py` (add `--selftest` to prove it can fail).
+
+## How each piece maps (for interviews)
+| Piece | Original in the private system | Industry term | What it shows a hiring manager | Resume line |
+|---|---|---|---|---|
+| `CLAUDE.md` | The rules file the assistant follows on every reply | System prompt, operating policy | Rules written once and followed every time | Designed the operating policy for an AI onboarding assistant |
+| `company/rules.json` | Numbers kept in one table, not scattered through text | Single source of truth, configuration | Change a threshold in one place; the check confirms every number, approver role, and issue code also appears in the rules | Kept policy numbers in one source of truth, checked automatically |
+| `company/people.md` | Owner approval gates (nothing sends or spends without a yes) | Approval matrix, human in the loop | The AI builds packets; people approve | Designed a tiered approval matrix with human sign-off |
+| `vendors/<name>/` | One folder per client or lead | Record keeping, document management | Every vendor's paperwork in one predictable place | Organized vendor records for audit readiness |
+| `tools/make_vendors.py` | Test cases made before trusting a skill | Synthetic data, test fixtures | Realistic data with no privacy risk | Built synthetic test data with planted defects |
+| `tests/answer-key.json` + `LOCK.txt` | Eval cases with answers locked before the first run | Ground truth, golden set, evals | The right answer is fixed before the AI tries; nobody can move the goalposts | Wrote and locked an evaluation set before the first run |
+| `tests/check_phase1.py` | The regression check run after every change | Automated test, reconciliation | Recomputes every result its own way and prints what it counted | Built automated checks that recount every result |
+| `--selftest` | Proving the check can fail by planting a break on a copy | Mutation testing | A check that can't fail proves nothing | Proved the checks catch planted errors |
+| `audit/audit-log.csv` + `audit-log.chain.txt` | The append-only run log of every operation | Audit trail, append-only log, tamper-evident hash chain | Who did what, when, with what result: one row per action, and editing a past row breaks the chain | Designed and directed an append-only, hash-chained audit trail with one row per action |
+| `/intake` skill | Skills: saved procedures the assistant runs on command | Document intake, automated compliance screening, rules engine | Reads each vendor's paperwork, applies the policy, and records evidence for every rule it applied | Designed and directed an AI intake step that screens vendor paperwork against policy and shows its evidence |
+| `/chase` skill | Skills, plus the approval gate: nothing sends without a person | Exception handling, follow-up drafting, human in the loop | One polite, specific draft per stuck vendor; a named person reviews and sends; 0 emails sent by the AI | Designed and directed AI-drafted vendor follow-ups with a human reviewer and no auto-send |
+| `/route` skill | Owner approval gates | Approval workflow, routing matrix, segregation of duties | Builds the packet with approvers in policy order and leaves every sign-off blank for a person | Designed and directed tiered approval packets that leave every decision to people |
+| `/status` skill | A quick status readout of open work | Pipeline tracking, work-in-progress board | One line per vendor: stage, status, blocker, days waiting | Designed and directed a one-line-per-vendor status board |
+| `.claude/agents/compliance-checker.md` | The read-only checker agent | Maker-checker review (four-eyes), least privilege | A second AI, defined with read-only tools, reviews the first one's work and caught both planted errors (in these runs the tool limit was an instruction, not enforced) | Designed and directed a read-only AI reviewer that caught planted errors before work was called done |
+| `tests/checker-copies/` + `reviews/` | Proving the checker works before trusting it | Seeded-error test, blind review, evidence retention | One wrong deadline and one missed name mismatch were planted; the checker's report is saved word for word with file hashes (3 Phase 3b review notes later had personal words scrubbed before publishing; see the change log) | Designed and directed a blind test of an AI reviewer using planted errors |
+| `tools/onboard.py` | New for the demo | Deterministic tooling, guardrails | Dates, dollar minimums, approver order and file hashes are computed by a script, not read by eye | Designed and directed helper scripts so the AI computes exact checks instead of estimating |
+| `tests/check_phase2.py` | The regression check run after every change | Acceptance test, written test-first, mutation testing | Written before the skills existed; recounts all of Phase 2 and proves it catches 23 planted breaks | Designed and directed a test-first acceptance check that recounts every Phase 2 result |
+| `projects/unit-4b/` | Every real Room Plan the author's business delivers: one folder per job | Project file, FF&E schedule | One project's request, plan, catalogs, quotes, order, tracking, receipts, invoices in one place | Designed and directed a project record structure for furnishing procurement |
+| `tools/make_project.py` | Test cases made before trusting a skill | Synthetic data, test fixtures | Realistic buying data with one planted problem per activity and no privacy risk | Designed and directed synthetic procurement test data with planted defects |
+| `tools/project.py` | Scripts for the math (totals, dates) instead of reading by eye | Deterministic tooling, guardrails | Dates, inches, dollars, and three-way matches computed by a script; refuses to run an action twice | Designed and directed helper scripts that compute every procurement check exactly |
+| `tests/check_phase3a.py` | The regression check run after every change | Acceptance test, written test-first, mutation testing | Written before the helper; recomputes all 7 activities its own way and proves it catches 13 planted breaks | Designed and directed a test-first acceptance check for the buying workflow |
+| `audit/procurement-log.csv` | The append-only run log | Audit trail, segregation of logs, hash chain | Every buying action in its own tamper-evident log, separate from onboarding | Designed and directed an append-only, hash-chained procurement audit log |
+| `/scope` skill | The author's intake step: ask once for any missing measurement | Requirements gathering, project brief | Turns a request into a structured brief; flags what's missing or conflicting; never estimates | Designed and directed an AI intake step that turns requests into structured project briefs |
+| `/source` skill | Live stock and delivery checks on every item | Lead-time management, expediting | Flags items that can't arrive by the install date and names the in-spec alternative | Designed and directed lead-time checks against project schedules |
+| `/quote` skill | Totals recomputed by script, never trusted from a page | Quote comparison, purchase requisition | One comparison table; hidden charges and expired quotes flagged; a draft request for a person | Designed and directed quote comparison with purchase-request drafts for human approval |
+| `/approve` skill | Fit checks on every product before it's recommended | Specification compliance, submittal review | Clear misses fail with the numbers; unclear items go to a person, never passed | Designed and directed specification checks that route uncertain matches to a person |
+| `/change` skill | Owner approval gates | Change order control, baseline management | Prices every substitution against budget and schedule; the baseline can't move before approval | Designed and directed change control that holds the approved baseline until sign-off |
+| `/deliver` skill | The anticipation step: what's late, what's due | Exception management, expediting | Late or misaddressed deliveries become tasks with an owner and a date, plus a draft update | Designed and directed delivery exception tracking with owner-assigned follow-ups |
+| `/match` skill | Never let money move without a person | Three-way match, accounts payable controls | Invoice vs. order vs. receipt; differences flagged for Finance; nothing marked paid | Designed and directed three-way invoice matching that flags differences for Finance |
+| `dashboard/build.py` + `dashboard/index.html` | The private system's mission-control dashboard, built from its own records | Operations dashboard, observability, reconciliation | One screen: decisions waiting on people, every vendor, the project, the checks, the log replay; a test recounts every number in its tiles and tables | Designed and directed an operations dashboard whose tile and table numbers are all recounted from the source records by an automated test |
+| `docs/diagram.png` + `docs/diagram.pdf` | The system map in the private system's architecture notes | Architecture diagram, process map | Who does what in one picture: AI steps in blue, people in amber, the controls underneath | Designed and directed a one-page architecture diagram of an AI-assisted onboarding and procurement process |
+| `docs/video-script.md` | New for the demo | Product demo script | A 2-minute walkthrough in one window; every spoken number traced to a record | Designed and directed a 2-minute product demo of an AI operations workflow |
+| `docs/explainer.md` + `docs/explainer.pdf` | The private system's interview notes | Talk track, one-pager | Each step said twice: plain English, then the industry term | Designed and directed a one-page explainer that maps each AI step to its industry term |
+| `tools/render.py` | Screenshots made with the browser already on the PC, no install | Headless rendering | The pictures are rebuilt from their source files, never edited by hand | Designed and directed scripted rendering of the dashboard, diagram, and explainer |
+| `tests/check_phase3b.py` | The regression check run after every change | Acceptance test, test-first, mutation testing | Written before the dashboard existed; recounts every number in the dashboard's tiles and tables, traces every spoken number, and proves each check can fail | Designed and directed a test-first acceptance check for the dashboard and demo materials |
+| `tools/make_controls.py` | Test cases made before trusting a skill | Synthetic data, test fixtures | The 3c inputs with one planted problem per control, all marked fake | Designed and directed synthetic test data for procurement controls with planted defects |
+| `tools/controls.py` | Scripts for exact checks instead of reading by eye | Deterministic tooling, guardrails | Name matching, dollar tiers, per-line competition, and running totals computed by a script; refuses to run twice | Designed and directed helper scripts that compute every procurement control exactly |
+| `tests/check_phase3c.py` | The regression check run after every change | Acceptance test, test-first, mutation testing | Written before the helper; recounts every 3c result its own way and proves no older record changed | Designed and directed a test-first acceptance check for procurement controls |
+| `audit/controls-log.csv` | The append-only run log | Audit trail, hash chain | Every control action in its own tamper-evident log; a discarded first run is kept, not deleted | Designed and directed an append-only, hash-chained log for procurement controls |
+| `company/exclusion-list.md` | New for the demo | Debarment list, exclusion screening | A fake stand-in for a government exclusion list that every vendor and supplier is checked against | Designed and directed exclusion screening for vendors and suppliers |
+| `/screen` skill | The author's real agency packet: conflict-of-interest forms and clearances | Vendor due diligence, recusal | Disclosures and exclusion checks before anyone signs; a related approver is recused | Designed and directed conflict-of-interest and exclusion screening with approver recusal |
+| `/request` skill | The author's real agency packet: the procurement approval request and checklist | Purchase requisition, competitive thresholds, sole-source justification | Procurement type by dollar size, funding line, quotes per line, justifications, and a certification left for the approver | Designed and directed a procurement approval request with competition checks and a certification |
+| `/closeout` skill | The author's real agency packet: invoice rules and a two-signature completion certificate | Contract accounting, close-out | Running totals, open items, and a supplier's completion claim checked against the receipt | Designed and directed contract close-out with running totals and a two-signature certificate |
+
+## Run the check
+```
+python -I -X utf8 tests/check_phase1.py
+python -I -X utf8 tests/check_phase1.py --selftest
+python -I -X utf8 tests/check_phase2.py
+python -I -X utf8 tests/check_phase2.py --selftest
+```
+Each prints what it counted for each check and exits 1 on any FAIL.
+
+On your own copy of this repo, add `--copy` to the Phase 1 check. Its C1 also confirms that the author's copy sits outside the author's private notes, which can only be checked on the author's machine; without `--copy`, C1 fails anywhere else by design.
+
+## Run the skills (in Claude Code, from this folder)
+`/intake <vendor | all>` → `/chase <vendor | all>` (BLOCKED or HOLD) or `/route <vendor | all>` (READY) → `compliance-checker` review → `/status`. Each action adds one row to `audit/audit-log.csv`. The status board also runs on its own: `python -I -X utf8 tools/onboard.py status`.
+
+## The 8 vendors (problems planted on purpose)
+Kestrelbay Air & Heat (clean, small) · Saltmarsh Roofing (insurance expired) · Brightcurrent Electric (liability below minimum) · Fernhollow Grounds (no W-9) · Clearsail Janitorial (company not named as additional insured) · Bayvane Plumbing (license expires in 23 days) · Gulfpine Pest Control (name on the insurance doesn't match the W-9) · Skyquay Lift & Fire (clean, $120,000, needs every approver).
+
+## Change log
+- 11/5/2026: Phase 1 built. Answer key written by hand and locked before any Phase 2 run.
+- 11/5/2026: Outside review PASS with no required fixes (it recomputed all 8 vendors by hand; 3 names web-searched, no real business found; not a state registry check). Its optional fixes applied: approvers always listed by tier, the expiry boundary days and issue-code meanings spelled out, C2 strengthened from 13 to 34 items, audit-trail row worded as "specified." Answer key unchanged (lock still matches).
+- 11/5/2026: Phase 2 built. `tests/check_phase2.py` was written first (first run: 1 of 8 PASS). Then Saltmarsh ran end to end, then the other 7 vendors. Final check: 8 of 8 PASS (P1–P7 plus P1b for `/status`). The self-test caught 23 of 23 planted breaks. Phase 1 is still 8 of 8. 18 audit rows for 18 actions. The checker caught both planted errors and flagged 0 real files. Answer key, lock and Phase 1 check unchanged. What wasn't tested: `docs/phase2-results.md`.
+- 11/5/2026: Phase 3a built (the author's decision D58: Palmquay runs the buying; the design partner, the author's real business, works with Palmquay on occasion, labeled above). `tests/answer-key-3a.json` and the approved baseline's hash were locked in `tests/LOCK.txt` before the helper existed; `tests/check_phase3a.py` was written first (first run: 3 of 14 PASS). The dry run on a throwaway copy found 2 bugs in the check itself, fixed before the real run: Q1 required a field its own exact-match rule forbade (now `_measurements`), and Q6 counted the task table's header as a task (now task IDs only). One wording change in the helper ("nothing paid" tripped Q7's search; now "payment status untouched"). Phase 1's privacy scan got one narrow exception: the partner's name may appear only in a file that carries the partner label (a new self-test break proves the name without the label still fails). Then the 7 activities ran once each, in order.
+- 11/5/2026: Blind review 01 (`reviews/procurement/2026-11-05-01-unit-4b.md`) caught the planted miss (2 findings) and found a gap in the written rule: "use the request date as the order date" didn't say a substitute is ordered on the supplier notice's date. The answer and the helper were right; the rule text was incomplete. Clarified in `CLAUDE.md` section 10 and `company/rules.json`, then review 02 ran on the same unchanged files: 7 of 7 real outputs OK, planted miss caught.
+- 11/5/2026: The first full Phase 3a check failed Q10: Phase 2's P6 runs its own copy of the privacy scan and didn't know the labeled-partner exception, and it expected exactly 3 Phase 1 self-test breaks (now 4). P6 now applies the same narrow exception and requires every Phase 1 break to be caught (4 of 4). Phase 2: 8 of 8 again.
+- 11/5/2026: Final: `tests/check_phase3a.py` **14 of 14**, self-test 13 of 13; Phase 2 8 of 8 (self-test 23 of 23); Phase 1 8 of 8 (self-test 4 of 4). Results: `docs/phase3a-results.md`.
+- 11/6/2026: Phase 3b built: dashboard, one-page diagram, 2-minute video script, explainer, renderer. `tests/check_phase3b.py` was written first (first run: 1 of 9 PASS); one rule was added after that run, stricter only (a file reference on the page must name a real file). The older checks caught a CSS class read as a web address; fixed in the diagram, not the scan. Five blind reviews, each with a planted error, all caught; reviews 01-04 failed with real findings (all fixed, listed in `docs/phase3b-results.md`), review 05 passed. This README's compliance-checker row and 3a status row were reworded to match the records. Final: **9 of 9**. Results: `docs/phase3b-results.md`.
+- 11/6/2026: Phase 3c built from the author's real procurement packet (decision D64). Inputs, rules (`company/rules.json` `controls`, CLAUDE.md section 11), the answer key, and hashes of 94 Phase 1-3a records were locked before the helper existed; `tests/check_phase3c.py` was written first (first run 3 of 11). Its own recount matched the hand-written key; one check bug fixed before the helper existed (two output-only fields left out of the recount comparison). The first real run wrote into `projects/unit-4b/out/`, which Phase 3a's checks own; Phase 3a's Q6 and Q11 caught it. That run was discarded, not edited: its 3-row log and 6 files are kept in `audit/discarded-3c-first-run/`, the outputs moved to `projects/unit-4b/controls/`, and the check gained a stricter rule (no new files in Phase 3a's `out/`). Results: `docs/phase3c-results.md`.
+- 11/6/2026: Prepared for a public repo (decision D60). This PC's folder paths were removed from `tests/check_phase1.py` (the demo's location is now computed; the private notes' path lives in a git-ignored file), and 3 Phase 3b review notes (02, 03, 05) had the PC's user name and cloud-sync folder name replaced with `[scrubbed: ...]`; nothing else in them changed. `tests/check_phase3b.py` now renders with the first installed browser that actually renders a test page (headless Edge returned blank pages on the author's PC that day). All 12 invented business names (Palmquay, 8 vendors, 3 suppliers) were web-searched with Sarasota or Florida: no real business by those names found (not a state registry check). After this: Phase 1 8/8, Phase 2 8/8, 3a 14/14, 3b 9/9, 3c 11/11.

@@ -1,0 +1,114 @@
+{
+  "vendor": "saltmarsh-roofing",
+  "legal_name": "Saltmarsh Roofing Co.",
+  "trade": "roofing",
+  "demo_date": "2026-11-05",
+  "documents": [
+    "coi",
+    "license",
+    "request",
+    "w9"
+  ],
+  "issues": [
+    "COI_EXPIRED"
+  ],
+  "status": "BLOCKED",
+  "approvers": [
+    "Facilities Manager",
+    "Procurement Lead"
+  ],
+  "contract_amount": 42000,
+  "approval_tier": "Up to $50,000",
+  "evidence": [
+    {
+      "check": "W-9 on file",
+      "source": "documents/w9.md",
+      "found": "present",
+      "rule": "required from every vendor",
+      "result": "ok"
+    },
+    {
+      "check": "certificate of insurance on file",
+      "source": "documents/coi.md",
+      "found": "present",
+      "rule": "required from every vendor",
+      "result": "ok"
+    },
+    {
+      "check": "work request on file",
+      "source": "documents/request.md",
+      "found": "present",
+      "rule": "required from every vendor",
+      "result": "ok"
+    },
+    {
+      "check": "state license on file",
+      "source": "documents/license.md",
+      "found": "present",
+      "rule": "required for licensed trades (roofing)",
+      "result": "ok"
+    },
+    {
+      "check": "insurance end date",
+      "source": "documents/coi.md: Policy end",
+      "found": "2026-09-30 (36 days ago)",
+      "rule": "not before 2026-11-05; 30 days or fewer out = hold",
+      "result": "COI_EXPIRED"
+    },
+    {
+      "check": "general liability",
+      "source": "documents/coi.md",
+      "found": "$1,000,000 / $2,000,000",
+      "rule": "at least $1,000,000 per occurrence / $2,000,000 aggregate",
+      "result": "ok"
+    },
+    {
+      "check": "auto liability",
+      "source": "documents/coi.md",
+      "found": "$1,000,000",
+      "rule": "at least $1,000,000",
+      "result": "ok"
+    },
+    {
+      "check": "umbrella",
+      "source": "documents/coi.md",
+      "found": "$5,000,000",
+      "rule": "at least $5,000,000 for roofing (high-risk trade)",
+      "result": "ok"
+    },
+    {
+      "check": "workers' comp",
+      "source": "documents/coi.md",
+      "found": "Statutory",
+      "rule": "Statutory or a valid exemption certificate",
+      "result": "ok"
+    },
+    {
+      "check": "additional insured",
+      "source": "documents/coi.md",
+      "found": "Palmquay Properties",
+      "rule": "must name Palmquay Properties",
+      "result": "ok"
+    },
+    {
+      "check": "license end date",
+      "source": "documents/license.md: Expires",
+      "found": "2027-08-31 (299 days from 2026-11-05)",
+      "rule": "not before 2026-11-05; 30 days or fewer out = hold",
+      "result": "ok"
+    },
+    {
+      "check": "legal name matches everywhere",
+      "source": "vendor.md, w9.md, coi.md, license.md",
+      "found": "vendor.md: Saltmarsh Roofing Co.; w9.md: Saltmarsh Roofing Co.; coi.md: Saltmarsh Roofing Co.; license.md: Saltmarsh Roofing Co.",
+      "rule": "same legal name on the vendor record, W-9, certificate and license",
+      "result": "ok"
+    }
+  ],
+  "run": {
+    "by": "onboarding-assistant",
+    "at": "2026-11-05T11:28:45",
+    "rules": "company/rules.json",
+    "tool": "tools/onboard.py intake"
+  }
+}

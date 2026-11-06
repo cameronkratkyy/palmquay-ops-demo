@@ -1,0 +1,63 @@
+{
+  "vendor": "clearsail-janitorial",
+  "result": "CLEAR",
+  "codes": [],
+  "disclosure": {
+    "file": "vendors/clearsail-janitorial/disclosures/conflict-of-interest.md",
+    "firm": "Clearsail Janitorial Services LLC",
+    "signed_by": "Nina Patel",
+    "date": "2026-11-03",
+    "paid_help_statement": "Yes",
+    "relationships": []
+  },
+  "names_checked": [
+    "Clearsail Janitorial Services LLC",
+    "Clearsail Janitorial Services LLC",
+    "Clearsail Janitorial Services LLC",
+    "Nina Patel"
+  ],
+  "exclusion_list_as_of": "2026-11-05",
+  "evidence": [
+    {
+      "check": "conflict-of-interest disclosure on file",
+      "found": "signed 2026-11-03 by Nina Patel",
+      "result": "ok"
+    },
+    {
+      "check": "no paid help to win the work",
+      "found": "Yes",
+      "result": "ok"
+    },
+    {
+      "check": "disclosed relationships",
+      "found": "none",
+      "result": "ok"
+    },
+    {
+      "check": "exclusion list: W-9 legal name",
+      "found": "Clearsail Janitorial Services LLC",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: insurance insured",
+      "found": "Clearsail Janitorial Services LLC",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure firm",
+      "found": "Clearsail Janitorial Services LLC",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure signer",
+      "found": "Nina Patel",
+      "result": "not listed"
+    }
+  ],
+  "run": {
+    "by": "onboarding-assistant",
+    "at": "2026-11-06T10:19:04",
+    "rules": "company/rules.json (controls)",
+    "tool": "tools/controls.py screen"
+  }
+}

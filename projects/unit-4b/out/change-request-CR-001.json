@@ -1,0 +1,19 @@
+{
+  "codes": [
+    "OVER_BUDGET"
+  ],
+  "old_sku": "MH-SOF-118",
+  "new_sku": "GW-SOF-205",
+  "delta": 410,
+  "new_total": 5308,
+  "budget": 5200,
+  "over_by": 108,
+  "old_date": "2026-11-13",
+  "new_date": "2026-11-09",
+  "approvers": [
+    "Facilities Manager"
+  ],
+  "baseline_changed": false,
+  "_baseline_sha256_before": "0b86e8390c2b5faf9f1a23f8c03e425e7a14c1f2a09a14e368ca1aee1668fa97",
+  "_baseline_sha256_after": "0b86e8390c2b5faf9f1a23f8c03e425e7a14c1f2a09a14e368ca1aee1668fa97"
+}

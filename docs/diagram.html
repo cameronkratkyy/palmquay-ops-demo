@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How the system works: Palmquay Properties (fictional)</title>
+<style>
+@page{size:1600px 1000px;margin:0}
+html,body{margin:0;background:#fff}
+body{width:1600px;height:1000px;overflow:hidden}
+</style>
+</head>
+<body>
+<!-- DIAGRAM START -->
+<style>
+.dg{font-family:"Segoe UI",system-ui,sans-serif;color:#0b0b0b;background:#fff;width:1600px;max-width:100%;box-sizing:border-box;padding:24px 40px 16px;line-height:1.25}
+.dg *{box-sizing:border-box}
+.dg-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:12px}
+.dg-title{font-size:33px;font-weight:700;letter-spacing:-.3px;margin:0}
+.dg-sub{font-size:17.5px;color:#3d3c39;margin:6px 0 0;max-width:1000px}
+.dg-tag{font-size:14px;color:#52514e;text-align:right;max-width:430px}
+.dg-key{display:flex;gap:16px;justify-content:flex-end;margin-top:8px;font-size:14.5px;color:#0b0b0b}
+.dg-key span{display:inline-flex;align-items:center;gap:6px}
+.dg-sw{display:inline-block;width:16px;height:12px;border-radius:3px}
+.dg-key-ai{background:#e8f1f8;border:1.5px solid #1d5a85}.dg-key-pp{background:#fff3dd;border:1.5px solid #c27c0e}
+.dg-lane{border:1px solid #e2e1dc;border-radius:12px;padding:10px 14px 10px;margin-bottom:10px;background:#fcfcfb}
+.dg-lanehead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.dg-lanetitle{font-size:20px;font-weight:700}.dg-lanetitle small{font-weight:400;color:#52514e;font-size:15.5px;margin-left:8px}
+.dg-score{font-size:15.5px;color:#0b0b0b;background:#f1f0ec;border-radius:20px;padding:4px 12px}
+.dg-row{display:flex;align-items:stretch;gap:0}
+.dg-box{border-radius:9px;padding:8px 11px;font-size:14px;flex:1;min-width:0}
+.dg-ai{background:#e8f1f8;border:1.5px solid #1d5a85}
+.dg-pp{background:#fff3dd;border:1.5px solid #c27c0e}
+.dg-in{background:#fff;border:1.5px dashed #8f8e88}
+.dg-skill{font:600 16px Consolas,"Cascadia Mono",monospace;color:#123e5e;display:block;margin-bottom:2px}
+.dg-who{font-weight:700;color:#7a4b00;display:block;margin-bottom:2px;font-size:15px}
+.dg-caught{display:block;margin-top:4px;font-size:12.8px;color:#8a1f1f}
+.dg-arrow{flex:0 0 26px;display:flex;align-items:center;justify-content:center;color:#52514e;font-size:20px}
+.dg-split{display:flex;flex-direction:column;gap:8px;flex:2.3}
+.dg-split .dg-row{flex:1}
+.dg-small{font-size:13.5px;color:#52514e;margin-top:3px;display:block}
+.dg-controls{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:2px}
+.dg-ctrl{border:1px solid #e2e1dc;border-radius:9px;padding:8px 11px;background:#f6f6f3;font-size:13.5px}
+.dg-ctrl b{display:block;font-size:15px;margin-bottom:2px}
+.dg-term{display:block;margin-top:3px;font-size:12px;color:#52514e;font-style:italic}
+.dg-foot{display:flex;justify-content:space-between;font-size:13.5px;margin-top:8px;color:#52514e;margin-top:12px}
+</style>
+<div class="dg">
+  <div class="dg-head">
+    <div>
+      <h1 class="dg-title">An AI operations system for a property company</h1>
+      <p class="dg-sub">From a new contractor's paperwork to a matched furniture invoice. The AI reads, checks, drafts, and builds. People approve, send, sign, and pay.</p>
+    </div>
+    <div>
+      <div class="dg-tag">Fictional company (Palmquay Properties, Sarasota) and fake data, so it can be shown. Designed and directed by the author; the code was written by Claude Code.</div>
+      <div class="dg-key"><span><i class="dg-sw dg-key-ai"></i>AI does it</span><span><i class="dg-sw dg-key-pp"></i>A person decides</span></div>
+    </div>
+  </div>
+
+  <div class="dg-lane">
+    <div class="dg-lanehead">
+      <div class="dg-lanetitle">Onboard a contractor<small>Is this vendor allowed to work for us?</small></div>
+      <div class="dg-score">8 vendors · 6 problems planted, 6 caught · 0 emails sent by the AI</div>
+    </div>
+    <div class="dg-row">
+      <div class="dg-box dg-in" style="flex:.9"><b>Paperwork arrives</b><span class="dg-small">Tax form, insurance certificate, state license, work request</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai" style="flex:1.25"><span class="dg-skill">/intake</span>Reads every document and applies the written rules: dates, coverage minimums, names. Result: ready, on hold, or blocked, with the evidence.<span class="dg-caught">Caught: expired insurance, low coverage, missing tax form, company not named on the insurance, name mismatch, a license about to expire</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-split">
+        <div class="dg-row">
+          <div class="dg-box dg-ai"><span class="dg-skill">/chase</span>Blocked or on hold: drafts one polite, specific follow-up with a deadline.</div>
+          <div class="dg-arrow">&#8594;</div>
+          <div class="dg-box dg-pp"><span class="dg-who">Facilities Manager</span>Reviews and sends it. The AI never sends email.</div>
+        </div>
+        <div class="dg-row">
+          <div class="dg-box dg-ai"><span class="dg-skill">/route</span>Ready: builds the approval packet, approvers in order by dollar amount.</div>
+          <div class="dg-arrow">&#8594;</div>
+          <div class="dg-box dg-pp"><span class="dg-who">1 to 4 people sign</span>A $120,000 job needs all 4. The AI leaves every signature blank.</div>
+        </div>
+      </div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai" style="flex:.8"><span class="dg-skill">/status</span>One line per vendor: stage, blocker, days waiting.</div>
+    </div>
+  </div>
+
+  <div class="dg-lane">
+    <div class="dg-lanehead">
+      <div class="dg-lanetitle">Buy what a project needs<small>Furnishing one apartment, approved suppliers only</small></div>
+      <div class="dg-score">7 steps · 13 problems planted, 13 caught · 0 orders or payments by the AI</div>
+    </div>
+    <div class="dg-row">
+      <div class="dg-box dg-ai"><span class="dg-skill">/scope</span>Turns the request into a brief; asks once for what's missing.<span class="dg-caught">A blank wall length; a king bed too big for the room</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/source</span>Checks each item's lead time against the install date.<span class="dg-caught">A sofa 27 days late</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/quote</span>One comparison table and a purchase request draft.<span class="dg-caught">A $185 fee in a footnote; an expired quote</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/approve</span>Checks every product against the plan. Unclear goes to a person.<span class="dg-caught">A rug 2 in too wide; the wrong finish</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/change</span>Prices each substitution; the approved order can't change until signed.<span class="dg-caught">A backorder swap $108 over budget</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/deliver</span>Flags late or misaddressed deliveries and opens a task.<span class="dg-caught">A bed 5 days late; a dresser sent to the wrong unit</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/match</span>Invoice vs. order vs. receipt.<span class="dg-caught">Billed $872 against $713</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-pp" style="flex:.85"><span class="dg-who">People decide</span>Answer the question, approve the order and the change, send the update. Finance pays.</div>
+    </div>
+  </div>
+
+  <div class="dg-lane">
+    <div class="dg-lanehead">
+      <div class="dg-lanetitle">Controls from a real procurement packet<small>Copied from a public agency's approval packet (structure only)</small></div>
+      <div class="dg-score">3 steps · 6 problems planted, 6 caught · 0 signatures by the AI</div>
+    </div>
+    <div class="dg-row">
+      <div class="dg-box dg-ai"><span class="dg-skill">/screen</span>Every contractor's conflict-of-interest disclosure; every name checked against an exclusion list.<span class="dg-caught">An owner related to the only approver; an excluded company on an insurance certificate</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-pp" style="flex:.75"><span class="dg-who">Legal reviews</span>The related approver is recused; the next one signs.</div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/request</span>The approval request: type by dollar size, purpose, funding line, quotes per line, a certification.<span class="dg-caught">Two single-source lines; the lowest price not picked (27 days late)</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-pp" style="flex:.75"><span class="dg-who">Facilities Manager</span>Writes the justifications and signs the certification.</div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-ai"><span class="dg-skill">/closeout</span>Running totals and open items; a supplier's "all delivered" checked against the receipt.<span class="dg-caught">A false completion claim: 2 items not received</span></div>
+      <div class="dg-arrow">&#8594;</div>
+      <div class="dg-box dg-pp" style="flex:.75"><span class="dg-who">Two signatures</span>The supplier certifies, the Facilities Manager verifies. The AI leaves both blank.</div>
+    </div>
+  </div>
+
+  <div class="dg-controls">
+    <div class="dg-ctrl"><b>Written rules</b>One rules file and one numbers file; a check confirms the two agree.<span class="dg-term">operating policy, single source of truth</span></div>
+    <div class="dg-ctrl"><b>People approve</b>The AI never sends, signs, orders, or pays. It stops and asks.<span class="dg-term">human in the loop, segregation of duties</span></div>
+    <div class="dg-ctrl"><b>A second AI, the checker</b>Set up to only read, it reviews the work, with planted mistakes mixed in.<span class="dg-term">maker-checker review, least privilege by design</span></div>
+    <div class="dg-ctrl"><b>Audit log</b>Every action is one row. Rows are hash-chained, so an edit shows.<span class="dg-term">audit trail, tamper evidence</span></div>
+    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 41 of 41 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
+    <div class="dg-ctrl"><b>One screen</b>A dashboard rebuilt from the records; a test recounts every number in its tiles and tables.<span class="dg-term">observability, reconciliation</span></div>
+  </div>
+
+  <div class="dg-foot">
+    <span>14 skills · 4 approvers · 31 audit log rows · 20 decisions waiting on people, each with the AI's suggestion</span>
+    <span>Same structure fits any process with intake, checks, approvals, and an audit trail.</span>
+  </div>
+</div>
+<!-- DIAGRAM END -->
+</body>
+</html>

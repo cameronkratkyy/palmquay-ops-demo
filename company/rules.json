@@ -1,0 +1,167 @@
+{
+  "_note": "Fictional company for a demo. The single source for every number in CLAUDE.md. Fake data only.",
+  "company": "Palmquay Properties",
+  "demo_date": "2026-11-05",
+  "required_documents": {
+    "all": [
+      "w9",
+      "coi",
+      "request"
+    ],
+    "licensed_trades": [
+      "hvac",
+      "roofing",
+      "electrical",
+      "plumbing",
+      "pest_control",
+      "elevator_fire"
+    ],
+    "license_required_for_licensed_trades": true
+  },
+  "insurance_minimums": {
+    "gl_per_occurrence": 1000000,
+    "gl_aggregate": 2000000,
+    "auto_liability": 1000000,
+    "workers_comp": "Statutory or a valid exemption certificate",
+    "umbrella_high_risk": 5000000,
+    "high_risk_trades": [
+      "roofing",
+      "elevator_fire"
+    ],
+    "additional_insured": "Palmquay Properties"
+  },
+  "expiring_window_days": 30,
+  "approval_tiers": [
+    {
+      "max_amount": 10000,
+      "approvers": [
+        "Facilities Manager"
+      ]
+    },
+    {
+      "max_amount": 50000,
+      "approvers": [
+        "Facilities Manager",
+        "Procurement Lead"
+      ]
+    },
+    {
+      "max_amount": null,
+      "approvers": [
+        "Facilities Manager",
+        "Procurement Lead",
+        "Legal",
+        "Finance"
+      ]
+    }
+  ],
+  "chase_deadline_days": 7,
+  "issue_codes": {
+    "MISSING_W9": "BLOCKED",
+    "MISSING_COI": "BLOCKED",
+    "MISSING_LICENSE": "BLOCKED",
+    "MISSING_REQUEST": "BLOCKED",
+    "COI_EXPIRED": "BLOCKED",
+    "LICENSE_EXPIRED": "BLOCKED",
+    "GL_BELOW_MIN": "BLOCKED",
+    "AUTO_BELOW_MIN": "BLOCKED",
+    "UMBRELLA_MISSING": "BLOCKED",
+    "WC_MISSING": "BLOCKED",
+    "NO_ADDITIONAL_INSURED": "BLOCKED",
+    "NAME_MISMATCH": "BLOCKED",
+    "COI_EXPIRING_30D": "HOLD",
+    "LICENSE_EXPIRING_30D": "HOLD"
+  },
+  "projects": {
+    "_note": "Phase 3a: buying for a furnishing project (fictional). Every Phase 3a number lives here.",
+    "partner_label": "SEAK Interiors is the author's real business; the partnership and every project detail are fictional.",
+    "bed_widths_in": {
+      "twin": 38,
+      "full": 54,
+      "queen": 60,
+      "king": 76
+    },
+    "bed_side_clearance_in": 24,
+    "walkway_min_in": 36,
+    "order_date_basis": "request date for the original order; the supplier notice's date for a substitute (it can't be ordered before the notice)",
+    "exception_owner": "Facilities Manager",
+    "task_due_days": 1,
+    "update_reviewer": "Facilities Manager",
+    "payment_approver": "Finance",
+    "issue_codes": {
+      "MISSING_MEASUREMENT": "NEEDS_INFO",
+      "SCOPE_CONFLICT": "NEEDS_INFO",
+      "LATE_ITEM": "FLAG",
+      "HIDDEN_FREIGHT": "FLAG",
+      "QUOTE_EXPIRED": "FLAG",
+      "TOO_WIDE": "FAIL",
+      "TOO_DEEP": "FAIL",
+      "FINISH_MISMATCH": "FAIL",
+      "NEEDS_PERSON": "PERSON",
+      "OVER_BUDGET": "NEEDS_APPROVAL",
+      "DELIVERY_LATE": "EXCEPTION",
+      "ADDRESS_MISMATCH": "EXCEPTION",
+      "QTY_MISMATCH": "HOLD",
+      "PRICE_MISMATCH": "HOLD",
+      "NOT_RECEIVED": "HOLD",
+      "FABRIC_MISMATCH": "FAIL"
+    },
+    "alternative_rule": "the cheapest catalog item with the same item name that meets the plan line's spec and arrives by the install date",
+    "hidden_freight_words": [
+      "delivery",
+      "freight",
+      "shipping"
+    ],
+    "on_hold_status": "on hold (change request)"
+  },
+  "controls": {
+    "_note": "Phase 3c: controls borrowed from the author's real public-agency procurement packet (structure only, fake data). Every Phase 3c number lives here.",
+    "disclosure_file": "disclosures/conflict-of-interest.md",
+    "disclosure_reviewer": "Legal",
+    "exclusion_reviewer": "Legal",
+    "approval_order": [
+      "Facilities Manager",
+      "Procurement Lead",
+      "Legal",
+      "Finance"
+    ],
+    "procurement_types": [
+      {
+        "name": "Small purchase",
+        "max_amount": 2500,
+        "competition": "one written quote or catalog price"
+      },
+      {
+        "name": "Standard purchase",
+        "max_amount": 25000,
+        "line_min": 500,
+        "min_suppliers": 2,
+        "competition": "every order line over $500 needs in-spec prices from at least 2 approved suppliers (written quotes or catalog prices)"
+      },
+      {
+        "name": "Formal bid",
+        "max_amount": null,
+        "competition": "an advertised request for proposals with written scoring; the Procurement Lead approves the method"
+      }
+    ],
+    "justification_writer": "Facilities Manager",
+    "closeout_verifier": "Facilities Manager",
+    "screen_results": [
+      "CLEAR",
+      "REVIEW",
+      "EXCLUDED"
+    ],
+    "issue_codes": {
+      "MISSING_DISCLOSURE": "REVIEW",
+      "PAID_SOLICITATION": "REVIEW",
+      "CONFLICT_DISCLOSED": "REVIEW",
+      "EXCLUDED": "EXCLUDED",
+      "LOWEST_NOT_SELECTED": "JUSTIFY",
+      "SINGLE_SOURCE": "JUSTIFY",
+      "FORMAL_BID_REQUIRED": "JUSTIFY",
+      "FUNDS_SHORT": "BLOCKED",
+      "CLAIM_CONTRADICTED": "REFUSED",
+      "NOT_READY": "OPEN"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "vendor": "bayvane-plumbing",
+  "result": "CLEAR",
+  "codes": [],
+  "disclosure": {
+    "file": "vendors/bayvane-plumbing/disclosures/conflict-of-interest.md",
+    "firm": "Bayvane Plumbing Inc.",
+    "signed_by": "Grant Holloway",
+    "date": "2026-11-03",
+    "paid_help_statement": "Yes",
+    "relationships": []
+  },
+  "names_checked": [
+    "Bayvane Plumbing Inc.",
+    "Bayvane Plumbing Inc.",
+    "Bayvane Plumbing Inc.",
+    "Bayvane Plumbing Inc.",
+    "Grant Holloway"
+  ],
+  "exclusion_list_as_of": "2026-11-05",
+  "evidence": [
+    {
+      "check": "conflict-of-interest disclosure on file",
+      "found": "signed 2026-11-03 by Grant Holloway",
+      "result": "ok"
+    },
+    {
+      "check": "no paid help to win the work",
+      "found": "Yes",
+      "result": "ok"
+    },
+    {
+      "check": "disclosed relationships",
+      "found": "none",
+      "result": "ok"
+    },
+    {
+      "check": "exclusion list: W-9 legal name",
+      "found": "Bayvane Plumbing Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: insurance insured",
+      "found": "Bayvane Plumbing Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: license holder",
+      "found": "Bayvane Plumbing Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure firm",
+      "found": "Bayvane Plumbing Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure signer",
+      "found": "Grant Holloway",
+      "result": "not listed"
+    }
+  ],
+  "run": {
+    "by": "onboarding-assistant",
+    "at": "2026-11-06T10:19:04",
+    "rules": "company/rules.json (controls)",
+    "tool": "tools/controls.py screen"
+  }
+}

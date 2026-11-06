@@ -1,0 +1,20 @@
+{
+  "status": "NEEDS_INFO",
+  "codes": [
+    "MISSING_MEASUREMENT",
+    "SCOPE_CONFLICT"
+  ],
+  "missing": [
+    "Bedroom wall B"
+  ],
+  "bed_requested": "king",
+  "bed_needs_in": 124,
+  "wall_in": 120,
+  "largest_bed_that_fits": "queen",
+  "_measurements": {
+    "Living room wall A": 168,
+    "Living room wall B": 144,
+    "Bedroom wall A": 120,
+    "Bedroom wall B": null
+  }
+}

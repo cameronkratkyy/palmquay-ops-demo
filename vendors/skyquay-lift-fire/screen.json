@@ -1,0 +1,69 @@
+{
+  "vendor": "skyquay-lift-fire",
+  "result": "CLEAR",
+  "codes": [],
+  "disclosure": {
+    "file": "vendors/skyquay-lift-fire/disclosures/conflict-of-interest.md",
+    "firm": "Skyquay Lift & Fire Inc.",
+    "signed_by": "Alicia Romero",
+    "date": "2026-11-03",
+    "paid_help_statement": "Yes",
+    "relationships": []
+  },
+  "names_checked": [
+    "Skyquay Lift & Fire Inc.",
+    "Skyquay Lift & Fire Inc.",
+    "Skyquay Lift & Fire Inc.",
+    "Skyquay Lift & Fire Inc.",
+    "Alicia Romero"
+  ],
+  "exclusion_list_as_of": "2026-11-05",
+  "evidence": [
+    {
+      "check": "conflict-of-interest disclosure on file",
+      "found": "signed 2026-11-03 by Alicia Romero",
+      "result": "ok"
+    },
+    {
+      "check": "no paid help to win the work",
+      "found": "Yes",
+      "result": "ok"
+    },
+    {
+      "check": "disclosed relationships",
+      "found": "none",
+      "result": "ok"
+    },
+    {
+      "check": "exclusion list: W-9 legal name",
+      "found": "Skyquay Lift & Fire Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: insurance insured",
+      "found": "Skyquay Lift & Fire Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: license holder",
+      "found": "Skyquay Lift & Fire Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure firm",
+      "found": "Skyquay Lift & Fire Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure signer",
+      "found": "Alicia Romero",
+      "result": "not listed"
+    }
+  ],
+  "run": {
+    "by": "onboarding-assistant",
+    "at": "2026-11-06T10:19:04",
+    "rules": "company/rules.json (controls)",
+    "tool": "tools/controls.py screen"
+  }
+}
