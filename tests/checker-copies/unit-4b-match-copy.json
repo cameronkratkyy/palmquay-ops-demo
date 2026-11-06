@@ -1,0 +1,13 @@
+{
+  "invoices": {
+    "INV-GW-5521": {
+      "result": "MATCH",
+      "codes": []
+    },
+    "INV-KC-3307": {
+      "result": "MATCH",
+      "codes": []
+    }
+  },
+  "payment_approver": "Finance"
+}

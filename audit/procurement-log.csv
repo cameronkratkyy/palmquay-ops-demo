@@ -1,0 +1,10 @@
+timestamp,actor,vendor,action,detail,result
+2026-11-05T22:35:49,procurement-assistant,unit-4b,scope_brief,"projects/unit-4b/out/brief.json; projects/unit-4b/out/brief.md; codes MISSING_MEASUREMENT,SCOPE_CONFLICT; missing Bedroom wall B",NEEDS_INFO
+2026-11-05T22:35:50,procurement-assistant,unit-4b,source_check,projects/unit-4b/out/source.json; projects/unit-4b/out/source.md; 8 items; late GW-SOF-210,1 late
+2026-11-05T22:35:50,procurement-assistant,unit-4b,quote_compare,"projects/unit-4b/out/quotes.json; projects/unit-4b/out/quotes.md; projects/unit-4b/out/purchase-request-draft.md; total $4,898; approvers Facilities Manager","draft for review, not ordered"
+2026-11-05T22:35:50,procurement-assistant,unit-4b,product_approval,"projects/unit-4b/out/approval.json; projects/unit-4b/out/approval.md; pass 5, fail 2, to a person 1","2 fail, 1 to a person"
+2026-11-05T22:35:50,procurement-assistant,unit-4b,change_request,"projects/unit-4b/out/change-request-CR-001.json; projects/unit-4b/out/change-request-CR-001.md; MH-SOF-118 -> GW-SOF-205; +$410; total $5,308 vs budget $5,200; baseline unchanged",awaiting approval
+2026-11-05T22:35:50,procurement-assistant,unit-4b,delivery_exceptions,"projects/unit-4b/out/deliveries.json; projects/unit-4b/out/tasks.md; projects/unit-4b/out/drafts/update-2026-11-12.md; exceptions GW-BED-Q DELIVERY_LATE, MH-DR-60 ADDRESS_MISMATCH","2 tasks; update drafted, not sent"
+2026-11-05T22:35:50,procurement-assistant,unit-4b,invoice_match,"projects/unit-4b/out/match.json; projects/unit-4b/out/match.md; INV-GW-5521 MATCH; INV-KC-3307 HOLD PRICE_MISMATCH,QTY_MISMATCH",flagged for Finance; payment status untouched
+2026-11-05T22:37:33,compliance-checker,unit-4b,checker_review,"reviews/procurement/2026-11-05-01-unit-4b.md; 6 OK, 3 findings; recorded by procurement-assistant",3 findings
+2026-11-05T22:39:00,compliance-checker,unit-4b,checker_review,"reviews/procurement/2026-11-05-02-unit-4b.md; 7 OK, 2 findings; recorded by procurement-assistant",2 findings

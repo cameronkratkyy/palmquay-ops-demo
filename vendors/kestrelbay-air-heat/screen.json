@@ -1,0 +1,92 @@
+{
+  "vendor": "kestrelbay-air-heat",
+  "result": "REVIEW",
+  "codes": [
+    "CONFLICT_DISCLOSED"
+  ],
+  "disclosure": {
+    "file": "vendors/kestrelbay-air-heat/disclosures/conflict-of-interest.md",
+    "firm": "Kestrelbay Air & Heat LLC",
+    "signed_by": "Tomas Ferreira",
+    "date": "2026-11-03",
+    "paid_help_statement": "Yes",
+    "relationships": [
+      {
+        "Person": "Ray Reyes",
+        "Relationship": "Brother of Dana Reyes, Facilities Manager",
+        "Interest": "Owns 10% of the firm"
+      }
+    ]
+  },
+  "names_checked": [
+    "Kestrelbay Air & Heat LLC",
+    "Kestrelbay Air & Heat LLC",
+    "Kestrelbay Air & Heat LLC",
+    "Kestrelbay Air & Heat LLC",
+    "Tomas Ferreira",
+    "Ray Reyes"
+  ],
+  "exclusion_list_as_of": "2026-11-05",
+  "evidence": [
+    {
+      "check": "conflict-of-interest disclosure on file",
+      "found": "signed 2026-11-03 by Tomas Ferreira",
+      "result": "ok"
+    },
+    {
+      "check": "no paid help to win the work",
+      "found": "Yes",
+      "result": "ok"
+    },
+    {
+      "check": "disclosed relationships",
+      "found": "Ray Reyes: Brother of Dana Reyes, Facilities Manager (Owns 10% of the firm)",
+      "result": "CONFLICT_DISCLOSED"
+    },
+    {
+      "check": "exclusion list: W-9 legal name",
+      "found": "Kestrelbay Air & Heat LLC",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: insurance insured",
+      "found": "Kestrelbay Air & Heat LLC",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: license holder",
+      "found": "Kestrelbay Air & Heat LLC",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure firm",
+      "found": "Kestrelbay Air & Heat LLC",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure signer",
+      "found": "Tomas Ferreira",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosed person",
+      "found": "Ray Reyes",
+      "result": "not listed"
+    }
+  ],
+  "reviewers": [
+    "Legal"
+  ],
+  "recused": [
+    "Facilities Manager"
+  ],
+  "approvers": [
+    "Procurement Lead"
+  ],
+  "run": {
+    "by": "onboarding-assistant",
+    "at": "2026-11-06T10:19:04",
+    "rules": "company/rules.json (controls)",
+    "tool": "tools/controls.py screen"
+  }
+}

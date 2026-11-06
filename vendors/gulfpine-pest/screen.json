@@ -1,0 +1,78 @@
+{
+  "vendor": "gulfpine-pest",
+  "result": "EXCLUDED",
+  "codes": [
+    "EXCLUDED"
+  ],
+  "disclosure": {
+    "file": "vendors/gulfpine-pest/disclosures/conflict-of-interest.md",
+    "firm": "Gulfpine Pest Control Inc.",
+    "signed_by": "Derek Mills",
+    "date": "2026-11-03",
+    "paid_help_statement": "Yes",
+    "relationships": []
+  },
+  "names_checked": [
+    "Gulfpine Pest Control Inc.",
+    "Gulfpine Pest Solutions LLC",
+    "Gulfpine Pest Control Inc.",
+    "Gulfpine Pest Control Inc.",
+    "Derek Mills"
+  ],
+  "exclusion_list_as_of": "2026-11-05",
+  "evidence": [
+    {
+      "check": "conflict-of-interest disclosure on file",
+      "found": "signed 2026-11-03 by Derek Mills",
+      "result": "ok"
+    },
+    {
+      "check": "no paid help to win the work",
+      "found": "Yes",
+      "result": "ok"
+    },
+    {
+      "check": "disclosed relationships",
+      "found": "none",
+      "result": "ok"
+    },
+    {
+      "check": "exclusion list: W-9 legal name",
+      "found": "Gulfpine Pest Control Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: insurance insured",
+      "found": "Gulfpine Pest Solutions LLC",
+      "result": "EXCLUDED"
+    },
+    {
+      "check": "exclusion list: license holder",
+      "found": "Gulfpine Pest Control Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure firm",
+      "found": "Gulfpine Pest Control Inc.",
+      "result": "not listed"
+    },
+    {
+      "check": "exclusion list: disclosure signer",
+      "found": "Derek Mills",
+      "result": "not listed"
+    }
+  ],
+  "reviewers": [
+    "Legal"
+  ],
+  "matched": [
+    "Gulfpine Pest Solutions LLC"
+  ],
+  "hold_followup": true,
+  "run": {
+    "by": "onboarding-assistant",
+    "at": "2026-11-06T10:19:04",
+    "rules": "company/rules.json (controls)",
+    "tool": "tools/controls.py screen"
+  }
+}

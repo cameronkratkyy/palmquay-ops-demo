@@ -1,0 +1,21 @@
+{
+  "_note": "Written by hand before the check ran (11/5). Expected results for the demo date 2026-11-05. Locked in tests/LOCK.txt; changing it needs a reason in the README's change log.",
+  "vendors": {
+    "kestrelbay-air-heat":   {"documents": ["coi", "license", "request", "w9"], "issues": [], "status": "READY",
+                              "approvers": ["Facilities Manager"], "why": "clean small job"},
+    "saltmarsh-roofing":     {"documents": ["coi", "license", "request", "w9"], "issues": ["COI_EXPIRED"], "status": "BLOCKED",
+                              "approvers": ["Facilities Manager", "Procurement Lead"], "why": "certificate ended 2026-09-30"},
+    "brightcurrent-electric": {"documents": ["coi", "license", "request", "w9"], "issues": ["GL_BELOW_MIN"], "status": "BLOCKED",
+                              "approvers": ["Facilities Manager", "Procurement Lead"], "why": "$500,000 / $1,000,000 vs $1M / $2M"},
+    "fernhollow-grounds":    {"documents": ["coi", "request"], "issues": ["MISSING_W9"], "status": "BLOCKED",
+                              "approvers": ["Facilities Manager", "Procurement Lead"], "why": "no W-9; landscaping needs no license"},
+    "clearsail-janitorial":  {"documents": ["coi", "request", "w9"], "issues": ["NO_ADDITIONAL_INSURED"], "status": "BLOCKED",
+                              "approvers": ["Facilities Manager"], "why": "Palmquay not named as additional insured"},
+    "bayvane-plumbing":      {"documents": ["coi", "license", "request", "w9"], "issues": ["LICENSE_EXPIRING_30D"], "status": "HOLD",
+                              "approvers": ["Facilities Manager", "Procurement Lead"], "why": "license ends 2026-11-28, 23 days out"},
+    "gulfpine-pest":         {"documents": ["coi", "license", "request", "w9"], "issues": ["NAME_MISMATCH"], "status": "BLOCKED",
+                              "approvers": ["Facilities Manager"], "why": "certificate says Gulfpine Pest Solutions LLC; W-9 and license say Gulfpine Pest Control Inc. (checker bait)"},
+    "skyquay-lift-fire":     {"documents": ["coi", "license", "request", "w9"], "issues": [], "status": "READY",
+                              "approvers": ["Facilities Manager", "Procurement Lead", "Legal", "Finance"], "why": "clean large job, every approver"}
+  }
+}

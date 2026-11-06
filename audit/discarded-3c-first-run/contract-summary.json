@@ -1,0 +1,47 @@
+{
+  "project": "unit-4b",
+  "order": "PQ-1042",
+  "original": 4898,
+  "approved_changes": 0,
+  "current": 4898,
+  "invoiced": 1407,
+  "approved_for_payment": 0,
+  "paid": 0,
+  "held": 872,
+  "remaining": 3491,
+  "lines_received": 3,
+  "lines_total": 8,
+  "open_lines": [
+    "GW-BED-Q",
+    "GW-CT-48",
+    "MH-CHR-32",
+    "MH-DR-60",
+    "MH-SOF-118"
+  ],
+  "held_invoices": [
+    "INV-KC-3307"
+  ],
+  "pending_changes": [
+    "CR-001"
+  ],
+  "open_tasks": [
+    "T1",
+    "T2"
+  ],
+  "claim": {
+    "supplier": "Gulfweave Furnishings",
+    "notice": "projects/unit-4b/closeout/2026-11-12-gulfweave-completion.md",
+    "result": "CLAIM_CONTRADICTED",
+    "not_delivered": [
+      "GW-BED-Q",
+      "GW-CT-48"
+    ]
+  },
+  "status": "NOT_READY",
+  "certificate_signed": false,
+  "run": {
+    "by": "procurement-assistant",
+    "at": "2026-11-06T10:17:14",
+    "tool": "tools/controls.py closeout"
+  }
+}

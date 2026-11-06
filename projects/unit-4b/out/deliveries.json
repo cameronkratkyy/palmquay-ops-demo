@@ -1,0 +1,15 @@
+{
+  "exceptions": {
+    "GW-BED-Q": "DELIVERY_LATE",
+    "MH-DR-60": "ADDRESS_MISMATCH"
+  },
+  "days_late": {
+    "GW-BED-Q": 5
+  },
+  "covered_by_change": [
+    "MH-SOF-118"
+  ],
+  "tasks": 2,
+  "task_owner": "Facilities Manager",
+  "task_due": "2026-11-13"
+}

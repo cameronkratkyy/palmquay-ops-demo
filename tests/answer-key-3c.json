@@ -1,0 +1,35 @@
+{
+  "_note": "Phase 3c answer key, written by hand before tools/controls.py or the 3c skills existed (11/6). Fictional data. Locked in tests/LOCK.txt; changing it needs a reason in the README's change log.",
+  "screen": {
+    "vendors": {
+      "bayvane-plumbing":       {"result": "CLEAR", "codes": []},
+      "brightcurrent-electric": {"result": "CLEAR", "codes": []},
+      "clearsail-janitorial":   {"result": "CLEAR", "codes": []},
+      "fernhollow-grounds":     {"result": "CLEAR", "codes": []},
+      "gulfpine-pest":          {"result": "EXCLUDED", "codes": ["EXCLUDED"], "matched": ["Gulfpine Pest Solutions LLC"], "reviewers": ["Legal"], "hold_followup": true},
+      "kestrelbay-air-heat":    {"result": "REVIEW", "codes": ["CONFLICT_DISCLOSED"], "reviewers": ["Legal"], "recused": ["Facilities Manager"], "approvers": ["Procurement Lead"]},
+      "saltmarsh-roofing":      {"result": "CLEAR", "codes": []},
+      "skyquay-lift-fire":      {"result": "CLEAR", "codes": []}
+    },
+    "suppliers": {"Gulfweave Furnishings": "CLEAR", "Keystone Coast Furniture": "CLEAR", "Mangrove Home Supply": "CLEAR"},
+    "why": "Kestrelbay's disclosure names an owner who is the brother of its only approver (Facilities Manager, the $8,500 tier), so she is recused and the Procurement Lead signs after Legal reviews; Gulfpine's insurance certificate names Gulfpine Pest Solutions LLC, excluded 2026-03-16 to 2029-03-15"
+  },
+  "request": {
+    "type": "Standard purchase", "total": 4898, "budget_line": "FAC-TURN-2026", "available": 5200, "left_after_order": 302, "funds_short": false,
+    "lines_checked": ["GW-BED-Q", "MH-DR-60", "MH-SOF-118"],
+    "flags": {"GW-BED-Q": "SINGLE_SOURCE", "MH-DR-60": "SINGLE_SOURCE", "MH-SOF-118": "LOWEST_NOT_SELECTED"},
+    "lowest": {"MH-SOF-118": {"lowest_sku": "GW-SOF-210", "lowest_price": 1450, "selected_price": 1520, "difference": 70, "reason_on_record": "LATE_ITEM"}},
+    "needs_person": ["GW-BED-Q", "MH-DR-60"],
+    "status": "NEEDS_JUSTIFICATION", "approvers": ["Facilities Manager"], "certified": false,
+    "why": "$4,898 is a Standard purchase; lines over $500 are the sofa ($1,520), bed ($690), dresser ($640); in-spec sofas come from 2 suppliers but the cheapest (GW-SOF-210, $1,450) arrives 27 days late; only Gulfweave sells an in-spec queen bed and only Mangrove an in-spec dresser"
+  },
+  "closeout": {
+    "original": 4898, "approved_changes": 0, "current": 4898, "invoiced": 1407, "approved_for_payment": 0, "paid": 0, "held": 872, "remaining": 3491,
+    "lines_received": 3, "lines_total": 8,
+    "open_lines": ["GW-BED-Q", "GW-CT-48", "MH-CHR-32", "MH-DR-60", "MH-SOF-118"],
+    "held_invoices": ["INV-KC-3307"], "pending_changes": ["CR-001"], "open_tasks": ["T1", "T2"],
+    "claim": {"supplier": "Gulfweave Furnishings", "result": "CLAIM_CONTRADICTED", "not_delivered": ["GW-BED-Q", "GW-CT-48"]},
+    "status": "NOT_READY", "certificate_signed": false,
+    "why": "invoices $535 + $872 = $1,407; $4,898 - $1,407 = $3,491; received in full: rug, lamps, nightstands; Gulfweave says all delivered but its bed and coffee table aren't on the receipt"
+  }
+}

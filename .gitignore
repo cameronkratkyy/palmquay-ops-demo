@@ -1,0 +1,4 @@
+# Stays on the author's machine: the private vault path used by check C1
+tests/private_paths.json
+__pycache__/
+*.pyc

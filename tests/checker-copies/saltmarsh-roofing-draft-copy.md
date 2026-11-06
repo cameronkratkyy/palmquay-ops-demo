@@ -1,0 +1,36 @@
+# Draft follow-up email: Saltmarsh Roofing Co.
+
+*Fake data for a demo. DRAFT ONLY: the assistant never sends email. Dana Reyes (Facilities Manager) reviews and sends it.*
+
+| Field | Value |
+|---|---|
+| Status | DRAFT, not sent |
+| To | office@saltmarsh-roofing.example |
+| From | dana.reyes@palmquay.example |
+| Reviewer and sender | Dana Reyes, Facilities Manager |
+| Subject | Current certificate of insurance needed by 2026-11-19 |
+| Issue codes | COI_EXPIRED |
+| Deadline | 2026-11-19 |
+| Drafted | 2026-11-05 by onboarding-assistant from vendors/saltmarsh-roofing/intake.json |
+
+## Message
+
+Hello Saltmarsh Roofing Co. team,
+
+Thank you for sending your paperwork for the flat-roof re-coat at Bayfront Commons. Everything else is in order; we need one item before we can move ahead.
+
+## What we need
+
+1. **A current certificate of insurance.** The certificate we have on file ended on 2026-09-30.
+   **Why we need it:** Our policy requires current insurance on file for every vendor, and an expired certificate stops the approval.
+
+## Deadline and how to send it
+
+Please send it by **2026-11-19** (one week from today). Reply to this email with the certificate attached (a PDF is fine), or send it to dana.reyes@palmquay.example.
+
+If anything here looks wrong, just reply and we'll sort it out.
+
+Thank you,
+Dana Reyes
+Facilities Manager, Palmquay Properties
+dana.reyes@palmquay.example

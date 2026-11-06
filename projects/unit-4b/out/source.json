@@ -1,0 +1,12 @@
+{
+  "items_checked": 8,
+  "late": {
+    "GW-SOF-210": {
+      "arrives": "2026-12-17",
+      "days_late": 27
+    }
+  },
+  "alternative": {
+    "GW-SOF-210": "MH-SOF-118"
+  }
+}
