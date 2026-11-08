@@ -715,6 +715,10 @@ def b4(sets, page):
         f"dashboard Map tab shows the same diagram: {bool(dg) and dg == dp}")
 
 
+# Length cap. Was 2:00 / 300 words; raised 11/8 when the author chose the longer, more-context script ("Keep 2:33").
+MAX_SECONDS, MAX_WORDS = 160, 330
+
+
 def b5(sets, page):
     t = read("docs", "video-script.md")
     rows = []
@@ -733,10 +737,10 @@ def b5(sets, page):
     found, bad_n, bad_d, bad_i = trace(say, sets)
     over = overclaims(t)
     first_ok = bool(rows) and rows[0][0].startswith("0:00") and "**Overview**" in rows[0][1] and times[0][-1] <= 10
-    ok = (rows and len(words) <= 300 and flat == sorted(flat) and flat and flat[-1] <= 120 and first_ok and not no_tab
+    ok = (rows and len(words) <= MAX_WORDS and flat == sorted(flat) and flat and flat[-1] <= MAX_SECONDS and first_ok and not no_tab
           and not bad_paths and not bad_n and not bad_d and not bad_i and not over and re.search(r"\bdesign", t, re.I))
-    rec(ok, "B5 video script: 2:00 or less, one window, starts on the finished dashboard, numbers trace",
-        f"{len(rows)} beats; {len(words)} spoken words (want 300 or fewer): {len(words) / 150 * 60:.0f} s at 150 a minute, "
+    rec(ok, "B5 video script: 2:40 or less, one window, starts on the finished dashboard, numbers trace",
+        f"{len(rows)} beats; {len(words)} spoken words (want {MAX_WORDS} or fewer): {len(words) / 150 * 60:.0f} s at 150 a minute, "
         f"{len(words) / 177 * 60:.0f} s at 177; last beat ends {flat[-1] if flat else '?'} s; first beat on the Overview tab within 10 s: {first_ok}; "
         f"beats naming no dashboard tab {no_tab}; paths missing {bad_paths}; {len(found)} numbers, untraced {bad_n}; dates {bad_d}; IDs {bad_i}; "
         f"overclaims {over}; says 'designed': {bool(re.search(r'design', t, re.I))}")
