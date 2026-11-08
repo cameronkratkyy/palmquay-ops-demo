@@ -1,10 +1,11 @@
 {
- "built": "2026-11-08T15:09:46",
+ "built": "2026-11-08T17:39:52",
  "facts": {
   "v.kestrelbay-air-heat.amount": 8500,
   "v.kestrelbay-air-heat.approvers": 1,
   "v.skyquay-lift-fire.amount": 120000,
   "v.skyquay-lift-fire.approvers": 4,
+  "ex.v1_signed": 2,
   "p.queen_needs": 108,
   "p.wall": 120,
   "p.cr_delta": 410,
@@ -19,27 +20,30 @@
   "rq.GW-BED-Q.line": 690,
   "rq.MH-DR-60.line": 640,
   "p.committed": 4898,
+  "ex.credit_days": 7,
+  "ex.credit_freight": 185,
   "v.total": 8,
   "v.READY": 2,
   "v.HOLD": 1,
   "v.BLOCKED": 5,
-  "w.total": 20,
+  "w.total": 21,
   "w.onb": 9,
-  "w.buy": 11,
+  "w.buy": 12,
   "p.budget": 5200,
   "i.total": 25,
   "i.onb": 6,
   "i.buy": 13,
   "i.ctl": 6,
-  "c.pass": 41,
-  "c.total": 41,
-  "a.rows": 31,
+  "c.pass": 53,
+  "c.total": 53,
+  "a.rows": 34,
   "a.onb": 18,
   "a.proc": 9,
   "a.ctl": 4,
+  "a.exc": 3,
   "g.ai_people": 0,
-  "g.drafts": 8,
-  "g.blank": 5,
+  "g.drafts": 9,
+  "g.blank": 9,
   "ic.LICENSE_EXPIRING_30D": 1,
   "ic.GL_BELOW_MIN": 1,
   "ic.NO_ADDITIONAL_INSURED": 1,
@@ -142,11 +146,14 @@
   "c.p3a.total": 14,
   "c.p3c.pass": 11,
   "c.p3c.total": 11,
-  "a.reviews": 5,
+  "c.p3d.pass": 12,
+  "c.p3d.total": 12,
+  "a.reviews": 6,
   "g.blank_lines": 2,
   "a.onb_links": 18,
   "a.proc_links": 9,
-  "a.ctl_links": 4
+  "a.ctl_links": 4,
+  "a.exc_links": 3
  },
  "waiting": [
   {
@@ -213,13 +220,6 @@
    "record": "vendors/kestrelbay-air-heat/packet.md"
   },
   {
-   "since": "2026-11-05",
-   "key": "sign_packet:skyquay-lift-fire",
-   "owner": "Facilities Manager",
-   "who": "Dana Reyes, Facilities Manager",
-   "record": "vendors/skyquay-lift-fire/packet.md"
-  },
-  {
    "since": "2026-11-06",
    "key": "certify_request:PQ-1042",
    "owner": "Facilities Manager",
@@ -248,6 +248,13 @@
    "record": "projects/unit-4b/out/change-request-CR-001.md"
   },
   {
+   "since": "2026-11-10",
+   "key": "sign_packet:skyquay-lift-fire",
+   "owner": "Facilities Manager",
+   "who": "Dana Reyes, Facilities Manager",
+   "record": "vendors/skyquay-lift-fire/packet-v2.md"
+  },
+  {
    "since": "2026-11-12",
    "key": "approve_payment:INV-GW-5521",
    "owner": "Finance",
@@ -260,6 +267,13 @@
    "owner": "Finance",
    "who": "Tom Becker, Finance",
    "record": "projects/unit-4b/out/match.md"
+  },
+  {
+   "since": "2026-11-12",
+   "key": "send_credit:credit-request-gulfweave-2026-11-12",
+   "owner": "Facilities Manager",
+   "who": "Dana Reyes, Facilities Manager",
+   "record": "projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md"
   },
   {
    "since": "2026-11-12",
@@ -314,7 +328,13 @@
    "pass": 11,
    "total": 11,
    "rc": 0
+  },
+  "p3d": {
+   "label": "Phase 3d",
+   "pass": 12,
+   "total": 12,
+   "rc": 0
   }
  },
- "events": 31
+ "events": 34
 }

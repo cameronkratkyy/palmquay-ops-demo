@@ -1,0 +1,33 @@
+{
+  "_note": "Phase 3d answer key, written by hand on 11/8/2026 from the raw records before tools/exceptions.py or the /revise and /credit skills existed. Locked in tests/LOCK.txt.",
+  "revise": {
+    "vendor": "skyquay-lift-fire",
+    "from_version": 1,
+    "to_version": 2,
+    "change_type": "contract terms",
+    "change": "Add a one-year warranty on parts and labor to the contract terms before I sign.",
+    "requested_by": "Legal",
+    "requested_on": "2026-11-10",
+    "material": true,
+    "status": "RESTART",
+    "signed_before": ["Facilities Manager", "Procurement Lead"],
+    "route": ["Facilities Manager", "Procurement Lead", "Legal", "Finance"],
+    "next": "Facilities Manager",
+    "sender": "Facilities Manager",
+    "blank_signoffs": 4,
+    "_why": "$120,000 is over $50,000, so four sign-offs in order; Dana and Marcus signed version 1 on 2026-11-06 and 2026-11-09, so a contract-terms change sends the new version back to Dana first."
+  },
+  "credit": {
+    "project": "unit-4b",
+    "as_of": "2026-11-12",
+    "items": {
+      "GW-BED-Q": {"supplier": "Gulfweave Furnishings", "promised": "2026-11-18", "eta": "2026-11-25", "days_past": 7}
+    },
+    "suppliers": {
+      "Gulfweave Furnishings": {"freight": 185, "credit_cents": 9250, "skus": ["GW-BED-Q"]}
+    },
+    "reviewer_and_sender": "Facilities Manager",
+    "status": "DRAFTED",
+    "_why": "Only the queen bed frame arrives 7 or more days after its promised date (2026-11-25 vs 2026-11-18). Every other line with an ETA is on time; the sofa is on hold for CR-001 and isn't counted. 50% of Gulfweave's $185 freight is $92.50."
+  }
+}

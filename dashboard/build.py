@@ -164,6 +164,11 @@ for r in table_rows(read("company", "people.md"), "Role"):
     people[re.sub(r"\s*\(.*?\)", "", r["Role"]).strip()] = r["Name"]
 
 
+def plain_item(s):
+    """'Bed frame, queen' -> 'queen bed frame'."""
+    return " ".join(reversed([x.strip() for x in s.lower().split(",", 1)])) if "," in s else s.lower()
+
+
 def who(role):
     return f"{people[role]}, {role}" if role in people else role
 
@@ -207,6 +212,11 @@ ctl_rows = log_rows("controls-log.csv") if os.path.exists(path("audit", "control
 reply_drafts = sorted(os.path.relpath(f, ROOT).replace("\\", "/") for f in glob.glob(P("controls", "drafts", "reply-*.md")))
 ctl_day = {r["action"]: r["timestamp"][:10] for r in ctl_rows}
 exclusion = {r["Excluded party"]: r for r in table_rows(read("company", "exclusion-list.md"), "Excluded party")} if os.path.exists(path("company", "exclusion-list.md")) else {}
+exc_rules = rules.get("exceptions", {})
+exc_rows = log_rows("exceptions-log.csv") if os.path.exists(path("audit", "exceptions-log.csv")) else []
+revisions = {s: jread("vendors", s, "revision.json") for s in slugs if os.path.exists(path("vendors", s, "revision.json"))}
+credit = jread("projects", PROJECT, "exceptions", "freight-credit.json") if os.path.exists(P("exceptions", "freight-credit.json")) else None
+credit_drafts = sorted(os.path.relpath(f, ROOT).replace("\\", "/") for f in glob.glob(P("exceptions", "credit-request-*.md")))
 catalog = {r["SKU"]: dict(r, supplier=line_fields(open(f, encoding="utf-8").read())["Supplier"]) for f in glob.glob(P("catalogs", "*.md")) for r in table_rows(open(f, encoding="utf-8").read(), "SKU")}
 
 
@@ -229,12 +239,12 @@ def defang(s):
 
 CHECKS = {}
 for tag, f, label in (("p1", "check_phase1.py", "Phase 1"), ("p2", "check_phase2.py", "Phase 2"), ("p3a", "check_phase3a.py", "Phase 3a"),
-                      ("p3c", "check_phase3c.py", "Phase 3c")):
+                      ("p3c", "check_phase3c.py", "Phase 3c"), ("p3d", "check_phase3d.py", "Phase 3d")):
     if not os.path.exists(path("tests", f)):
         continue
     t1 = time.time()
-    rc, so = run([path("tests", f)] + (["--root", ROOT] if f in ("check_phase3a.py", "check_phase3c.py") else []) + (["--copy"] if COPY else [])
-                 + (["--skip-old-phases"] if f == "check_phase3c.py" else []))
+    rc, so = run([path("tests", f)] + (["--root", ROOT] if f in ("check_phase3a.py", "check_phase3c.py", "check_phase3d.py") else [])
+                 + (["--copy"] if COPY else []) + (["--skip-old-phases"] if f in ("check_phase3c.py", "check_phase3d.py") else []))
     m = re.findall(r"^RESULT: (\d+) of (\d+) checks PASS", so, re.M)
     lines = [defang(l) for l in so.splitlines() if l.startswith(("PASS - ", "FAIL - "))]
     CHECKS[tag] = {"label": label, "file": f"tests/{f}", "rc": rc, "pass": int(m[-1][0]) if m else None,
@@ -250,6 +260,7 @@ def chain(tool, cmd):
 onb_links, onb_verify = chain("onboard.py", "verify-audit")
 proc_links, proc_verify = chain("project.py", "verify-log")
 ctl_links, ctl_verify = chain("controls.py", "verify-log") if ctl_rows else (0, "")
+exc_links, exc_verify = chain("exceptions.py", "verify-log") if exc_rows else (0, "")
 
 
 # ------------------------------------------------------------- facts -------------------------------------------------------------
@@ -283,19 +294,23 @@ queen_needs = pr_rules["bed_widths_in"]["queen"] + 2 * pr_rules["bed_side_cleara
 bed_eta = next(r["ETA"] for r in tracking if r["SKU"] == bed_sku)
 people_only = re.compile(r"^(?:send|sign|approve|pay|order|place)", re.I)
 did = re.compile(r"(?<!not )\b(?:sent|signed|approved|paid|ordered)\b", re.I)
-ai_people = sum(1 for r in onb_rows + proc_rows + ctl_rows if r["actor"].endswith("-assistant") and (people_only.search(r["action"]) or did.search(r["result"])))
+ai_people = sum(1 for r in onb_rows + proc_rows + ctl_rows + exc_rows if r["actor"].endswith("-assistant") and (people_only.search(r["action"]) or did.search(r["result"])))
 unsent = [d for s in slugs for d in V[s]["drafts"] if "| Status | DRAFT, not sent |" in read(*d.split("/"))]
 upd_drafts = sorted(os.path.relpath(f, ROOT).replace("\\", "/") for f in glob.glob(P("out", "drafts", "update-*.md")))
-unsent += [d for d in upd_drafts + reply_drafts if "not sent" in read(*d.split("/")).splitlines()[0]]
+unsent += [d for d in upd_drafts + reply_drafts + credit_drafts if "not sent" in read(*d.split("/")).splitlines()[0]]
 blank_signoffs = 0
 for s in slugs:
     if V[s]["packet"]:
         for r in table_rows(read(*V[s]["packet"].split("/")), "#"):
             if r.get("#", "").isdigit() and not r.get("Decision") and not r.get("Signature"):
                 blank_signoffs += 1
+for s, rv in revisions.items():  # a newer packet version after a change during sign-off (Phase 3d): its own sign-off lines
+    for r in table_rows(read(*rv["packet"].split("/")).split("## Sign-offs", 1)[1], "#"):
+        if r.get("#", "").isdigit() and not r.get("Decision") and not r.get("Signature"):
+            blank_signoffs += 1
 blank_lines = [f for f in sorted(glob.glob(P("out", "*.md"))) if re.search(r"Approved by: _{3,}", open(f, encoding="utf-8").read())]
 reviews = ([("onb", r) for r in onb_rows if r["action"] == "checker_review"] + [("proc", r) for r in proc_rows if r["action"] == "checker_review"]
-           + [("ctl", r) for r in ctl_rows if r["action"] == "checker_review"])
+           + [("ctl", r) for r in ctl_rows if r["action"] == "checker_review"] + [("exc", r) for r in exc_rows if r["action"] == "checker_review"])
 
 # ------------------------------------------------------------- waiting on people -------------------------------------------------------------
 W = []  # (since, key, owner_role, who, decision_html, options, suggestion_html, record)
@@ -311,7 +326,17 @@ for s in slugs:
                       f"Send the follow-up to {E(name)}? It asks them to fix: {E(asks)}. Reply due {f['Deadline']}.",
                       "Send as written · Edit, then send · Hold",
                       "Send as written: the checker's review of the drafts found " + q("audit/audit-log.csv", "no findings on real files") + ".", d))
-    if v["packet"]:
+    if v["packet"] and s in revisions:
+        rv = revisions[s]
+        role = rv["next"]
+        v2 = rv["packet"]
+        W.append((rv["requested_on"], f"sign_packet:{s}", role, who(role),
+                  f"Sign {q(v2, 'version 2')} of the approval packet for {E(name)} ({k(f'v.{s}.amount', dollars(v['req']['Contract amount']), True)}, "
+                  f"{k(f'v.{s}.approvers', len(rv['route']))} sign-offs in order, you first again)? {E(who(rv['requested_by']))} asked for a change after "
+                  f"{k('ex.v1_signed', len(rv['signed_before']))} people signed {q(v2, 'version 1')}: " + q(v2, rv["change"]),
+                  "Void the old version, send the new one, and sign it first · Ask Legal a question first",
+                  "Send the new version: a change to the contract terms means the earlier signatures don't carry over.", v2))
+    elif v["packet"]:
         pf = table_fields(read(*v["packet"].split("/")))
         sc = screens.get(s, {})
         role = sc["approvers"][0] if sc.get("recused") else it["approvers"][0]
@@ -391,6 +416,16 @@ if areq:
               f"Sign the certification on the approval request for order {ident('PQ-1042')} ({E(areq['type'].lower())}, "
               f"{k('p.committed', areq['total'], True)}, budget line " + q("projects/unit-4b/controls/approval-request.md", areq["budget_line"]) + ")?",
               "Sign after the justifications · Hold", "Sign once both justifications are written.", "projects/unit-4b/controls/approval-request.md"))
+if credit:
+    fc_role = credit["reviewer_and_sender"]
+    for d in credit_drafts:
+        sup, sv = next((n_, s_) for n_, s_ in credit["suppliers"].items() if s_["draft"] == d)
+        it_ = credit["items"][sv["skus"][0]]
+        W.append((credit["as_of"], "send_credit:" + os.path.basename(d)[:-3], fc_role, who(fc_role),
+                  f"Send the shipping-credit request to {E(sup)}? Its {E(plain_item(it_['item']))} {ident(sv['skus'][0])} is now "
+                  f"{k('ex.credit_days', it_['days_past'])} days past its promised date; the draft asks for " + q(d, sv["credit"])
+                  + f", half of its {k('ex.credit_freight', sv['freight'], True)} freight.",
+                  "Send as written · Change the amount, then send · Don't ask", "Send it: it's a polite ask, and the supplier can say no.", d))
 for d in reply_drafts:
     cv = ctl_rules["closeout_verifier"]
     nd = csum["claim"]["not_delivered"]
@@ -420,8 +455,9 @@ def tiles():
                   chip("PASS" if passed == total else "FAIL", "PASS" if passed == total else "FAIL") + " run at build; " + ident("Phase 3b", True) + "'s check runs separately"))
     else:
         t.append(("Checks, run at build", "not run", "a check printed no result"))
-    t.append(("Audit log rows", k("a.rows", len(onb_rows) + len(proc_rows) + len(ctl_rows)),
-              f"{k('a.onb', len(onb_rows))} onboarding + {k('a.proc', len(proc_rows))} buying + {k('a.ctl', len(ctl_rows))} controls, hash-chained"))
+    t.append(("Audit log rows", k("a.rows", len(onb_rows) + len(proc_rows) + len(ctl_rows) + len(exc_rows)),
+              f"{k('a.onb', len(onb_rows))} onboarding + {k('a.proc', len(proc_rows))} buying + {k('a.ctl', len(ctl_rows))} controls"
+              + (f" + {k('a.exc', len(exc_rows))} exceptions" if exc_rows else "") + ", hash-chained"))
     t.append(("Sent, signed, or paid by the AI", k("g.ai_people", ai_people),
               f"{k('g.drafts', len(unsent))} drafts unsent · {k('g.blank', blank_signoffs)} sign-offs blank"))
     return '<div class="tiles" data-audit>' + "".join(
@@ -516,6 +552,9 @@ def onboarding():
             nxt = "Excluded company in its paperwork: Legal reviews; follow-up on hold"
         elif v["packet"] and sc.get("recused"):
             nxt = f"Packet on hold: Legal reviews a disclosure; {E(who(sc['approvers'][0]))} signs ({E(sc['recused'][0])} recused)"
+        elif v["packet"] and s in revisions:
+            nxt = (f"Change asked during sign-off: {q(revisions[s]['packet'], 'version 2')} built; signing restarts with "
+                   f"{E(who(revisions[s]['next']))}")
         elif v["packet"]:
             nxt = f"Packet built; waiting on {E(who(it['approvers'][0]))}"
         elif v["drafts"]:
@@ -570,9 +609,35 @@ def onboarding():
                         f'(a disclosed relative owns part of the firm), so {E(who(sc_["approvers"][0]))} signs instead, after Legal reviews. '
                         f'The packet record itself is left as it was.</p>')
             body += f'<h4>Approval packet (sign-offs blank on purpose): <code>{v["packet"]}</code></h4>{note}{pre(v["packet"])}'
-        parts = ["what intake checked"] + (["the follow-up draft"] if v["drafts"] else []) + (["the approval packet"] if v["packet"] else [])
+        if s in revisions:
+            rv = revisions[s]
+            body += (f'<h4>E-signature export (a person exported it): <code>{rv["sources"][1]}</code></h4>{pre(rv["sources"][1])}'
+                     f'<h4>Approval packet, newest version (sign-offs blank on purpose): <code>{rv["packet"]}</code></h4>{pre(rv["packet"])}')
+        parts = ["what intake checked"] + (["the follow-up draft"] if v["drafts"] else []) + (["the approval packet"] if v["packet"] else []) \
+            + (["the change during sign-off"] if s in revisions else [])
         ev.append(details(f'{chip(it["status"])} <b>{E(it["legal_name"])}</b> <span class="muted">{", ".join(parts)}</span>', body))
-    return vt + xt + screening() + "<h2>The record behind each vendor</h2>" + "".join(ev)
+    return vt + xt + screening() + revisions_section() + "<h2>The record behind each vendor</h2>" + "".join(ev)
+
+
+def revisions_section():
+    if not revisions:
+        return ""
+    rows_ = []
+    for s, rv in revisions.items():
+        v2 = rv["packet"]
+        before = ", ".join(f"{E(people.get(r, r))} ({rv['signed_before_on'][r]})" for r in rv["signed_before"])
+        rows_.append(f'<tr><td>{E(V[s]["intake"]["legal_name"])}</td><td>{q(v2, rv["change"])}</td>'
+                     f'<td>{E(who(rv["requested_by"]))}, {rv["requested_on"]}</td><td>{before}</td>'
+                     f'<td>{q(v2, "version 2")}: {k(f"v.{s}.approvers", len(rv["route"]))} sign-offs, blank, in order</td>'
+                     f'<td>{E(who(rv["sender"]))} voids {q(v2, "version 1")} and sends the new one; {E(who(rv["next"]))} signs first again</td></tr>')
+    mcl = exc_rules["revision"]["material_changes"]
+    mc = ", ".join(mcl[:-1]) + ", or " + mcl[-1]
+    return ('<h2>A change during sign-off</h2><p class="lead">A signer can catch something after others have signed. A change to the '
+            f'{E(mc)} means a new version: the old signatures don\'t carry over, and signing starts again from the first approver. '
+            'The AI builds the new version and marks what changed; a person voids the old one and sends the new one. '
+            f'The e-signature export runs to {max(rv["requested_on"] for rv in revisions.values())}.</p>'
+            '<table data-audit><thead><tr><th>Vendor</th><th>Change asked</th><th>Asked by</th><th>Had signed the old version</th>'
+            '<th>New version</th><th>Next</th></tr></thead><tbody>' + "".join(rows_) + "</tbody></table>")
 
 
 def scchip(r):
@@ -667,6 +732,23 @@ def buying():
                   f'<td>{shipto}</td><td>{flag}</td></tr>')
     deliveries = (f'<h2>Deliveries as of {tracking_asof}</h2><table data-audit><thead><tr><th>Item</th><th>Supplier</th><th>Status</th><th>ETA</th>'
                   '<th>Ship to</th><th>Exception</th></tr></thead><tbody>' + "".join(dr) + "</tbody></table>")
+    if credit:
+        fc = exc_rules["freight_credit"]
+        cr_rows = []
+        for sup, sv in credit["suppliers"].items():
+            for sku in sv["skus"]:
+                it_ = credit["items"][sku]
+                cr_rows.append(f'<tr><td>{ident(sku)} {E(plain_item(it_["item"]))}</td><td>{E(sup)}</td><td>{it_["promised"]}</td><td>{it_["eta"]}</td>'
+                               f'<td class="num">{k("ex.credit_days", it_["days_past"])}</td><td class="num">{k("ex.credit_freight", sv["freight"], True)}</td>'
+                               f'<td class="num">{q(sv["draft"], sv["credit"])}</td><td>{chip("WAITING", "drafted, not sent")} '
+                               f'{E(who(credit["reviewer_and_sender"]))} reviews and sends</td></tr>')
+        deliveries += ('<h2>Shipping credit for a late delivery</h2><p class="lead">When tracking shows an item '
+                       f'{fc["days_past_promised"]} days or more past the date the order promised, the AI drafts a polite request asking that supplier to '
+                       f'credit {fc["share_of_freight_percent"]}% of its freight on the order. It\'s an opening ask, and the supplier can say no; '
+                       f'{E(who(credit["reviewer_and_sender"]))}, may change the amount before sending it.</p>'
+                       '<table data-audit><thead><tr><th>Item</th><th>Supplier</th><th>Promised</th><th>ETA</th><th class="num">Days past promised</th>'
+                       '<th class="num">Supplier\'s freight</th><th class="num">Credit asked</th><th>Status</th></tr></thead><tbody>'
+                       + "".join(cr_rows) + "</tbody></table>")
     ir = []
     for inv, iv in mt["invoices"].items():
         if iv["result"] == "HOLD":
@@ -688,7 +770,7 @@ def buying():
                f'<li>{q(po_rel, po["Notes"])}</li></ul>')
     files = ["projects/unit-4b/request.md", "projects/unit-4b/out/brief.md", "projects/unit-4b/out/source.md", "projects/unit-4b/out/quotes.md",
              "projects/unit-4b/out/purchase-request-draft.md", "projects/unit-4b/out/approval.md", po_rel, notice_rel, cr_md,
-             "projects/unit-4b/out/tasks.md"] + upd_drafts + ["projects/unit-4b/out/match.md"]
+             "projects/unit-4b/out/tasks.md"] + upd_drafts + credit_drafts + ["projects/unit-4b/out/match.md"]
     ev = "".join(details(f"<code>{f}</code>", pre(f)) for f in files)
     return head + acts + deliveries + inv_t + decided + controls_section() + "<h2>The records</h2>" + ev
 
@@ -746,7 +828,8 @@ def checks():
     what = {"p1": "The fictional company, its rules, the vendors' planted problems, and the locked answer key",
             "p2": "Onboarding: intake, follow-up drafts, approval packets, the checker, the audit log",
             "p3a": "Buying: all seven steps against their locked answer key, the procurement log, the checker",
-            "p3c": "Controls from the real packet against their locked answer key (its check of the older phases runs separately)"}
+            "p3c": "Controls from the real packet against their locked answer key (its check of the older phases runs separately)",
+            "p3d": "Real-world exceptions (a change during sign-off, a shipping credit) against their locked answer key (its check of the older phases runs separately)"}
     for c, v in CHECKS.items():
         res = (f'{k(f"c.{c}.pass", v["pass"])} of {k(f"c.{c}.total", v["total"])} ' + chip("PASS" if v["pass"] == v["total"] and v["rc"] == 0 else "FAIL",
                "PASS" if v["pass"] == v["total"] and v["rc"] == 0 else "FAIL")) if v["pass"] is not None else chip("FAIL", "no result")
@@ -760,7 +843,7 @@ def checks():
     t += details("Run them yourself (self-tests take longer)", f"<pre>{E(cmds)}</pre>")
     rr = []
     for lg, r in reviews:
-        rel = {"onb": "audit/audit-log.csv", "proc": "audit/procurement-log.csv", "ctl": "audit/controls-log.csv"}[lg]
+        rel = {"onb": "audit/audit-log.csv", "proc": "audit/procurement-log.csv", "ctl": "audit/controls-log.csv", "exc": "audit/exceptions-log.csv"}[lg]
         rr.append(f'<tr><td>{E(r["timestamp"].replace("T", " "))}</td><td>{" ".join(ident(x) if re.search(r"\d", x) else E(x) for x in r["vendor"].split(" "))}</td><td>{q(rel, r["detail"])}</td><td>{q(rel, r["result"])}</td></tr>')
     t += ('<h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI\'s work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule\'s wording didn\'t cover a substitute\'s order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review '
           'mixed in a copy with a planted mistake to prove it was really reading. '
@@ -776,21 +859,22 @@ def checks():
 
 
 def audit():
-    ok = onb_links == len(onb_rows) and proc_links == len(proc_rows) and ctl_links == len(ctl_rows)
+    ok = onb_links == len(onb_rows) and proc_links == len(proc_rows) and ctl_links == len(ctl_rows) and exc_links == len(exc_rows)
     head = ('<h2>Replay the run</h2><p class="lead">The page rebuilds the board from the audit log, one row at a time. Press play, or drag. '
             'The log is append-only by rule and hash-chained: editing any past row breaks every link after it.</p>'
             '<div class="replay"><div class="controls"><button id="play" type="button">&#9654; Play</button>'
             '<input id="step" type="range" min="0" value="0" aria-label="Replay step"><span id="steplabel" class="muted"></span></div>'
             '<div id="nowevent" class="nowevent"></div><div class="board"><div><h4>Vendors</h4><div id="rvendors" class="rgrid"></div></div>'
-            '<div><h4>Buying steps and controls, Unit 4B</h4><div id="racts" class="rgrid"></div></div></div><div id="rcount" class="muted"></div></div>')
+            '<div><h4>Buying steps, controls, and exceptions</h4><div id="racts" class="rgrid"></div></div></div><div id="rcount" class="muted"></div></div>')
     chain_t = ('<h2>Hash chains</h2><table data-audit><tbody>'
                f'<tr><td>Onboarding log</td><td class="num">{k("a.onb", len(onb_rows))} rows</td><td>{k("a.onb_links", onb_links) if onb_links is not None else "FAILED"} links verify</td></tr>'
                f'<tr><td>Procurement log</td><td class="num">{k("a.proc", len(proc_rows))} rows</td><td>{k("a.proc_links", proc_links) if proc_links is not None else "FAILED"} links verify</td></tr>'
                f'<tr><td>Controls log</td><td class="num">{k("a.ctl", len(ctl_rows))} rows</td><td>{k("a.ctl_links", ctl_links) if ctl_links is not None else "FAILED"} links verify</td></tr>'
-               f'</tbody></table><p>{chip("OK", ("All three" if ctl_rows else "Both") + " chains verify") if ok else chip("FAIL", "A chain does not verify")}</p>')
+               + (f'<tr><td>Exceptions log</td><td class="num">{k("a.exc", len(exc_rows))} rows</td><td>{k("a.exc_links", exc_links) if exc_links is not None else "FAILED"} links verify</td></tr>' if exc_rows else "")
+               + f'</tbody></table><p>{chip("OK", ("All four" if exc_rows else "All three" if ctl_rows else "Both") + " chains verify") if ok else chip("FAIL", "A chain does not verify")}</p>')
     rows = []
     for lg, name, rs in (("onb", "audit/audit-log.csv", onb_rows), ("proc", "audit/procurement-log.csv", proc_rows),
-                         ("ctl", "audit/controls-log.csv", ctl_rows)):
+                         ("ctl", "audit/controls-log.csv", ctl_rows), ("exc", "audit/exceptions-log.csv", exc_rows)):
         for i, r in enumerate(rs, 1):
             rows.append(f'<tr data-log="{lg}" data-i="{i}"><td class="nowrap">{E(r["timestamp"])}</td><td>{E(r["actor"])}</td><td>{E(r["vendor"])}</td>'
                         f'<td>{E(r["action"])}</td><td>{E(r["result"])}</td><td class="muted small">{E(r["detail"])}</td></tr>')
@@ -812,13 +896,18 @@ events = sorted([{"log": "onb", "i": i, "t": r["timestamp"], "actor": r["actor"]
                 [{"log": "proc", "i": i, "t": r["timestamp"], "actor": r["actor"], "subject": r["vendor"], "action": r["action"],
                   "detail": r["detail"], "result": r["result"]} for i, r in enumerate(proc_rows, 1)] +
                 [{"log": "ctl", "i": i, "t": r["timestamp"], "actor": r["actor"], "subject": r["vendor"], "action": r["action"],
-                  "detail": r["detail"], "result": r["result"]} for i, r in enumerate(ctl_rows, 1)], key=lambda e: e["t"])
+                  "detail": r["detail"], "result": r["result"]} for i, r in enumerate(ctl_rows, 1)] +
+                [{"log": "exc", "i": i, "t": r["timestamp"], "actor": r["actor"], "subject": r["vendor"], "action": r["action"],
+                  "detail": r["detail"], "result": r["result"]} for i, r in enumerate(exc_rows, 1)], key=lambda e: e["t"])
 rvendors = [{"slug": s, "name": V[s]["intake"]["legal_name"]} for s in slugs]
 racts = [{"action": a, "skill": sk, "name": nm} for a, sk, nm, _ in ACTS]
 if ctl_rows:
     racts += [{"action": "screen", "skill": "/screen", "name": "Disclosures + exclusion list"},
               {"action": "approval_request", "skill": "/request", "name": "Approval request"},
               {"action": "closeout", "skill": "/closeout", "name": "Running totals + close-out"}]
+if exc_rows:
+    racts += [{"action": "packet_revision", "skill": "/revise", "name": "A change during sign-off"},
+              {"action": "freight_credit", "skill": "/credit", "name": "Shipping credit for a late delivery"}]
 
 CSS = """
 :root{--bg:#f4f4f1;--surface:#fcfcfb;--card:#fff;--ink:#0b0b0b;--ink2:#52514e;--line:#e2e1dc;--accent:#1d5a85;--good:#0ca30c;--warn:#fab219;--serious:#ec835a;--crit:#d03b3b;--soft:#f1f0ec}

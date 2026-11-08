@@ -34,15 +34,15 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 .rc{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:12.5px;transition:background .3s}.rc.flash{background:#fff4d6}
 .rc .badges{font-size:11px;color:var(--ink2)}table.log td{font-size:12px}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
-</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-08 15:09 from those records; a test recounts every number in its tiles and tables.</div>
+</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-08 17:39 from those records; a test recounts every number in its tiles and tables.</div>
 </div>
 <div class="tiles" data-audit><div class="tile"><div class="lab">Vendors</div>
 <div class="big"><span class="n" data-k="v.total">8</span></div>
 <div class="small"><span class="n" data-k="v.READY">2</span> ready · <span class="n" data-k="v.HOLD">1</span> on hold · <span class="n" data-k="v.BLOCKED">5</span> blocked</div>
 </div>
 <div class="tile"><div class="lab">Waiting on people</div>
-<div class="big"><span class="n" data-k="w.total">20</span></div>
-<div class="small"><span class="n" data-k="w.onb">9</span> onboarding · <span class="n" data-k="w.buy">11</span> buying</div>
+<div class="big"><span class="n" data-k="w.total">21</span></div>
+<div class="small"><span class="n" data-k="w.onb">9</span> onboarding · <span class="n" data-k="w.buy">12</span> buying</div>
 </div>
 <div class="tile"><div class="lab"><span class="id plain">Unit 4B</span> spend vs budget</div>
 <div class="big"><span class="n" data-k="p.committed">$4,898</span></div>
@@ -53,16 +53,16 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <div class="small"><span class="n" data-k="i.onb">6</span> onboarding · <span class="n" data-k="i.buy">13</span> buying · <span class="n" data-k="i.ctl">6</span> controls</div>
 </div>
 <div class="tile"><div class="lab">Checks, run at build</div>
-<div class="big"><span class="n" data-k="c.pass">41</span> of <span class="n" data-k="c.total">41</span></div>
+<div class="big"><span class="n" data-k="c.pass">53</span> of <span class="n" data-k="c.total">53</span></div>
 <div class="small"><span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span> run at build; <span class="id plain">Phase 3b</span>'s check runs separately</div>
 </div>
 <div class="tile"><div class="lab">Audit log rows</div>
-<div class="big"><span class="n" data-k="a.rows">31</span></div>
-<div class="small"><span class="n" data-k="a.onb">18</span> onboarding + <span class="n" data-k="a.proc">9</span> buying + <span class="n" data-k="a.ctl">4</span> controls, hash-chained</div>
+<div class="big"><span class="n" data-k="a.rows">34</span></div>
+<div class="small"><span class="n" data-k="a.onb">18</span> onboarding + <span class="n" data-k="a.proc">9</span> buying + <span class="n" data-k="a.ctl">4</span> controls + <span class="n" data-k="a.exc">3</span> exceptions, hash-chained</div>
 </div>
 <div class="tile"><div class="lab">Sent, signed, or paid by the AI</div>
 <div class="big"><span class="n" data-k="g.ai_people">0</span></div>
-<div class="small"><span class="n" data-k="g.drafts">8</span> drafts unsent · <span class="n" data-k="g.blank">5</span> sign-offs blank</div>
+<div class="small"><span class="n" data-k="g.drafts">9</span> drafts unsent · <span class="n" data-k="g.blank">9</span> sign-offs blank</div>
 </div>
 </div>
 <nav><button type="button" data-for="overview" data-tab-label="Overview" aria-selected="false">Overview</button><button type="button" data-for="onboarding" data-tab-label="Onboarding" aria-selected="false">Onboarding</button><button type="button" data-for="buying" data-tab-label="Buying" aria-selected="false">Buying</button><button type="button" data-for="checks" data-tab-label="Checks" aria-selected="false">Checks</button><button type="button" data-for="audit" data-tab-label="Audit log" aria-selected="false">Audit log</button><button type="button" data-for="map" data-tab-label="Map" aria-selected="false">Map</button></nav></header><main><section data-tab="overview" id="tab-overview" class=on><h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, Florida. Manages 14 commercial and apartment buildings in Sarasota and Manatee counties. These five people do the work in this demo; each one keeps working in their own tools, and this board shows what is waiting on whom. Each person keeps the same color everywhere on the page.</p><div class="org" data-org><div class="people"><div class="person" data-person="Lena Ortiz" style="--pc:#1d6fa5"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Lena Ortiz</div>
@@ -163,13 +163,6 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <td>Approve after Legal clears the disclosure.</td>
 <td><code data-file="vendors/kestrelbay-air-heat/packet.md">vendors/kestrelbay-air-heat/packet.md</code></td>
 </tr>
-<tr data-w="sign_packet:skyquay-lift-fire" data-owner="Facilities Manager"><td class="nowrap">2026-11-05</td>
-<td><span class="dot" style="background:#d9822b"></span> Dana Reyes, Facilities Manager</td>
-<td>Sign the approval packet for Skyquay Lift &amp; Fire Inc. (<span class="n" data-k="v.skyquay-lift-fire.amount">$120,000</span>, <span class="n" data-k="v.skyquay-lift-fire.approvers">4</span> sign-offs in order, you first)?</td>
-<td class="muted">Approve · Reject · Ask a question</td>
-<td>Approve: intake found no issues against the rules.</td>
-<td><code data-file="vendors/skyquay-lift-fire/packet.md">vendors/skyquay-lift-fire/packet.md</code></td>
-</tr>
 <tr data-w="certify_request:PQ-1042" data-owner="Facilities Manager"><td class="nowrap">2026-11-06</td>
 <td><span class="dot" style="background:#d9822b"></span> Dana Reyes, Facilities Manager</td>
 <td>Sign the certification on the approval request for order <span class="id">PQ-1042</span> (standard purchase, <span class="n" data-k="p.committed">$4,898</span>, budget line <span class="src" data-src="projects/unit-4b/controls/approval-request.md" title="Quoted from projects/unit-4b/controls/approval-request.md">FAC-TURN-2026</span>)?</td>
@@ -198,6 +191,13 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <td>Approve: waiting misses the install date by <span class="n" data-k="p.backorder_late">11</span> days; the cost is <span class="n" data-k="p.cr_over">$108</span> over budget.</td>
 <td><code data-file="projects/unit-4b/out/change-request-CR-001.md">projects/unit-4b/out/change-request-CR-001.md</code></td>
 </tr>
+<tr data-w="sign_packet:skyquay-lift-fire" data-owner="Facilities Manager"><td class="nowrap">2026-11-10</td>
+<td><span class="dot" style="background:#d9822b"></span> Dana Reyes, Facilities Manager</td>
+<td>Sign <span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">version 2</span> of the approval packet for Skyquay Lift &amp; Fire Inc. (<span class="n" data-k="v.skyquay-lift-fire.amount">$120,000</span>, <span class="n" data-k="v.skyquay-lift-fire.approvers">4</span> sign-offs in order, you first again)? Priya Natarajan, Legal asked for a change after <span class="n" data-k="ex.v1_signed">2</span> people signed <span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">version 1</span>: <span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">Add a one-year warranty on parts and labor to the contract terms before I sign.</span></td>
+<td class="muted">Void the old version, send the new one, and sign it first · Ask Legal a question first</td>
+<td>Send the new version: a change to the contract terms means the earlier signatures don't carry over.</td>
+<td><code data-file="vendors/skyquay-lift-fire/packet-v2.md">vendors/skyquay-lift-fire/packet-v2.md</code></td>
+</tr>
 <tr data-w="approve_payment:INV-GW-5521" data-owner="Finance"><td class="nowrap">2026-11-12</td>
 <td><span class="dot" style="background:#b83b5e"></span> Tom Becker, Finance</td>
 <td>Approve payment of invoice <span class="id">INV-GW-5521</span> (<span class="n" data-k="p.inv_match_total">$535</span>)? It matches the order and the receipt.</td>
@@ -211,6 +211,13 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <td class="muted">Pay as billed · Ask for a corrected invoice</td>
 <td>Ask for a corrected invoice: it bills <span class="n" data-k="p.inv_diff">$159</span> too much.</td>
 <td><code data-file="projects/unit-4b/out/match.md">projects/unit-4b/out/match.md</code></td>
+</tr>
+<tr data-w="send_credit:credit-request-gulfweave-2026-11-12" data-owner="Facilities Manager"><td class="nowrap">2026-11-12</td>
+<td><span class="dot" style="background:#d9822b"></span> Dana Reyes, Facilities Manager</td>
+<td>Send the shipping-credit request to Gulfweave Furnishings? Its queen bed frame <span class="id">GW-BED-Q</span> is now <span class="n" data-k="ex.credit_days">7</span> days past its promised date; the draft asks for <span class="src" data-src="projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md" title="Quoted from projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md">$92.50</span>, half of its <span class="n" data-k="ex.credit_freight">$185</span> freight.</td>
+<td class="muted">Send as written · Change the amount, then send · Don&#x27;t ask</td>
+<td>Send it: it's a polite ask, and the supplier can say no.</td>
+<td><code data-file="projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md">projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md</code></td>
 </tr>
 <tr data-w="send_reply:reply-gulfweave-2026-11-12" data-owner="Facilities Manager"><td class="nowrap">2026-11-12</td>
 <td><span class="dot" style="background:#d9822b"></span> Dana Reyes, Facilities Manager</td>
@@ -508,7 +515,7 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <td><span class="chip st-READY"><i aria-hidden="true">&#10003;</i>READY</span></td>
 <td><span class="muted">none</span></td>
 <td class="num"><span class="n" data-k="v.skyquay-lift-fire.issues">0</span></td>
-<td>Packet built; waiting on Dana Reyes, Facilities Manager</td>
+<td>Change asked during sign-off: <span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">version 2</span> built; signing restarts with Dana Reyes, Facilities Manager</td>
 <td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>clear</span></td>
 <td class="num"><span class="n" data-k="v.skyquay-lift-fire.approvers">4</span></td>
 <td class="num"><span class="n" data-k="v.skyquay-lift-fire.days">2</span></td>
@@ -599,6 +606,20 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 </tr>
 <tr><td>Approved furniture suppliers checked against the list / excluded</td>
 <td class="num"><span class="n" data-k="sc.suppliers">3</span> / <span class="n" data-k="sc.sup_excluded">0</span></td>
+</tr>
+</tbody></table><h2>A change during sign-off</h2><p class="lead">A signer can catch something after others have signed. A change to the scope, price, dates, contract terms, or insurance means a new version: the old signatures don't carry over, and signing starts again from the first approver. The AI builds the new version and marks what changed; a person voids the old one and sends the new one. The e-signature export runs to 2026-11-10.</p><table data-audit><thead><tr><th>Vendor</th>
+<th>Change asked</th>
+<th>Asked by</th>
+<th>Had signed the old version</th>
+<th>New version</th>
+<th>Next</th>
+</tr>
+</thead><tbody><tr><td>Skyquay Lift &amp; Fire Inc.</td>
+<td><span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">Add a one-year warranty on parts and labor to the contract terms before I sign.</span></td>
+<td>Priya Natarajan, Legal, 2026-11-10</td>
+<td>Dana Reyes (2026-11-06), Marcus Hale (2026-11-09)</td>
+<td><span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">version 2</span>: <span class="n" data-k="v.skyquay-lift-fire.approvers">4</span> sign-offs, blank, in order</td>
+<td>Dana Reyes, Facilities Manager voids <span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">version 1</span> and sends the new one; Dana Reyes, Facilities Manager signs first again</td>
 </tr>
 </tbody></table><h2>The record behind each vendor</h2><details><summary><span class="chip st-HOLD"><i aria-hidden="true">&#10074;&#10074;</i>HOLD</span> <b>Bayvane Plumbing Inc.</b> <span class="muted">what intake checked, the follow-up draft</span></summary><p class="muted">What <code>/intake</code> checked, quoted from <code>vendors/bayvane-plumbing/intake.json</code>.</p><table><thead><tr><th>Check</th>
 <th>Found</th>
@@ -1295,7 +1316,7 @@ If anything here looks wrong, just reply and we&#x27;ll sort it out.
 Thank you,
 Dana Reyes
 Facilities Manager, Palmquay Properties
-dana.reyes@palmquay.example</pre></details><details><summary><span class="chip st-READY"><i aria-hidden="true">&#10003;</i>READY</span> <b>Skyquay Lift &amp; Fire Inc.</b> <span class="muted">what intake checked, the approval packet</span></summary><p class="muted">What <code>/intake</code> checked, quoted from <code>vendors/skyquay-lift-fire/intake.json</code>.</p><table><thead><tr><th>Check</th>
+dana.reyes@palmquay.example</pre></details><details><summary><span class="chip st-READY"><i aria-hidden="true">&#10003;</i>READY</span> <b>Skyquay Lift &amp; Fire Inc.</b> <span class="muted">what intake checked, the approval packet, the change during sign-off</span></summary><p class="muted">What <code>/intake</code> checked, quoted from <code>vendors/skyquay-lift-fire/intake.json</code>.</p><table><thead><tr><th>Check</th>
 <th>Found</th>
 <th>Rule</th>
 <th>Result</th>
@@ -1403,7 +1424,68 @@ dana.reyes@palmquay.example</pre></details><details><summary><span class="chip s
 | 3 | Legal | Priya Natarajan | priya.natarajan@palmquay.example |  |  |  |
 | 4 | Finance | Tom Becker | tom.becker@palmquay.example |  |  |  |
 
-Decision, Date and Signature are left blank on purpose: a person fills them in. The next approver is notified by a person, not by the assistant.</pre></details></section><section data-tab="buying" id="tab-buying"><h2>Bayfront Commons, <span class="id plain">Unit 4B</span>: furnishing project</h2><p class="lead">Requested by Lena Ortiz, Property Manager, on 2026-11-05; install by 2026-11-20. A design partner wrote the furnishing plan; Palmquay buys. Scripted events in this sample project run to 2026-11-12.</p><div class="budget" data-audit><div class="bnums"><div><span class="lab">Committed</span> <span class="n" data-k="p.committed">$4,898</span></div>
+Decision, Date and Signature are left blank on purpose: a person fills them in. The next approver is notified by a person, not by the assistant.</pre><h4>E-signature export (a person exported it): <code>vendors/skyquay-lift-fire/esign-status-2026-11-10.md</code></h4><pre data-file="vendors/skyquay-lift-fire/esign-status-2026-11-10.md"># E-signature status: Skyquay Lift &amp; Fire Inc. approval packet (fictional)
+
+*Fake document made for a demo. A person exported this from the e-signature tool; the assistant never sends or signs. Every name here is fictional.*
+
+| Field | Value |
+|---|---|
+| Packet | vendors/skyquay-lift-fire/packet.md |
+| Version | 1 |
+| Sent for signature by | Dana Reyes, Facilities Manager |
+| Exported | 2026-11-10 |
+
+| # | Role | Name | Status | Date | Note |
+|---|---|---|---|---|---|
+| 1 | Facilities Manager | Dana Reyes | signed | 2026-11-06 |  |
+| 2 | Procurement Lead | Marcus Hale | signed | 2026-11-09 |  |
+| 3 | Legal | Priya Natarajan | change requested | 2026-11-10 | Add a one-year warranty on parts and labor to the contract terms before I sign. |
+| 4 | Finance | Tom Becker | not reached |  |  |
+
+Change type: contract terms</pre><h4>Approval packet, newest version (sign-offs blank on purpose): <code>vendors/skyquay-lift-fire/packet-v2.md</code></h4><pre data-file="vendors/skyquay-lift-fire/packet-v2.md"># Approval packet, version 2: Skyquay Lift &amp; Fire Inc.
+
+*Sample data for a demo (fictional company). Built by the onboarding assistant from version 1 (`vendors/skyquay-lift-fire/packet.md`), the e-signature export (`vendors/skyquay-lift-fire/esign-status-2026-11-10.md`), and company/rules.json. Nothing is approved until the people below sign. The assistant never voids, sends, signs, approves, or pays.*
+
+| Field | Value |
+|---|---|
+| Vendor | Skyquay Lift &amp; Fire Inc. |
+| Version | 2 (replaces version 1) |
+| Building | Bayfront Commons |
+| Scope | Modernize 2 passenger elevators + fire-alarm tie-in |
+| Contract amount | $120,000 |
+| Approval tier | Over $50,000: 4 sign-offs, in order |
+| Status | RESTART: signing starts again with the first approver |
+| Built | 2026-11-08T17:24:04 by onboarding-assistant |
+
+## What changed
+| What | Version 1 | Version 2 | Asked for by |
+|---|---|---|---|
+| contract terms | as in version 1 | Add a one-year warranty on parts and labor to the contract terms before I sign. | Priya Natarajan, Legal, 2026-11-10 |
+
+A change to the contract terms is a material change under company/rules.json, so version 1&#x27;s signatures don&#x27;t carry over: version 1 becomes void once a person voids it in the e-signature tool, and signing restarts with the first approver.
+
+## Version 1: where signing stood on 2026-11-10
+| # | Role | Name | Version 1 | Now |
+|---|---|---|---|---|
+| 1 | Facilities Manager | Dana Reyes | signed 2026-11-06 | needs to sign again on version 2 |
+| 2 | Procurement Lead | Marcus Hale | signed 2026-11-09 | needs to sign again on version 2 |
+| 3 | Legal | Priya Natarajan | change requested | signs version 2 in order |
+| 4 | Finance | Tom Becker | not reached | signs version 2 in order |
+
+## Sign-offs (version 2, in this order; each person signs after the one above)
+
+| # | Role | Name | Email | Decision | Date | Signature |
+|---|---|---|---|---|---|---|
+| 1 | Facilities Manager | Dana Reyes | dana.reyes@palmquay.example |  |  |  |
+| 2 | Procurement Lead | Marcus Hale | marcus.hale@palmquay.example |  |  |  |
+| 3 | Legal | Priya Natarajan | priya.natarajan@palmquay.example |  |  |  |
+| 4 | Finance | Tom Becker | tom.becker@palmquay.example |  |  |  |
+
+Decision, Date and Signature are left blank on purpose: a person fills them in.
+
+## What a person does next
+1. Dana Reyes, Facilities Manager, voids version 1 in the e-signature tool and sends version 2.
+2. Signing starts again in order: Dana Reyes, Marcus Hale, Priya Natarajan, then Tom Becker.</pre></details></section><section data-tab="buying" id="tab-buying"><h2>Bayfront Commons, <span class="id plain">Unit 4B</span>: furnishing project</h2><p class="lead">Requested by Lena Ortiz, Property Manager, on 2026-11-05; install by 2026-11-20. A design partner wrote the furnishing plan; Palmquay buys. Scripted events in this sample project run to 2026-11-12.</p><div class="budget" data-audit><div class="bnums"><div><span class="lab">Committed</span> <span class="n" data-k="p.committed">$4,898</span></div>
 <div><span class="lab">Budget</span> <span class="n" data-k="p.budget">$5,200</span></div>
 <div><span class="lab">Left</span> <span class="n" data-k="p.headroom">$302</span></div>
 <div><span class="lab">If change <span class="id">CR-001</span> is approved</span> <span class="n" data-k="p.cr_total">$5,308</span>, <span class="n" data-k="p.cr_over">$108</span> over</div>
@@ -1539,6 +1621,24 @@ Decision, Date and Signature are left blank on purpose: a person fills them in. 
 <td>2026-11-15</td>
 <td>different unit from the order</td>
 <td><span class="code" data-src="company/rules.json" title="Quoted from company/rules.json">ADDRESS_MISMATCH</span></td>
+</tr>
+</tbody></table><h2>Shipping credit for a late delivery</h2><p class="lead">When tracking shows an item 7 days or more past the date the order promised, the AI drafts a polite request asking that supplier to credit 50% of its freight on the order. It's an opening ask, and the supplier can say no; Dana Reyes, Facilities Manager, may change the amount before sending it.</p><table data-audit><thead><tr><th>Item</th>
+<th>Supplier</th>
+<th>Promised</th>
+<th>ETA</th>
+<th class="num">Days past promised</th>
+<th class="num">Supplier's freight</th>
+<th class="num">Credit asked</th>
+<th>Status</th>
+</tr>
+</thead><tbody><tr><td><span class="id">GW-BED-Q</span> queen bed frame</td>
+<td>Gulfweave Furnishings</td>
+<td>2026-11-18</td>
+<td>2026-11-25</td>
+<td class="num"><span class="n" data-k="ex.credit_days">7</span></td>
+<td class="num"><span class="n" data-k="ex.credit_freight">$185</span></td>
+<td class="num"><span class="src" data-src="projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md" title="Quoted from projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md">$92.50</span></td>
+<td><span class="chip st-WAITING"><i aria-hidden="true">&#8230;</i>drafted, not sent</span> Dana Reyes, Facilities Manager reviews and sends</td>
 </tr>
 </tbody></table><h2>Invoices: three-way match</h2><p class="lead">Invoice vs. the approved order vs. what arrived. The AI flags differences and never marks anything paid. On hold for Finance: <span class="n" data-k="p.inv_hold">1</span>.</p><table data-audit><thead><tr><th>Invoice</th>
 <th>Supplier</th>
@@ -1911,7 +2011,32 @@ A quick update on Unit 4B. As of 2026-11-12, most pieces are on track for 2026-1
 We&#x27;re following up with both suppliers today and will confirm new dates by tomorrow.
 
 Thanks,
-Facilities Manager (Dana Reyes)</pre></details><details><summary><code>projects/unit-4b/out/match.md</code></summary><pre data-file="projects/unit-4b/out/match.md"># Three-way match: invoice vs. order PQ-1042 vs. receipt (fictional)
+Facilities Manager (Dana Reyes)</pre></details><details><summary><code>projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md</code></summary><pre data-file="projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md"># Draft to Gulfweave Furnishings (fictional): shipping credit request, not sent
+
+Draft only. Dana Reyes, Facilities Manager, reviews it, may change the amount, and sends it; the assistant does not send email. Sample data for a demo.
+
+| Field | Value |
+|---|---|
+| To | orders@gulfweave.example |
+| Order | PQ-1042 |
+| Late item | GW-BED-Q, Bed frame, queen |
+| Promised delivery | 2026-11-18 |
+| Current ETA | 2026-11-25 (tracking as of 2026-11-12) |
+| Days past the promised date | 7 |
+| Freight on this order | $185 |
+| Credit requested | $92.50 (50% of the freight) |
+
+Subject: Order PQ-1042: delivery delay and a shipping credit
+
+Hello Gulfweave Furnishings team,
+
+Our order PQ-1042 promised the queen bed frame (GW-BED-Q) for 2026-11-18. Tracking now shows 2026-11-25, 7 days after that date, and after our install date of 2026-11-20.
+
+Because of the delay, we&#x27;d like to ask for a credit of $92.50, which is 50% of the $185 freight on this order. Could you confirm the new delivery date, and let us know whether you can apply the credit to your invoice for this order?
+
+Thank you,
+Dana Reyes, Facilities Manager
+Palmquay Properties (fictional)</pre></details><details><summary><code>projects/unit-4b/out/match.md</code></summary><pre data-file="projects/unit-4b/out/match.md"># Three-way match: invoice vs. order PQ-1042 vs. receipt (fictional)
 
 | Invoice | SKU | Billed | Ordered | Received | Flags |
 |---|---|---|---|---|---|
@@ -1946,21 +2071,25 @@ Payment is approved by Finance (?). The assistant flags differences and never ma
 <td>Controls from the real packet against their locked answer key (its check of the older phases runs separately)</td>
 <td><span class="n" data-k="c.p3c.pass">11</span> of <span class="n" data-k="c.p3c.total">11</span> <span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span></td>
 </tr>
+<tr><td><span class="id plain">Phase 3d</span></td>
+<td>Real-world exceptions (a change during sign-off, a shipping credit) against their locked answer key (its check of the older phases runs separately)</td>
+<td><span class="n" data-k="c.p3d.pass">12</span> of <span class="n" data-k="c.p3d.total">12</span> <span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span></td>
+</tr>
 </tbody></table><details><summary>Phase 1: every line it printed (0.2 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
 PASS - C2 CLAUDE.md states every rule and matches rules.json - 34 of 34 found; missing []
 PASS - C3 8 vendors, each with its record and exactly the key&#x27;s documents - 8 folders, 8 records, 8 of 8 document sets match
 PASS - C4 recomputed from the documents = answer key - 8 of 8 match; mismatches {}
 PASS - C4b the key covers every planted problem + a clean small and a clean large job - 6 of 6 problem types; clean small [&#x27;kestrelbay-air-heat&#x27;]; clean large [&#x27;skyquay-lift-fire&#x27;]
 PASS - C5 answer key unchanged since it was locked - lock 973099662faf..., now 973099662faf...
-PASS - C6 no personal words; every ID is visibly fake - 202 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked fake
-PASS - C7 README maps each piece (industry term + resume line) - 43 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;]</pre></details><details><summary>Phase 2: every line it printed (3.8 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
+PASS - C6 no personal words; every ID is visibly fake - 222 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked fake
+PASS - C7 README maps each piece (industry term + resume line) - 48 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;]</pre></details><details><summary>Phase 2: every line it printed (4.3 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
 PASS - P1b /status prints one correct line per vendor - exit 0; 8 lines; 8 of 8 right (stage, status, blocker, days waiting); problems {} 
 PASS - P2 /chase: 1 good draft per BLOCKED/HOLD vendor, 0 sends - 6 of 6 drafts pass (vendor, item, why, deadline 2026-11-12, how to send, .example contact, no threats, no unsupported facts); 0 drafts for READY vendors []; sends 0 (audit rows marked sent 0, network imports []); problems {}
 PASS - P3 /route: packet for each READY vendor, approvers in order, sign-offs blank - 2 of 2 packets pass; packets for vendors not READY []; approvers {&#x27;kestrelbay-air-heat&#x27;: [&#x27;Facilities Manager&#x27;], &#x27;skyquay-lift-fire&#x27;: [&#x27;Facilities Manager&#x27;, &#x27;Procurement Lead&#x27;, &#x27;Legal&#x27;, &#x27;Finance&#x27;]}; problems {}
 PASS - P4 read-only compliance-checker reviewed everything and caught both plants - agent tools [&#x27;Glob&#x27;, &#x27;Grep&#x27;, &#x27;Read&#x27;]; latest review reviews/2026-11-05-02-all-vendors.md: 18 files, 18 unchanged since review; 16 of 16 real files marked OK by the checker; planted wrong deadline caught True; planted missed name mismatch caught True; problems []
 PASS - P5 audit log: 1 row per action, append-only (hash chain) - 18 rows; 18 actions taken (8 intake + 6 chase drafts + 2 route packets + 2 checker reviews); chain 18 of 18 rows verify; problems []
-PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 202 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
-PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 43 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (3.9 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
+PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 222 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
+PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 48 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (4.6 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
 PASS - Q0b recomputed from the inputs = answer key (the data really has the planted problems) - 7 activities recomputed; differ from key []; PO total recomputed 4898 vs stated 4898; error none
 PASS - Q1 /scope: brief = key; every request field in brief.md; nothing invented - projects/unit-4b/out/brief.json: = key; 16 of 16 request fields in brief.md; invented measurement False
 PASS - Q2 /source: late items and the in-time alternative = key - projects/unit-4b/out/source.json: = key
@@ -1983,14 +2112,27 @@ PASS - R5 3 skills with front matter; CLAUDE.md section 11 states every Phase 3c
 PASS - R6 Phases 1, 2, 3a, 3b still pass (skipped by --skip-old-phases in self-test copies) - skipped
 PASS - R7 blind review: planted error caught, real outputs PASS, nothing changed since - 1 reviews; latest 2026-11-06-01-controls.md; problems []
 PASS - R8 README: 3c built, every new piece mapped with a &#x27;Designed and directed&#x27; line - 3c row: &#x27;| 3c | Controls copied from a real public-agency procurement packet: c&#x27;; 8 of 8 pieces mapped; missing []
-PASS - R9 every new input file is marked fake - 11 files; unmarked []</pre></details><details><summary>Run them yourself (self-tests take longer)</summary><pre>python -I -X utf8 tests/check_phase1.py
+PASS - R9 every new input file is marked fake - 11 files; unmarked []</pre></details><details><summary>Phase 3d: every line it printed (0.1 s)</summary><pre>PASS - D0 answer key and frozen-record list unchanged since locked - key 9f2beb763128 vs lock 9f2beb763128; frozen list a9aedeb40b20 vs lock a9aedeb40b20 (154 records); older keys match: True
+PASS - D0b the check&#x27;s own recount from the raw records equals the hand-written key - 0 differences []
+PASS - D1 /revise = key: version 2 with the change word for word, earlier signers sign again, route restarts, sign-offs blank - 0 key differences; problems []
+PASS - D2 /credit = key: one polite draft per supplier with the order, item, dates, freight, and ask; not sent - 1 drafts; problems []; harsh words []
+PASS - D3 exceptions log: 1 row per action, right actors, chain verifies, 0 people-only results - 3 rows; actions {&#x27;packet_revision&#x27;: 1, &#x27;freight_credit&#x27;: 1, &#x27;checker_review&#x27;: 1}; not exactly once []; people-only results 0; problems []
+PASS - D4 0 earlier records changed; the only new record files are the expected outputs - 154 frozen, changed 0 []; new 6, unexpected [], expected but missing []
+PASS - D5 2 skills with front matter; CLAUDE.md section 12 states every Phase 3d rule - 2 of 2 skills ok []; 13 of 13 rules found; missing []
+PASS - D6 the dashboard shows both: waiting rows, quotes from the new records, the replay - 21 waiting rows; 3 exceptions events in the replay; problems []
+PASS - D7 Phases 1, 2, 3a, 3b, 3c and the org-chart check still pass (skipped by --skip-old-phases) - skipped
+PASS - D8 blind review: planted error caught, real outputs PASS, nothing changed since - 1 reviews; latest 2026-11-08-01-exceptions.md; problems []
+PASS - D9 README: 3d built, every new piece mapped with a &#x27;Designed and directed&#x27; line - 3d row: &#x27;| 3d | Real-world exceptions a firm will ask about: a signer asks for &#x27;; 5 of 5 pieces mapped; missing []
+PASS - D10 every new input file is marked as a made-up sample - 1 files; unmarked []</pre></details><details><summary>Run them yourself (self-tests take longer)</summary><pre>python -I -X utf8 tests/check_phase1.py
 python -I -X utf8 tests/check_phase1.py --selftest
 python -I -X utf8 tests/check_phase2.py
 python -I -X utf8 tests/check_phase2.py --selftest
 python -I -X utf8 tests/check_phase3a.py
 python -I -X utf8 tests/check_phase3a.py --selftest
 python -I -X utf8 tests/check_phase3c.py
-python -I -X utf8 tests/check_phase3c.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">5</span>.</p><table data-audit><thead><tr><th>When</th>
+python -I -X utf8 tests/check_phase3c.py --selftest
+python -I -X utf8 tests/check_phase3d.py
+python -I -X utf8 tests/check_phase3d.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">6</span>.</p><table data-audit><thead><tr><th>When</th>
 <th>Subject</th>
 <th>What it reviewed</th>
 <th>Result</th>
@@ -2020,14 +2162,19 @@ python -I -X utf8 tests/check_phase3c.py --selftest</pre></details><h2>The check
 <td><span class="src" data-src="audit/controls-log.csv" title="Quoted from audit/controls-log.csv">reviews/controls/2026-11-06-01-controls.md; recorded by procurement-assistant</span></td>
 <td><span class="src" data-src="audit/controls-log.csv" title="Quoted from audit/controls-log.csv">overall PASS</span></td>
 </tr>
+<tr><td>2026-11-08 17:39:25</td>
+<td>skyquay-lift-fire + <span class="id">unit-4b</span></td>
+<td><span class="src" data-src="audit/exceptions-log.csv" title="Quoted from audit/exceptions-log.csv">reviews/exceptions/2026-11-08-01-exceptions.md; recorded by onboarding-assistant</span></td>
+<td><span class="src" data-src="audit/exceptions-log.csv" title="Quoted from audit/exceptions-log.csv">overall PASS</span></td>
+</tr>
 </tbody></table><h2>Guardrails, counted</h2><table data-audit><tbody><tr><td>Log rows where the AI sent, signed, approved, ordered, or paid</td>
 <td class="num"><span class="n" data-k="g.ai_people">0</span></td>
 </tr>
 <tr><td>Drafts written and marked not sent (a person sends)</td>
-<td class="num"><span class="n" data-k="g.drafts">8</span></td>
+<td class="num"><span class="n" data-k="g.drafts">9</span></td>
 </tr>
 <tr><td>Packet sign-off lines left blank for a person</td>
-<td class="num"><span class="n" data-k="g.blank">5</span></td>
+<td class="num"><span class="n" data-k="g.blank">9</span></td>
 </tr>
 <tr><td>Approval lines left blank on the purchase request and change request</td>
 <td class="num"><span class="n" data-k="g.blank_lines">2</span></td>
@@ -2036,7 +2183,7 @@ python -I -X utf8 tests/check_phase3c.py --selftest</pre></details><h2>The check
 <div id="nowevent" class="nowevent"></div>
 <div class="board"><div><h4>Vendors</h4><div id="rvendors" class="rgrid"></div>
 </div>
-<div><h4>Buying steps and controls, Unit 4B</h4><div id="racts" class="rgrid"></div>
+<div><h4>Buying steps, controls, and exceptions</h4><div id="racts" class="rgrid"></div>
 </div>
 </div>
 <div id="rcount" class="muted"></div>
@@ -2053,7 +2200,11 @@ python -I -X utf8 tests/check_phase3c.py --selftest</pre></details><h2>The check
 <td class="num"><span class="n" data-k="a.ctl">4</span> rows</td>
 <td><span class="n" data-k="a.ctl_links">4</span> links verify</td>
 </tr>
-</tbody></table><p><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>All three chains verify</span></p><h2>Every row</h2><table class="log"><thead><tr><th>Time</th>
+<tr><td>Exceptions log</td>
+<td class="num"><span class="n" data-k="a.exc">3</span> rows</td>
+<td><span class="n" data-k="a.exc_links">3</span> links verify</td>
+</tr>
+</tbody></table><p><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>All four chains verify</span></p><h2>Every row</h2><table class="log"><thead><tr><th>Time</th>
 <th>Actor</th>
 <th>Subject</th>
 <th>Action</th>
@@ -2277,6 +2428,27 @@ python -I -X utf8 tests/check_phase3c.py --selftest</pre></details><h2>The check
 <td>overall PASS</td>
 <td class="muted small">reviews/controls/2026-11-06-01-controls.md; recorded by procurement-assistant</td>
 </tr>
+<tr data-log="exc" data-i="1"><td class="nowrap">2026-11-08T17:24:04</td>
+<td>onboarding-assistant</td>
+<td>skyquay-lift-fire</td>
+<td>packet_revision</td>
+<td>RESTART; version 2 built, 4 sign-offs blank, not sent</td>
+<td class="muted small">vendors/skyquay-lift-fire/revision.json; vendors/skyquay-lift-fire/packet-v2.md; version 1 -&gt; 2: contract terms change asked by Legal on 2026-11-10; 2 earlier signatures don&#x27;t carry over; route restarts with Facilities Manager</td>
+</tr>
+<tr data-log="exc" data-i="2"><td class="nowrap">2026-11-08T17:24:04</td>
+<td>procurement-assistant</td>
+<td>unit-4b</td>
+<td>freight_credit</td>
+<td>DRAFTED; 1 credit request drafted, not sent</td>
+<td class="muted small">projects/unit-4b/exceptions/freight-credit.json; GW-BED-Q ETA 2026-11-25, 7 days past promised 2026-11-18; Gulfweave Furnishings freight $185, ask 50% = $92.50; draft projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md</td>
+</tr>
+<tr data-log="exc" data-i="3"><td class="nowrap">2026-11-08T17:39:25</td>
+<td>compliance-checker</td>
+<td>skyquay-lift-fire + unit-4b</td>
+<td>checker_review</td>
+<td>overall PASS</td>
+<td class="muted small">reviews/exceptions/2026-11-08-01-exceptions.md; recorded by onboarding-assistant</td>
+</tr>
 </tbody></table></section><section data-tab="map" id="tab-map"><!-- DIAGRAM START -->
 <style>
 .dg{font-family:"Segoe UI",system-ui,sans-serif;color:#0b0b0b;background:#fff;width:1600px;max-width:100%;box-sizing:border-box;padding:24px 40px 16px;line-height:1.25}
@@ -2399,7 +2571,7 @@ python -I -X utf8 tests/check_phase3c.py --selftest</pre></details><h2>The check
     <div class="dg-ctrl"><b>People approve</b>The AI never sends, signs, orders, or pays. It stops and asks.<span class="dg-term">human in the loop, segregation of duties</span></div>
     <div class="dg-ctrl"><b>A second AI, the checker</b>Set up to only read, it reviews the work, with planted mistakes mixed in.<span class="dg-term">maker-checker review, least privilege by design</span></div>
     <div class="dg-ctrl"><b>Audit log</b>Every action is one row. Rows are hash-chained, so an edit shows.<span class="dg-term">audit trail, tamper evidence</span></div>
-    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 41 of 41 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
+    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 53 of 53 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
     <div class="dg-ctrl"><b>One screen</b>A dashboard rebuilt from the records; a test recounts every number in its tiles and tables.<span class="dg-term">observability, reconciliation</span></div>
   </div>
 
@@ -2408,7 +2580,7 @@ python -I -X utf8 tests/check_phase3c.py --selftest</pre></details><h2>The check
     <span>Same structure fits any process with intake, checks, approvals, and an audit trail.</span>
   </div>
 </div>
-<!-- DIAGRAM END --></section></main><script id="replay-data" type="application/json">[{"log": "onb", "i": 1, "t": "2026-11-05T11:28:45", "actor": "onboarding-assistant", "subject": "saltmarsh-roofing", "action": "intake", "detail": "vendors/saltmarsh-roofing/intake.json; status BLOCKED; issues COI_EXPIRED; approvers Facilities Manager > Procurement Lead", "result": "BLOCKED"}, {"log": "onb", "i": 2, "t": "2026-11-05T11:28:58", "actor": "onboarding-assistant", "subject": "saltmarsh-roofing", "action": "chase_draft", "detail": "vendors/saltmarsh-roofing/drafts/2026-11-05-follow-up.md; to office@saltmarsh-roofing.example; items COI_EXPIRED; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 3, "t": "2026-11-05T11:30:11", "actor": "compliance-checker", "subject": "saltmarsh-roofing", "action": "checker_review", "detail": "reviews/2026-11-05-01-saltmarsh.md; 3 files reviewed; 2 OK; 1 findings (1 on planted copies, 0 on real files); recorded by onboarding-assistant", "result": "no findings on real files"}, {"log": "onb", "i": 4, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "kestrelbay-air-heat", "action": "intake", "detail": "vendors/kestrelbay-air-heat/intake.json; status READY; issues none; approvers Facilities Manager", "result": "READY"}, {"log": "onb", "i": 5, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "brightcurrent-electric", "action": "intake", "detail": "vendors/brightcurrent-electric/intake.json; status BLOCKED; issues GL_BELOW_MIN; approvers Facilities Manager > Procurement Lead", "result": "BLOCKED"}, {"log": "onb", "i": 6, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "fernhollow-grounds", "action": "intake", "detail": "vendors/fernhollow-grounds/intake.json; status BLOCKED; issues MISSING_W9; approvers Facilities Manager > Procurement Lead", "result": "BLOCKED"}, {"log": "onb", "i": 7, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "clearsail-janitorial", "action": "intake", "detail": "vendors/clearsail-janitorial/intake.json; status BLOCKED; issues NO_ADDITIONAL_INSURED; approvers Facilities Manager", "result": "BLOCKED"}, {"log": "onb", "i": 8, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "bayvane-plumbing", "action": "intake", "detail": "vendors/bayvane-plumbing/intake.json; status HOLD; issues LICENSE_EXPIRING_30D; approvers Facilities Manager > Procurement Lead", "result": "HOLD"}, {"log": "onb", "i": 9, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "gulfpine-pest", "action": "intake", "detail": "vendors/gulfpine-pest/intake.json; status BLOCKED; issues NAME_MISMATCH; approvers Facilities Manager", "result": "BLOCKED"}, {"log": "onb", "i": 10, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "skyquay-lift-fire", "action": "intake", "detail": "vendors/skyquay-lift-fire/intake.json; status READY; issues none; approvers Facilities Manager > Procurement Lead > Legal > Finance", "result": "READY"}, {"log": "onb", "i": 11, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "brightcurrent-electric", "action": "chase_draft", "detail": "vendors/brightcurrent-electric/drafts/2026-11-05-follow-up.md; to office@brightcurrent-electric.example; items GL_BELOW_MIN; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 12, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "fernhollow-grounds", "action": "chase_draft", "detail": "vendors/fernhollow-grounds/drafts/2026-11-05-follow-up.md; to office@fernhollow-grounds.example; items MISSING_W9; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 13, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "clearsail-janitorial", "action": "chase_draft", "detail": "vendors/clearsail-janitorial/drafts/2026-11-05-follow-up.md; to office@clearsail-janitorial.example; items NO_ADDITIONAL_INSURED; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 14, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "bayvane-plumbing", "action": "chase_draft", "detail": "vendors/bayvane-plumbing/drafts/2026-11-05-follow-up.md; to office@bayvane-plumbing.example; items LICENSE_EXPIRING_30D; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 15, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "gulfpine-pest", "action": "chase_draft", "detail": "vendors/gulfpine-pest/drafts/2026-11-05-follow-up.md; to office@gulfpine-pest.example; items NAME_MISMATCH; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 16, "t": "2026-11-05T11:31:17", "actor": "onboarding-assistant", "subject": "kestrelbay-air-heat", "action": "route_packet", "detail": "vendors/kestrelbay-air-heat/packet.md; 1 approver: Facilities Manager; amount $8,500", "result": "packet built, awaiting sign-off"}, {"log": "onb", "i": 17, "t": "2026-11-05T11:31:17", "actor": "onboarding-assistant", "subject": "skyquay-lift-fire", "action": "route_packet", "detail": "vendors/skyquay-lift-fire/packet.md; 4 approvers: Facilities Manager > Procurement Lead > Legal > Finance; amount $120,000", "result": "packet built, awaiting sign-off"}, {"log": "onb", "i": 18, "t": "2026-11-05T11:33:37", "actor": "compliance-checker", "subject": "all", "action": "checker_review", "detail": "reviews/2026-11-05-02-all-vendors.md; 18 files reviewed; 16 OK; 3 findings (3 on planted copies, 0 on real files); recorded by onboarding-assistant", "result": "no findings on real files"}, {"log": "proc", "i": 1, "t": "2026-11-05T22:35:49", "actor": "procurement-assistant", "subject": "unit-4b", "action": "scope_brief", "detail": "projects/unit-4b/out/brief.json; projects/unit-4b/out/brief.md; codes MISSING_MEASUREMENT,SCOPE_CONFLICT; missing Bedroom wall B", "result": "NEEDS_INFO"}, {"log": "proc", "i": 2, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "source_check", "detail": "projects/unit-4b/out/source.json; projects/unit-4b/out/source.md; 8 items; late GW-SOF-210", "result": "1 late"}, {"log": "proc", "i": 3, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "quote_compare", "detail": "projects/unit-4b/out/quotes.json; projects/unit-4b/out/quotes.md; projects/unit-4b/out/purchase-request-draft.md; total $4,898; approvers Facilities Manager", "result": "draft for review, not ordered"}, {"log": "proc", "i": 4, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "product_approval", "detail": "projects/unit-4b/out/approval.json; projects/unit-4b/out/approval.md; pass 5, fail 2, to a person 1", "result": "2 fail, 1 to a person"}, {"log": "proc", "i": 5, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "change_request", "detail": "projects/unit-4b/out/change-request-CR-001.json; projects/unit-4b/out/change-request-CR-001.md; MH-SOF-118 -> GW-SOF-205; +$410; total $5,308 vs budget $5,200; baseline unchanged", "result": "awaiting approval"}, {"log": "proc", "i": 6, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "delivery_exceptions", "detail": "projects/unit-4b/out/deliveries.json; projects/unit-4b/out/tasks.md; projects/unit-4b/out/drafts/update-2026-11-12.md; exceptions GW-BED-Q DELIVERY_LATE, MH-DR-60 ADDRESS_MISMATCH", "result": "2 tasks; update drafted, not sent"}, {"log": "proc", "i": 7, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "invoice_match", "detail": "projects/unit-4b/out/match.json; projects/unit-4b/out/match.md; INV-GW-5521 MATCH; INV-KC-3307 HOLD PRICE_MISMATCH,QTY_MISMATCH", "result": "flagged for Finance; payment status untouched"}, {"log": "proc", "i": 8, "t": "2026-11-05T22:37:33", "actor": "compliance-checker", "subject": "unit-4b", "action": "checker_review", "detail": "reviews/procurement/2026-11-05-01-unit-4b.md; 6 OK, 3 findings; recorded by procurement-assistant", "result": "3 findings"}, {"log": "proc", "i": 9, "t": "2026-11-05T22:39:00", "actor": "compliance-checker", "subject": "unit-4b", "action": "checker_review", "detail": "reviews/procurement/2026-11-05-02-unit-4b.md; 7 OK, 2 findings; recorded by procurement-assistant", "result": "2 findings"}, {"log": "ctl", "i": 1, "t": "2026-11-06T10:19:04", "actor": "onboarding-assistant", "subject": "all", "action": "screen", "detail": "vendors/*/screen.json; controls/supplier-screen.json; controls/screen.md; 8 contractors, 3 suppliers; gulfpine-pest EXCLUDED EXCLUDED; kestrelbay-air-heat REVIEW CONFLICT_DISCLOSED", "result": "6 CLEAR, 1 REVIEW, 1 EXCLUDED"}, {"log": "ctl", "i": 2, "t": "2026-11-06T10:19:04", "actor": "procurement-assistant", "subject": "unit-4b", "action": "approval_request", "detail": "projects/unit-4b/controls/approval-request.json; projects/unit-4b/controls/approval-request.md; Standard purchase $4,898; budget line FAC-TURN-2026, left $302; flags MH-SOF-118 LOWEST_NOT_SELECTED, GW-BED-Q SINGLE_SOURCE, MH-DR-60 SINGLE_SOURCE", "result": "NEEDS_JUSTIFICATION; certification blank"}, {"log": "ctl", "i": 3, "t": "2026-11-06T10:19:04", "actor": "procurement-assistant", "subject": "unit-4b", "action": "closeout", "detail": "projects/unit-4b/controls/contract-summary.json; projects/unit-4b/controls/contract-summary.md; projects/unit-4b/controls/completion-certificate.md; projects/unit-4b/controls/drafts/reply-gulfweave-2026-11-12.md; invoiced $1,407 of $4,898, remaining $3,491; Gulfweave Furnishings CLAIM_CONTRADICTED GW-BED-Q,GW-CT-48", "result": "NOT_READY; certificate unsigned; reply drafted, not sent"}, {"log": "ctl", "i": 4, "t": "2026-11-06T10:23:33", "actor": "compliance-checker", "subject": "unit-4b + vendors", "action": "checker_review", "detail": "reviews/controls/2026-11-06-01-controls.md; recorded by procurement-assistant", "result": "overall PASS"}]</script><script id="replay-vendors" type="application/json">[{"slug": "bayvane-plumbing", "name": "Bayvane Plumbing Inc."}, {"slug": "brightcurrent-electric", "name": "Brightcurrent Electric Inc."}, {"slug": "clearsail-janitorial", "name": "Clearsail Janitorial Services LLC"}, {"slug": "fernhollow-grounds", "name": "Fernhollow Grounds LLC"}, {"slug": "gulfpine-pest", "name": "Gulfpine Pest Control Inc."}, {"slug": "kestrelbay-air-heat", "name": "Kestrelbay Air & Heat LLC"}, {"slug": "saltmarsh-roofing", "name": "Saltmarsh Roofing Co."}, {"slug": "skyquay-lift-fire", "name": "Skyquay Lift & Fire Inc."}]</script><script id="replay-acts" type="application/json">[{"action": "scope_brief", "skill": "/scope", "name": "Requirements and scope"}, {"action": "source_check", "skill": "/source", "name": "Supplier lead times"}, {"action": "quote_compare", "skill": "/quote", "name": "Quotes and purchase request"}, {"action": "product_approval", "skill": "/approve", "name": "Product approval"}, {"action": "change_request", "skill": "/change", "name": "Budget and change control"}, {"action": "delivery_exceptions", "skill": "/deliver", "name": "Deliveries and exceptions"}, {"action": "invoice_match", "skill": "/match", "name": "Invoice three-way match"}, {"action": "screen", "skill": "/screen", "name": "Disclosures + exclusion list"}, {"action": "approval_request", "skill": "/request", "name": "Approval request"}, {"action": "closeout", "skill": "/closeout", "name": "Running totals + close-out"}]</script><script>
+<!-- DIAGRAM END --></section></main><script id="replay-data" type="application/json">[{"log": "onb", "i": 1, "t": "2026-11-05T11:28:45", "actor": "onboarding-assistant", "subject": "saltmarsh-roofing", "action": "intake", "detail": "vendors/saltmarsh-roofing/intake.json; status BLOCKED; issues COI_EXPIRED; approvers Facilities Manager > Procurement Lead", "result": "BLOCKED"}, {"log": "onb", "i": 2, "t": "2026-11-05T11:28:58", "actor": "onboarding-assistant", "subject": "saltmarsh-roofing", "action": "chase_draft", "detail": "vendors/saltmarsh-roofing/drafts/2026-11-05-follow-up.md; to office@saltmarsh-roofing.example; items COI_EXPIRED; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 3, "t": "2026-11-05T11:30:11", "actor": "compliance-checker", "subject": "saltmarsh-roofing", "action": "checker_review", "detail": "reviews/2026-11-05-01-saltmarsh.md; 3 files reviewed; 2 OK; 1 findings (1 on planted copies, 0 on real files); recorded by onboarding-assistant", "result": "no findings on real files"}, {"log": "onb", "i": 4, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "kestrelbay-air-heat", "action": "intake", "detail": "vendors/kestrelbay-air-heat/intake.json; status READY; issues none; approvers Facilities Manager", "result": "READY"}, {"log": "onb", "i": 5, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "brightcurrent-electric", "action": "intake", "detail": "vendors/brightcurrent-electric/intake.json; status BLOCKED; issues GL_BELOW_MIN; approvers Facilities Manager > Procurement Lead", "result": "BLOCKED"}, {"log": "onb", "i": 6, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "fernhollow-grounds", "action": "intake", "detail": "vendors/fernhollow-grounds/intake.json; status BLOCKED; issues MISSING_W9; approvers Facilities Manager > Procurement Lead", "result": "BLOCKED"}, {"log": "onb", "i": 7, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "clearsail-janitorial", "action": "intake", "detail": "vendors/clearsail-janitorial/intake.json; status BLOCKED; issues NO_ADDITIONAL_INSURED; approvers Facilities Manager", "result": "BLOCKED"}, {"log": "onb", "i": 8, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "bayvane-plumbing", "action": "intake", "detail": "vendors/bayvane-plumbing/intake.json; status HOLD; issues LICENSE_EXPIRING_30D; approvers Facilities Manager > Procurement Lead", "result": "HOLD"}, {"log": "onb", "i": 9, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "gulfpine-pest", "action": "intake", "detail": "vendors/gulfpine-pest/intake.json; status BLOCKED; issues NAME_MISMATCH; approvers Facilities Manager", "result": "BLOCKED"}, {"log": "onb", "i": 10, "t": "2026-11-05T11:30:22", "actor": "onboarding-assistant", "subject": "skyquay-lift-fire", "action": "intake", "detail": "vendors/skyquay-lift-fire/intake.json; status READY; issues none; approvers Facilities Manager > Procurement Lead > Legal > Finance", "result": "READY"}, {"log": "onb", "i": 11, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "brightcurrent-electric", "action": "chase_draft", "detail": "vendors/brightcurrent-electric/drafts/2026-11-05-follow-up.md; to office@brightcurrent-electric.example; items GL_BELOW_MIN; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 12, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "fernhollow-grounds", "action": "chase_draft", "detail": "vendors/fernhollow-grounds/drafts/2026-11-05-follow-up.md; to office@fernhollow-grounds.example; items MISSING_W9; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 13, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "clearsail-janitorial", "action": "chase_draft", "detail": "vendors/clearsail-janitorial/drafts/2026-11-05-follow-up.md; to office@clearsail-janitorial.example; items NO_ADDITIONAL_INSURED; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 14, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "bayvane-plumbing", "action": "chase_draft", "detail": "vendors/bayvane-plumbing/drafts/2026-11-05-follow-up.md; to office@bayvane-plumbing.example; items LICENSE_EXPIRING_30D; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 15, "t": "2026-11-05T11:31:16", "actor": "onboarding-assistant", "subject": "gulfpine-pest", "action": "chase_draft", "detail": "vendors/gulfpine-pest/drafts/2026-11-05-follow-up.md; to office@gulfpine-pest.example; items NAME_MISMATCH; deadline 2026-11-12; reviewer and sender Dana Reyes", "result": "drafted, not sent"}, {"log": "onb", "i": 16, "t": "2026-11-05T11:31:17", "actor": "onboarding-assistant", "subject": "kestrelbay-air-heat", "action": "route_packet", "detail": "vendors/kestrelbay-air-heat/packet.md; 1 approver: Facilities Manager; amount $8,500", "result": "packet built, awaiting sign-off"}, {"log": "onb", "i": 17, "t": "2026-11-05T11:31:17", "actor": "onboarding-assistant", "subject": "skyquay-lift-fire", "action": "route_packet", "detail": "vendors/skyquay-lift-fire/packet.md; 4 approvers: Facilities Manager > Procurement Lead > Legal > Finance; amount $120,000", "result": "packet built, awaiting sign-off"}, {"log": "onb", "i": 18, "t": "2026-11-05T11:33:37", "actor": "compliance-checker", "subject": "all", "action": "checker_review", "detail": "reviews/2026-11-05-02-all-vendors.md; 18 files reviewed; 16 OK; 3 findings (3 on planted copies, 0 on real files); recorded by onboarding-assistant", "result": "no findings on real files"}, {"log": "proc", "i": 1, "t": "2026-11-05T22:35:49", "actor": "procurement-assistant", "subject": "unit-4b", "action": "scope_brief", "detail": "projects/unit-4b/out/brief.json; projects/unit-4b/out/brief.md; codes MISSING_MEASUREMENT,SCOPE_CONFLICT; missing Bedroom wall B", "result": "NEEDS_INFO"}, {"log": "proc", "i": 2, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "source_check", "detail": "projects/unit-4b/out/source.json; projects/unit-4b/out/source.md; 8 items; late GW-SOF-210", "result": "1 late"}, {"log": "proc", "i": 3, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "quote_compare", "detail": "projects/unit-4b/out/quotes.json; projects/unit-4b/out/quotes.md; projects/unit-4b/out/purchase-request-draft.md; total $4,898; approvers Facilities Manager", "result": "draft for review, not ordered"}, {"log": "proc", "i": 4, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "product_approval", "detail": "projects/unit-4b/out/approval.json; projects/unit-4b/out/approval.md; pass 5, fail 2, to a person 1", "result": "2 fail, 1 to a person"}, {"log": "proc", "i": 5, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "change_request", "detail": "projects/unit-4b/out/change-request-CR-001.json; projects/unit-4b/out/change-request-CR-001.md; MH-SOF-118 -> GW-SOF-205; +$410; total $5,308 vs budget $5,200; baseline unchanged", "result": "awaiting approval"}, {"log": "proc", "i": 6, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "delivery_exceptions", "detail": "projects/unit-4b/out/deliveries.json; projects/unit-4b/out/tasks.md; projects/unit-4b/out/drafts/update-2026-11-12.md; exceptions GW-BED-Q DELIVERY_LATE, MH-DR-60 ADDRESS_MISMATCH", "result": "2 tasks; update drafted, not sent"}, {"log": "proc", "i": 7, "t": "2026-11-05T22:35:50", "actor": "procurement-assistant", "subject": "unit-4b", "action": "invoice_match", "detail": "projects/unit-4b/out/match.json; projects/unit-4b/out/match.md; INV-GW-5521 MATCH; INV-KC-3307 HOLD PRICE_MISMATCH,QTY_MISMATCH", "result": "flagged for Finance; payment status untouched"}, {"log": "proc", "i": 8, "t": "2026-11-05T22:37:33", "actor": "compliance-checker", "subject": "unit-4b", "action": "checker_review", "detail": "reviews/procurement/2026-11-05-01-unit-4b.md; 6 OK, 3 findings; recorded by procurement-assistant", "result": "3 findings"}, {"log": "proc", "i": 9, "t": "2026-11-05T22:39:00", "actor": "compliance-checker", "subject": "unit-4b", "action": "checker_review", "detail": "reviews/procurement/2026-11-05-02-unit-4b.md; 7 OK, 2 findings; recorded by procurement-assistant", "result": "2 findings"}, {"log": "ctl", "i": 1, "t": "2026-11-06T10:19:04", "actor": "onboarding-assistant", "subject": "all", "action": "screen", "detail": "vendors/*/screen.json; controls/supplier-screen.json; controls/screen.md; 8 contractors, 3 suppliers; gulfpine-pest EXCLUDED EXCLUDED; kestrelbay-air-heat REVIEW CONFLICT_DISCLOSED", "result": "6 CLEAR, 1 REVIEW, 1 EXCLUDED"}, {"log": "ctl", "i": 2, "t": "2026-11-06T10:19:04", "actor": "procurement-assistant", "subject": "unit-4b", "action": "approval_request", "detail": "projects/unit-4b/controls/approval-request.json; projects/unit-4b/controls/approval-request.md; Standard purchase $4,898; budget line FAC-TURN-2026, left $302; flags MH-SOF-118 LOWEST_NOT_SELECTED, GW-BED-Q SINGLE_SOURCE, MH-DR-60 SINGLE_SOURCE", "result": "NEEDS_JUSTIFICATION; certification blank"}, {"log": "ctl", "i": 3, "t": "2026-11-06T10:19:04", "actor": "procurement-assistant", "subject": "unit-4b", "action": "closeout", "detail": "projects/unit-4b/controls/contract-summary.json; projects/unit-4b/controls/contract-summary.md; projects/unit-4b/controls/completion-certificate.md; projects/unit-4b/controls/drafts/reply-gulfweave-2026-11-12.md; invoiced $1,407 of $4,898, remaining $3,491; Gulfweave Furnishings CLAIM_CONTRADICTED GW-BED-Q,GW-CT-48", "result": "NOT_READY; certificate unsigned; reply drafted, not sent"}, {"log": "ctl", "i": 4, "t": "2026-11-06T10:23:33", "actor": "compliance-checker", "subject": "unit-4b + vendors", "action": "checker_review", "detail": "reviews/controls/2026-11-06-01-controls.md; recorded by procurement-assistant", "result": "overall PASS"}, {"log": "exc", "i": 1, "t": "2026-11-08T17:24:04", "actor": "onboarding-assistant", "subject": "skyquay-lift-fire", "action": "packet_revision", "detail": "vendors/skyquay-lift-fire/revision.json; vendors/skyquay-lift-fire/packet-v2.md; version 1 -> 2: contract terms change asked by Legal on 2026-11-10; 2 earlier signatures don't carry over; route restarts with Facilities Manager", "result": "RESTART; version 2 built, 4 sign-offs blank, not sent"}, {"log": "exc", "i": 2, "t": "2026-11-08T17:24:04", "actor": "procurement-assistant", "subject": "unit-4b", "action": "freight_credit", "detail": "projects/unit-4b/exceptions/freight-credit.json; GW-BED-Q ETA 2026-11-25, 7 days past promised 2026-11-18; Gulfweave Furnishings freight $185, ask 50% = $92.50; draft projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md", "result": "DRAFTED; 1 credit request drafted, not sent"}, {"log": "exc", "i": 3, "t": "2026-11-08T17:39:25", "actor": "compliance-checker", "subject": "skyquay-lift-fire + unit-4b", "action": "checker_review", "detail": "reviews/exceptions/2026-11-08-01-exceptions.md; recorded by onboarding-assistant", "result": "overall PASS"}]</script><script id="replay-vendors" type="application/json">[{"slug": "bayvane-plumbing", "name": "Bayvane Plumbing Inc."}, {"slug": "brightcurrent-electric", "name": "Brightcurrent Electric Inc."}, {"slug": "clearsail-janitorial", "name": "Clearsail Janitorial Services LLC"}, {"slug": "fernhollow-grounds", "name": "Fernhollow Grounds LLC"}, {"slug": "gulfpine-pest", "name": "Gulfpine Pest Control Inc."}, {"slug": "kestrelbay-air-heat", "name": "Kestrelbay Air & Heat LLC"}, {"slug": "saltmarsh-roofing", "name": "Saltmarsh Roofing Co."}, {"slug": "skyquay-lift-fire", "name": "Skyquay Lift & Fire Inc."}]</script><script id="replay-acts" type="application/json">[{"action": "scope_brief", "skill": "/scope", "name": "Requirements and scope"}, {"action": "source_check", "skill": "/source", "name": "Supplier lead times"}, {"action": "quote_compare", "skill": "/quote", "name": "Quotes and purchase request"}, {"action": "product_approval", "skill": "/approve", "name": "Product approval"}, {"action": "change_request", "skill": "/change", "name": "Budget and change control"}, {"action": "delivery_exceptions", "skill": "/deliver", "name": "Deliveries and exceptions"}, {"action": "invoice_match", "skill": "/match", "name": "Invoice three-way match"}, {"action": "screen", "skill": "/screen", "name": "Disclosures + exclusion list"}, {"action": "approval_request", "skill": "/request", "name": "Approval request"}, {"action": "closeout", "skill": "/closeout", "name": "Running totals + close-out"}, {"action": "packet_revision", "skill": "/revise", "name": "A change during sign-off"}, {"action": "freight_credit", "skill": "/credit", "name": "Shipping credit for a late delivery"}]</script><script>
 (function(){
   var errs=0;window.addEventListener('error',function(){errs++;document.body.setAttribute('data-errors',String(errs));});
   var sections=[].slice.call(document.querySelectorAll('section[data-tab]')),buttons=[].slice.call(document.querySelectorAll('nav button'));
