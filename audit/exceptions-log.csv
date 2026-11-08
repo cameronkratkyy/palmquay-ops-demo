@@ -1,0 +1,4 @@
+timestamp,actor,vendor,action,detail,result
+2026-11-08T17:24:04,onboarding-assistant,skyquay-lift-fire,packet_revision,vendors/skyquay-lift-fire/revision.json; vendors/skyquay-lift-fire/packet-v2.md; version 1 -> 2: contract terms change asked by Legal on 2026-11-10; 2 earlier signatures don't carry over; route restarts with Facilities Manager,"RESTART; version 2 built, 4 sign-offs blank, not sent"
+2026-11-08T17:24:04,procurement-assistant,unit-4b,freight_credit,"projects/unit-4b/exceptions/freight-credit.json; GW-BED-Q ETA 2026-11-25, 7 days past promised 2026-11-18; Gulfweave Furnishings freight $185, ask 50% = $92.50; draft projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md","DRAFTED; 1 credit request drafted, not sent"
+2026-11-08T17:39:25,compliance-checker,skyquay-lift-fire + unit-4b,checker_review,reviews/exceptions/2026-11-08-01-exceptions.md; recorded by onboarding-assistant,overall PASS

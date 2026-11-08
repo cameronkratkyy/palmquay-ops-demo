@@ -163,5 +163,27 @@
       "CLAIM_CONTRADICTED": "REFUSED",
       "NOT_READY": "OPEN"
     }
+  },
+  "exceptions": {
+    "_note": "Phase 3d (11/8): two real-world exceptions that happen after the paperwork is clean. Every Phase 3d number lives here.",
+    "revision": {
+      "material_changes": [
+        "scope",
+        "price",
+        "dates",
+        "contract terms",
+        "insurance"
+      ],
+      "restart_from": "the first approver in the tier's order",
+      "signatures_carry_over": false,
+      "sender": "Facilities Manager",
+      "status": "RESTART"
+    },
+    "freight_credit": {
+      "days_past_promised": 7,
+      "share_of_freight_percent": 50,
+      "reviewer_and_sender": "Facilities Manager",
+      "status": "DRAFTED"
+    }
   }
 }

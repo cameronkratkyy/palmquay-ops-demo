@@ -1,0 +1,37 @@
+{
+  "project": "unit-4b",
+  "order": "PQ-1042",
+  "as_of": "2026-11-12",
+  "tracking": "projects/unit-4b/deliveries/tracking-2026-11-12.md",
+  "rule": {
+    "days_past_promised": 7,
+    "share_of_freight_percent": 50
+  },
+  "items": {
+    "GW-BED-Q": {
+      "supplier": "Gulfweave Furnishings",
+      "item": "Bed frame, queen",
+      "promised": "2026-11-18",
+      "eta": "2026-11-25",
+      "days_past": 7
+    }
+  },
+  "suppliers": {
+    "Gulfweave Furnishings": {
+      "freight": 185,
+      "skus": [
+        "GW-BED-Q"
+      ],
+      "credit_cents": 9250,
+      "credit": "$92.50",
+      "draft": "projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md"
+    }
+  },
+  "reviewer_and_sender": "Facilities Manager",
+  "status": "DRAFTED",
+  "run": {
+    "by": "procurement-assistant",
+    "at": "2026-11-08T17:24:04",
+    "tool": "tools/exceptions.py credit"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "vendor": "skyquay-lift-fire",
+  "from_version": 1,
+  "to_version": 2,
+  "change_type": "contract terms",
+  "change": "Add a one-year warranty on parts and labor to the contract terms before I sign.",
+  "requested_by": "Legal",
+  "requested_by_name": "Priya Natarajan",
+  "requested_on": "2026-11-10",
+  "material": true,
+  "status": "RESTART",
+  "signed_before": [
+    "Facilities Manager",
+    "Procurement Lead"
+  ],
+  "signed_before_on": {
+    "Facilities Manager": "2026-11-06",
+    "Procurement Lead": "2026-11-09"
+  },
+  "route": [
+    "Facilities Manager",
+    "Procurement Lead",
+    "Legal",
+    "Finance"
+  ],
+  "next": "Facilities Manager",
+  "sender": "Facilities Manager",
+  "blank_signoffs": 4,
+  "sources": [
+    "vendors/skyquay-lift-fire/packet.md",
+    "vendors/skyquay-lift-fire/esign-status-2026-11-10.md",
+    "company/rules.json"
+  ],
+  "packet": "vendors/skyquay-lift-fire/packet-v2.md",
+  "run": {
+    "by": "onboarding-assistant",
+    "at": "2026-11-08T17:24:04",
+    "tool": "tools/exceptions.py revise"
+  }
+}

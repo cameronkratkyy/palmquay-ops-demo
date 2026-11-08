@@ -3,3 +3,5 @@
 0b86e8390c2b5faf9f1a23f8c03e425e7a14c1f2a09a14e368ca1aee1668fa97  projects/unit-4b/approved/po-PQ-1042.md  locked 2026-11-05 22:30: the approved baseline; it may change only after an approval row exists
 87cfc76396f4b0ecdd9fb8a81ff384244ef1175696bf9d20591f2b74e468f3f7  answer-key-3c.json  locked 2026-11-06 10:12 before any Phase 3c helper or skill existed
 eb44aab504ef2f070d4f6489212304e6c80d7666408d82ce88ae333b52a3851f  tests/frozen-3c.txt  locked 2026-11-06 10:12: hashes of 94 Phase 1-3a records that Phase 3c may not change
+9f2beb76312884c3978c7db413475ab15a22e70b75e7cdddaaf4985ba603eaf9  answer-key-3d.json  locked 2026-11-08 17:19 before any Phase 3d helper or skill existed
+a9aedeb40b20e77b3ac44069a3fc01c83a840c1cc54b88b253c9e80b653ff07c  tests/frozen-3d.txt  locked 2026-11-08 17:19: hashes of 154 records Phase 3d may not change

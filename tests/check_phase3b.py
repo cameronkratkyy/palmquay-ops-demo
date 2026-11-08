@@ -42,6 +42,7 @@ ACT_OUT = {"scope_brief": "brief.json", "source_check": "source.json", "quote_co
            "delivery_exceptions": "deliveries.json", "invoice_match": "match.json"}
 CTL_OUT = {"screen": "controls/supplier-screen.json", "approval_request": "projects/unit-4b/controls/approval-request.json",
            "closeout": "projects/unit-4b/controls/contract-summary.json"}  # Phase 3c (11/6): outputs outside Phase 3a's out/
+EXC_OUT = {"packet_revision": "vendors/skyquay-lift-fire/revision.json", "freight_credit": "projects/unit-4b/exceptions/freight-credit.json"}  # Phase 3d (11/8)
 BROWSERS = [r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Google\Chrome\Application\chrome.exe"]
 URL = re.compile(r"\bhttps?://|\bwww\.|//cdn|@import|\bfetch\(|XMLHttpRequest|WebSocket|\bsrc=[\"']//", re.I)
@@ -179,9 +180,10 @@ def num_of(s):
 def checks_run():
     """Run the three older checks once (B7 and the dashboard's Checks tab both use these numbers)."""
     out = {}
-    for tag, f in (("p1", "check_phase1.py"), ("p2", "check_phase2.py"), ("p3a", "check_phase3a.py"), ("p3c", "check_phase3c.py")):
-        cmd = [sys.executable, "-I", "-X", "utf8", p("tests", f)] + (["--root", ROOT] if f in ("check_phase3a.py", "check_phase3c.py") else []) \
-            + (["--copy"] if COPY else []) + (["--skip-old-phases"] if f == "check_phase3c.py" else [])
+    for tag, f in (("p1", "check_phase1.py"), ("p2", "check_phase2.py"), ("p3a", "check_phase3a.py"), ("p3c", "check_phase3c.py"),
+                   ("p3d", "check_phase3d.py")):
+        cmd = [sys.executable, "-I", "-X", "utf8", p("tests", f)] + (["--root", ROOT] if f in ("check_phase3a.py", "check_phase3c.py", "check_phase3d.py") else []) \
+            + (["--copy"] if COPY else []) + (["--skip-old-phases"] if f in ("check_phase3c.py", "check_phase3d.py") else [])
         if not os.path.exists(p("tests", f)):
             out[tag] = (None, None, 99, "missing")
             continue
@@ -367,13 +369,44 @@ def recount(runs):
     for f in replies:
         if "not sent" in open(f, encoding="utf-8").read().splitlines()[0]:
             W["send_reply:" + os.path.basename(f)[:-3]] = ctl["closeout_verifier"]
+    exr = rules.get("exceptions", {})
+    credit_drafts = sorted(glob.glob(p("projects", proj, "exceptions", "credit-request-*.md")))
+    for f in credit_drafts:
+        if "not sent" in open(f, encoding="utf-8").read().splitlines()[0]:
+            W["send_credit:" + os.path.basename(f)[:-3]] = exr["freight_credit"]["reviewer_and_sender"]
+    # Phase 3d facts, recounted from the raw records (the e-signature export; the order vs. tracking), not from the helper's output
+    for s in slugs:
+        exps = sorted(glob.glob(p("vendors", s, "esign-status-*.md")))
+        if exps and os.path.exists(p("vendors", s, "revision.json")):
+            et = open(exps[-1], encoding="utf-8").read()
+            sig = [c for c in ([x.strip() for x in l.strip().strip("|").split("|")] for l in et.splitlines()) if len(c) == 6 and c[0].isdigit()]
+            ask = next(int(c[0]) for c in sig if c[3] == "change requested")
+            E["ex.v1_signed"] = sum(1 for c in sig if c[3] == "signed" and int(c[0]) < ask)
+    if os.path.exists(p("projects", proj, "exceptions", "freight-credit.json")):
+        promised = {}
+        for line in read("projects", proj, "approved", "po-PQ-1042.md").splitlines():
+            c_ = [x.strip() for x in line.strip().strip("|").split("|")]
+            if line.startswith("|") and len(c_) == 6 and re.match(r"^[A-Z]{2}-", c_[0]):
+                promised[c_[0]] = (c_[2], c_[5])
+        freight = {m.group(1): money(m.group(2)) for m in re.finditer(r"^Freight ([^:]+): (\$[\d,]+)", read("projects", proj, "approved", "po-PQ-1042.md"), re.M)}
+        trk = sorted(glob.glob(p("projects", proj, "deliveries", "tracking-*.md")))[-1]
+        late = []
+        for line in open(trk, encoding="utf-8").read().splitlines():
+            c_ = [x.strip() for x in line.strip().strip("|").split("|")]
+            if line.startswith("|") and len(c_) == 5 and c_[0] in promised and c_[3] and c_[2] != pr["on_hold_status"]:
+                d_ = (day(c_[3]) - day(promised[c_[0]][1])).days
+                if d_ >= exr["freight_credit"]["days_past_promised"]:
+                    late.append((d_, promised[c_[0]][0]))
+        if late:
+            E["ex.credit_days"] = max(d_ for d_, _ in late)
+            E["ex.credit_freight"] = freight[late[0][1]]
     info["waiting"] = W
     E["w.total"] = len(W)
     E["w.onb"] = sum(1 for k in W if k.split(":")[0] in ("send_followup", "sign_packet", "review_disclosure", "review_exclusion"))
     E["w.buy"] = E["w.total"] - E["w.onb"]
 
     # the older checks, live
-    tags = [x for x in ("p1", "p2", "p3a", "p3c") if runs[x][2] != 99]
+    tags = [x for x in ("p1", "p2", "p3a", "p3c", "p3d") if runs[x][2] != 99]
     for tag in tags:
         n, tot = runs[tag][0], runs[tag][1]
         if n is not None:
@@ -385,8 +418,14 @@ def recount(runs):
     # audit logs + guardrails
     onb_rows, proc_rows = log_rows("audit-log.csv"), log_rows("procurement-log.csv")
     ctl_rows = log_rows("controls-log.csv") if os.path.exists(p("audit", "controls-log.csv")) else []
-    info["rows"] = (onb_rows, proc_rows, ctl_rows)
-    E.update({"a.onb": len(onb_rows), "a.proc": len(proc_rows), "a.rows": len(onb_rows) + len(proc_rows) + len(ctl_rows)})
+    exc_rows = log_rows("exceptions-log.csv") if os.path.exists(p("audit", "exceptions-log.csv")) else []
+    info["rows"] = (onb_rows, proc_rows, ctl_rows, exc_rows)
+    E.update({"a.onb": len(onb_rows), "a.proc": len(proc_rows), "a.rows": len(onb_rows) + len(proc_rows) + len(ctl_rows) + len(exc_rows)})
+    if exc_rows:
+        E["a.exc"] = len(exc_rows)
+        le, _ = verify_chain("exceptions.py", "verify-log")
+        if le is not None:
+            E["a.exc_links"] = le
     if ctl_rows:
         E["a.ctl"] = len(ctl_rows)
         lc, _ = verify_chain("controls.py", "verify-log")
@@ -398,14 +437,15 @@ def recount(runs):
         E["a.onb_links"] = lo
     if lp is not None:
         E["a.proc_links"] = lp
-    E["a.reviews"] = sum(1 for r in onb_rows + proc_rows + ctl_rows if r["action"] == "checker_review")
+    E["a.reviews"] = sum(1 for r in onb_rows + proc_rows + ctl_rows + exc_rows if r["action"] == "checker_review")
     people = re.compile(r"^(?:send|sign|approve|pay|order|place)", re.I)
     did = re.compile(r"(?<!not )\b(?:sent|signed|approved|paid|ordered)\b", re.I)
-    E["g.ai_people"] = sum(1 for r in onb_rows + proc_rows + ctl_rows if r["actor"].endswith("-assistant")
+    E["g.ai_people"] = sum(1 for r in onb_rows + proc_rows + ctl_rows + exc_rows if r["actor"].endswith("-assistant")
                            and (people.search(r["action"]) or did.search(r["result"])))
     drafts = [f for s in slugs for f in glob.glob(p("vendors", s, "drafts", "*.md"))
               if re.search(r"\|\s*Status\s*\|\s*DRAFT, not sent\s*\|", open(f, encoding="utf-8").read())]
     drafts += [f for f in glob.glob(p("projects", proj, "out", "drafts", "*.md")) + glob.glob(p("projects", proj, "controls", "drafts", "*.md"))
+               + glob.glob(p("projects", proj, "exceptions", "credit-request-*.md"))
                if "not sent" in open(f, encoding="utf-8").read().splitlines()[0]]
     E["g.drafts"] = len(drafts)
     blank = 0
@@ -416,6 +456,12 @@ def recount(runs):
                 c = [x.strip() for x in line.strip().strip("|").split("|")]
                 if len(c) == 7 and c[0].isdigit() and not c[4] and not c[6]:
                     blank += 1
+    for f in glob.glob(p("vendors", "*", "packet-v*.md")):  # a packet's newer version after a change during sign-off (Phase 3d)
+        t = open(f, encoding="utf-8").read()
+        for line in t.split("## Sign-offs", 1)[1].splitlines() if "## Sign-offs" in t else []:
+            c = [x.strip() for x in line.strip().strip("|").split("|")]
+            if len(c) == 7 and c[0].isdigit() and not c[4] and not c[6]:
+                blank += 1
     E["g.blank"] = blank
     E["g.blank_lines"] = sum(1 for f in glob.glob(p("projects", proj, "out", "*.md"))
                              if re.search(r"Approved by: _{3,}", open(f, encoding="utf-8").read()))
@@ -593,16 +639,16 @@ def b1(E, info, page):
 
 def b2(E, info, page):
     probs = []
-    onb_rows, proc_rows, ctl_rows = info["rows"]
+    onb_rows, proc_rows, ctl_rows, exc_rows = info["rows"]
     html_text = open(page, encoding="utf-8").read() if os.path.exists(page) else ""
     root = parse(html_text)
     data = next((raw_text(n) for n in walk(root) if n.tag == "script" and n.attrs.get("id") == "replay-data"), "")
     ev = json.loads(data) if data.strip() else []
-    want = [("onb", r) for r in onb_rows] + [("proc", r) for r in proc_rows] + [("ctl", r) for r in ctl_rows]
+    want = [("onb", r) for r in onb_rows] + [("proc", r) for r in proc_rows] + [("ctl", r) for r in ctl_rows] + [("exc", r) for r in exc_rows]
     if len(ev) != len(want):
         probs.append(f"{len(ev)} events vs {len(want)} log rows")
-    per = {lg: [e for e in ev if e.get("log") == lg] for lg in ("onb", "proc", "ctl")}
-    for lg, rows in (("onb", onb_rows), ("proc", proc_rows), ("ctl", ctl_rows)):
+    per = {lg: [e for e in ev if e.get("log") == lg] for lg in ("onb", "proc", "ctl", "exc")}
+    for lg, rows in (("onb", onb_rows), ("proc", proc_rows), ("ctl", ctl_rows), ("exc", exc_rows)):
         for i, r in enumerate(rows):
             e = per[lg][i] if i < len(per[lg]) else {}
             if [e.get(k) for k in ("t", "actor", "subject", "action", "result")] != [r["timestamp"], r["actor"], r["vendor"], r["action"], r["result"]]:
@@ -620,7 +666,9 @@ def b2(E, info, page):
     missing_out = [a for a in done if not os.path.exists(p("projects", "unit-4b", "out", ACT_OUT[a]))]
     done_ctl = {r["action"] for r in ctl_rows if r["action"] in CTL_OUT}
     missing_out += [a for a in done_ctl if not os.path.exists(p(*CTL_OUT[a].split("/")))]
-    want_acts = set(ACT_OUT) | done_ctl
+    done_exc = {r["action"] for r in exc_rows if r["action"] in EXC_OUT}
+    missing_out += [a for a in done_exc if not os.path.exists(p(*EXC_OUT[a].split("/")))]
+    want_acts = set(ACT_OUT) | done_ctl | done_exc
     qrow = next((r for r in proc_rows if r["action"] == "quote_compare"), {"detail": ""})
     crow = next((r for r in proc_rows if r["action"] == "change_request"), {"detail": ""})
     if f"total ${E['p.committed']:,}" not in qrow["detail"] or f"+${E['p.cr_delta']:,}" not in crow["detail"] or f"total ${E['p.cr_total']:,}" not in crow["detail"]:
@@ -638,16 +686,17 @@ def b2(E, info, page):
     table = [n for n in walk(root) if "data-log" in n.attrs and n.tag == "tr"]
     bad_t = 0
     for n in table:
-        rows = {"onb": onb_rows, "proc": proc_rows, "ctl": ctl_rows}.get(n.attrs["data-log"], [])
+        rows = {"onb": onb_rows, "proc": proc_rows, "ctl": ctl_rows, "exc": exc_rows}.get(n.attrs["data-log"], [])
         i = int(n.attrs.get("data-i", "0"))
         cells = [norm(text(c)) for c in n.kids if isinstance(c, Node) and c.tag == "td"]
         r = rows[i - 1] if 0 < i <= len(rows) else None
         if not r or cells[:5] != [norm(r["timestamp"]), r["actor"], r["vendor"], r["action"], norm(r["result"])]:
             bad_t += 1
-    chains = E.get("a.onb_links") == len(onb_rows) and E.get("a.proc_links") == len(proc_rows) and (not ctl_rows or E.get("a.ctl_links") == len(ctl_rows))
+    chains = (E.get("a.onb_links") == len(onb_rows) and E.get("a.proc_links") == len(proc_rows) and (not ctl_rows or E.get("a.ctl_links") == len(ctl_rows))
+              and (not exc_rows or E.get("a.exc_links") == len(exc_rows)))
     ok = not probs and not bad_status and not missing_out and len(table) == len(want) and not bad_t and chains and len(ev) > 0
     rec(ok, "B2 replay: one event per audit row, and replaying them ends at the records",
-        f"{len(ev)} events vs {len(onb_rows)} + {len(proc_rows)} + {len(ctl_rows)} log rows; own replay: vendor statuses wrong {bad_status}, "
+        f"{len(ev)} events vs {len(onb_rows)} + {len(proc_rows)} + {len(ctl_rows)} + {len(exc_rows)} log rows; own replay: vendor statuses wrong {bad_status}, "
         f"{len(done) + len(done_ctl)} of {len(want_acts)} activities and controls with output files (missing {missing_out}); rendered at the end: {len(rv_end)} vendors, "
         f"{len(ra_end)} activities done; at the start: {len(rv_0)} vendors all SUBMITTED, {len(ra_0)} done; log table {len(table)} rows, "
         f"{bad_t} differ; chains {E.get('a.onb_links')} of {len(onb_rows)} + {E.get('a.proc_links')} of {len(proc_rows)} links; {probs[:3]}")
@@ -715,8 +764,9 @@ def b4(sets, page):
         f"dashboard Map tab shows the same diagram: {bool(dg) and dg == dp}")
 
 
-# Length cap. Was 2:00 / 300 words; raised 11/8 when the author chose the longer, more-context script ("Keep 2:33").
-MAX_SECONDS, MAX_WORDS = 160, 330
+# Length cap. Was 2:00 / 300 words; raised 11/8 when the author chose the longer, more-context script ("Keep 2:33"),
+# then again the same day when he asked for full context in every scene ("it can be over 2 minutes that's fine").
+MAX_SECONDS, MAX_WORDS = 210, 450
 
 
 def b5(sets, page):
@@ -739,7 +789,7 @@ def b5(sets, page):
     first_ok = bool(rows) and rows[0][0].startswith("0:00") and "**Overview**" in rows[0][1] and times[0][-1] <= 10
     ok = (rows and len(words) <= MAX_WORDS and flat == sorted(flat) and flat and flat[-1] <= MAX_SECONDS and first_ok and not no_tab
           and not bad_paths and not bad_n and not bad_d and not bad_i and not over and re.search(r"\bdesign", t, re.I))
-    rec(ok, "B5 video script: 2:40 or less, one window, starts on the finished dashboard, numbers trace",
+    rec(ok, "B5 video script: 3:30 or less, one window, starts on the finished dashboard, numbers trace",
         f"{len(rows)} beats; {len(words)} spoken words (want {MAX_WORDS} or fewer): {len(words) / 150 * 60:.0f} s at 150 a minute, "
         f"{len(words) / 177 * 60:.0f} s at 177; last beat ends {flat[-1] if flat else '?'} s; first beat on the Overview tab within 10 s: {first_ok}; "
         f"beats naming no dashboard tab {no_tab}; paths missing {bad_paths}; {len(found)} numbers, untraced {bad_n}; dates {bad_d}; IDs {bad_i}; "
@@ -765,9 +815,11 @@ def b7(runs):
     want = {"p1": 8, "p2": 8, "p3a": 14}
     if runs.get("p3c", (None, None, 99))[2] != 99:
         want["p3c"] = 11
+    if runs.get("p3d", (None, None, 99))[2] != 99:
+        want["p3d"] = 12
     got = {k: runs[k][:3] for k in want}
     ok = all(got[k][0] == got[k][1] == want[k] and got[k][2] == 0 for k in want)
-    rec(ok, "B7 Phases 1, 2, 3a (and 3c, without its own older-phase step) still pass (their scans read the new files)",
+    rec(ok, "B7 Phases 1, 2, 3a (and 3c, 3d, without their own older-phase steps) still pass (their scans read the new files)",
         "; ".join(f"{k}: {got[k][0]} of {got[k][1]} (want {want[k]}), exit {got[k][2]}" for k in want)
         + ("" if ok else " | " + " | ".join(runs[k][3].replace("\n", " ")[-160:] for k in want if runs[k][2] != 0)))
 
