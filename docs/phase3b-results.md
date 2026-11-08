@@ -42,3 +42,5 @@ Record the video, watch it back, share the Drive link, add the diagram to Linked
 
 ## Not tested
 How the recorded video looks and sounds. The Snipping Tool, Clipchamp, Drive, and LinkedIn clicks (written from their usual menus, not clicked through). The PDFs were counted (1 page each) but not looked at as images. The trace check proves a spoken number appears somewhere in the records, not that it's the right one for that sentence. Small numbers are common in the records, so a wrong small number can trace by coincidence; the reviewer checks each claim against its record.
+
+**Update 11/6 (chat 14.0):** the name lookup is fixed going forward in `tools/project.py` ("Finance" now finds Finance (Controller), Tom Becker). The existing `match.md` keeps its "(?)": it is one of the 94 frozen records in `tests/frozen-3c.txt`, and rewriting it would mean editing a locked baseline, so the fix applies to the next run, the way a posted record gets a forward correction. All 5 checks after the fix: 8/8, 8/8, 14/14, 9/9, 11/11. Not committed or pushed.

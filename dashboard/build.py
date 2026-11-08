@@ -1,4 +1,4 @@
-"""Palmquay operations dashboard: one offline page built from the records in this folder (fictional company, fake data).
+"""Palmquay operations dashboard: one offline page built from the records in this folder (fictional company, sample records).
 
     python -I -X utf8 dashboard/build.py              write dashboard/index.html + dashboard/data.json (runs the 3 older checks live, ~4 s)
     python -I -X utf8 dashboard/build.py --out DIR    write to DIR instead (the Phase 3b check uses this to prove the build is read-only)
@@ -428,10 +428,48 @@ def tiles():
         f'<div class="tile"><div class="lab">{a}</div><div class="big">{b}</div><div class="small">{c}</div></div>' for a, b, c in t) + "</div>"
 
 
+# Org chart (added 11/8 at the author's ask): who works at Palmquay. Names and what each person approves come from company/people.md and the
+# furnishing request; job titles, departments, and colors are display choices. Blank profile icons only, never faces.
+ORG_ORDER = ["Property Manager", "Facilities Manager", "Procurement Lead", "Legal", "Finance"]
+ORG_TITLE = {"Property Manager": "Property Manager", "Facilities Manager": "Facilities Manager", "Procurement Lead": "Procurement Lead",
+             "Legal": "Legal Counsel", "Finance": "Controller"}
+ORG_DEPT = {"Property Manager": "Property management", "Facilities Manager": "Facilities", "Procurement Lead": "Procurement",
+            "Legal": "Legal", "Finance": "Finance"}
+ORG_COLORS = ["#1d6fa5", "#d9822b", "#2e8b57", "#7b4fb3", "#b83b5e"]
+approves = {re.sub(r"\s*\(.*?\)", "", r["Role"]).strip(): r["Approves"] for r in table_rows(read("company", "people.md"), "Role")}
+org_people = {**people, requester_role: requester_name}
+ORG = [(role, org_people[role], ORG_COLORS[i]) for i, role in enumerate(ORG_ORDER) if role in org_people]
+COLOR_OF = {name: color for _, name, color in ORG}
+company_line = re.search(r"manages (\d+) ([a-z ]+?) in ([A-Za-z ]+? counties)", read("CLAUDE.md"))
+ICON = ('<svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/>'
+        '<circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg>')
+
+
+def dot(name):
+    return f'<span class="dot" style="background:{COLOR_OF[name]}"></span> ' if name in COLOR_OF else ""
+
+
+def org_chart():
+    cards = []
+    for role, name, color in ORG:
+        does = (f"Asked for {E(unit)} to be furnished ({E(req['Budget'])} budget)" if role == requester_role
+                else "Approves: " + E(approves.get(role, "")))
+        cards.append(f'<div class="person" data-person="{E(name)}" style="--pc:{color}">{ICON}<div class="pname">{E(name)}</div>'
+                     f'<div class="title">{E(ORG_TITLE[role])}</div><div class="dept">{E(ORG_DEPT[role])}</div>'
+                     f'<div class="does">{does}</div></div><!-- /person -->')
+    where = (f"Manages {company_line.group(1)} {E(company_line.group(2))} in {E(company_line.group(3))}" if company_line else "")
+    return ('<h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, '
+            f'Florida. {where}. These five people do the work in this demo; each one keeps working in their own tools, and this board shows '
+            'what is waiting on whom. Each person keeps the same color everywhere on the page.</p>'
+            '<div class="org" data-org><div class="people">' + "".join(cards) + '</div>'
+            '<div class="helpers"><span class="helper">AI assistant: reads the papers and drafts the next step; never sends, signs, orders, or pays</span>'
+            '<span class="helper">Checker AI: a second AI, told to only read, reviews the work</span></div></div><!-- ORG END -->')
+
+
 def overview():
     rows = []
     for since, key, role, person, decision, options, suggest, rec_ in W:
-        rows.append(f'<tr data-w="{key}" data-owner="{E(role)}"><td class="nowrap">{since}</td><td>{E(person)}</td><td>{decision}</td>'
+        rows.append(f'<tr data-w="{key}" data-owner="{E(role)}"><td class="nowrap">{since}</td><td>{dot(person.split(",")[0])}{E(person)}</td><td>{decision}</td>'
                     f'<td class="muted">{E(options)}</td><td>{suggest}</td><td><code data-file="{rec_}">{E(rec_)}</code></td></tr>')
     waiting = ('<h2>Waiting on people</h2><p class="lead">Every decision the AI stopped for, oldest first. The AI suggests; the named person '
                'decides. Rules for what counts: <code>dashboard/README.md</code>. Onboarding runs as of the demo date '
@@ -454,10 +492,10 @@ def overview():
     for (half, c), g in grouped.items():
         prow.append(f"<tr><td>{half}</td><td>{code(c)}</td><td>{E(MEANING[c])}</td><td><code>{g['sk']}</code></td><td>{', '.join(g['places'])}</td>"
                     f'<td class="num">{k("ic." + c, by[c])}</td></tr>')
-    problems = ('<h2>Problems caught, by cause</h2><p class="lead">Each one was planted in the fake data on purpose, written into a locked answer '
+    problems = ('<h2>Problems caught, by cause</h2><p class="lead">Each one was planted in the sample data on purpose, written into a locked answer '
                 'key first, and caught by the step named here.</p><table data-audit><thead><tr><th>Half</th><th>Code</th><th>What it means</th>'
                 '<th>Caught by</th><th>Where</th><th class="num">Count</th></tr></thead><tbody>' + "".join(prow) + "</tbody></table>")
-    return waiting + problems
+    return org_chart() + waiting + problems
 
 
 def Counter_codes():
@@ -560,7 +598,7 @@ def screening():
     n_ex = sum(1 for v in sup.values() if v == "EXCLUDED")
     counts = {r: sum(1 for sc in screens.values() if sc["result"] == r) for r in ("CLEAR", "REVIEW", "EXCLUDED")}
     return ('<h2>Screening: conflict-of-interest disclosures and the exclusion list</h2><p class="lead">Copied from a real public-agency '
-            'procurement packet (structure only; all data here is fake). Every contractor signs a disclosure, and every name in its paperwork is '
+            'procurement packet (structure only; every record here is a fictional sample). Every contractor signs a disclosure, and every name in its paperwork is '
             'checked against a fictional exclusion list. Legal decides; the AI only flags.</p><table data-audit><thead><tr><th>Vendor</th>'
             '<th>Disclosure signed</th><th>Disclosed relationships</th><th>Exclusion matches</th><th>Screen</th><th>Who reviews</th></tr></thead><tbody>'
             + "".join(rows_) + '</tbody></table><table data-audit><tbody>'
@@ -581,7 +619,7 @@ def buying():
              '<span><i class="sw pending"></i>Pending change request</span><span><i class="sw line"></i>Budget</span></div>')
     head = (f'<h2>{E(req["Building"].replace(" (fictional)", ""))}, {ident(unit, True)}: furnishing project</h2>'
             f'<p class="lead">Requested by {E(requester_name)}, {E(requester_role)}, on {req["Request date"]}; install by {req["Install by"]}. '
-            f'A design partner wrote the furnishing plan; Palmquay buys. Scripted events in this fake project run to {tracking_asof}.</p>'
+            f'A design partner wrote the furnishing plan; Palmquay buys. Scripted events in this sample project run to {tracking_asof}.</p>'
             f'<div class="budget" data-audit><div class="bnums"><div><span class="lab">Committed</span> {k("p.committed", committed, True)}</div>'
             f'<div><span class="lab">Budget</span> {k("p.budget", budget, True)}</div><div><span class="lab">Left</span> {k("p.headroom", budget - committed, True)}</div>'
             f'<div><span class="lab">If change {ident("CR-001")} is approved</span> {k("p.cr_total", cr["new_total"], True)}, '
@@ -673,7 +711,7 @@ def controls_section():
                      f'<td class="num">{k(f"rq.{sku}.selected", dollars(po_l["Unit price"]), True)}</td><td>{code(flag) if flag else chip("OK", "ok")}</td>'
                      f'<td>{q(md_rel, line["Justification"])}</td></tr>')
     req_t = ('<h2>Controls from a real procurement packet</h2><p class="lead">The approval request, running totals, and close-out copy the '
-             'structure of a real public-agency packet; all data here is fake. Order PQ-1042 was approved before this checklist was added, so the '
+             'structure of a real public-agency packet; every record here is a fictional sample. Order PQ-1042 was approved before this checklist was added, so the '
              'request records what the checklist finds, for the file.</p>'
              f'<table data-audit><tbody><tr><td>Procurement type</td><td>{q(md_rel, areq["type"])}</td></tr>'
              f'<tr><td>Order total</td><td>{k("p.committed", areq["total"], True)}</td></tr>'
@@ -705,7 +743,7 @@ def controls_section():
 
 def checks():
     rows = []
-    what = {"p1": "The fake company, its rules, the vendors' planted problems, and the locked answer key",
+    what = {"p1": "The fictional company, its rules, the vendors' planted problems, and the locked answer key",
             "p2": "Onboarding: intake, follow-up drafts, approval packets, the checker, the audit log",
             "p3a": "Buying: all seven steps against their locked answer key, the procurement log, the checker",
             "p3c": "Controls from the real packet against their locked answer key (its check of the older phases runs separately)"}
@@ -787,7 +825,7 @@ CSS = """
 *{box-sizing:border-box}body{margin:0;font:14px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
 header{background:var(--surface);border-bottom:1px solid var(--line);padding:16px 24px 0;position:sticky;top:0;z-index:5}
 .top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}h1{font-size:19px;margin:0}
-.stamp{font-size:12px;color:var(--ink2)}.tiles{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:12px 0 4px}
+.stamp{font-size:12px;color:var(--ink2)}.org{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:6px}.people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.person{text-align:center;padding:10px 6px;border-radius:8px;border-top:4px solid var(--pc);background:var(--surface)}.avatar{width:52px;height:52px;display:block;margin:0 auto 6px}.pname{font-weight:600}.title{font-size:12.5px}.dept{font-size:11.5px;color:var(--ink2)}.does{font-size:11.5px;color:var(--ink2);margin-top:4px}.helpers{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.helper{font-size:12px;color:var(--ink2);border:1px dashed var(--line);border-radius:6px;padding:5px 9px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}.tiles{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:12px 0 4px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px}.tile .lab{font-size:12px;color:var(--ink2)}
 .tile .big{font-size:23px;font-weight:600;line-height:1.25;font-variant-numeric:tabular-nums}.tile .small{font-size:11.5px;color:var(--ink2)}
 nav{display:flex;gap:2px;margin-top:6px}nav button{border:0;background:none;padding:9px 14px;font:inherit;color:var(--ink2);border-bottom:2px solid transparent;cursor:pointer}
@@ -878,7 +916,7 @@ def page():
             '<title>Palmquay Properties: AI operations dashboard (fictional)</title>'
             f"<style>{CSS}</style></head>"
             '<body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1>'
-            f'<div class="stamp">Fictional company, fake data. Built {stamp} from the records in this folder in {{SECS}} s; '
+            f'<div class="stamp">Fictional company with sample records. Built {stamp} from those records; '
             f"a test recounts every number in its tiles and tables.</div></div>{head_tiles}<nav>{nav}</nav></header><main>{body}</main>"
             + data("replay-data", events) + data("replay-vendors", rvendors) + data("replay-acts", racts)
             + f"<script>{JS}</script></body></html>")

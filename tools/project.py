@@ -124,7 +124,12 @@ def approvers(amount):
 
 def people():
     t = open(os.path.join(ROOT, "company", "people.md"), encoding="utf-8").read()
-    return {r["Role"]: r["Name"] for r in rows(t, "Role")}
+    names = {}
+    for r in rows(t, "Role"):
+        names[r["Role"]] = r["Name"]
+        # 11/6 fix: rules say "Finance", people.md says "Finance (Controller)"; match on the part before " ("
+        names.setdefault(r["Role"].split(" (")[0].strip(), r["Name"])
+    return names
 
 
 def load_catalog(project):

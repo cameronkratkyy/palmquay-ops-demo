@@ -1,4 +1,4 @@
-# 2-minute video script: the Palmquay demo
+# 2-minute video script: the Palmquay demo (v6.4, 11/8: beat 2 points at the new org chart; adds "each keeps working in their own tools"; more context at his ask: who each contractor and supplier is, what it asked for, and what happened; about 2:39)
 
 *Fictional company, fake data. The demo happens in one window: `dashboard/index.html`, opened in Edge (Snipping Tool records it). Read the **Say** column out loud; the **On screen** column is what to click. The times assume about 150 words a minute, slower than normal talking, plus about 1.5 seconds for each click or scroll. If you run long, cut words, not clicks.*
 
@@ -11,23 +11,38 @@
 6. To finish, click the red **stop** button in Snipping Tool's recording bar. Then press **F11** in Edge to leave full screen.
 7. Do one practice run with a timer before the real one.
 
+## Who's who (say the names; they're on the dashboard)
+| Person (fictional) | Job at Palmquay | What they decide in this video |
+|---|---|---|
+| Dana Reyes | Facilities manager | First sign-off on every contractor; sends the follow-up emails; signs any change to an approved order |
+| Marcus Hale | Procurement lead | Signs off on work over $10,000 |
+| Priya Natarajan | Legal counsel | Signs off on work over $50,000 |
+| Tom Becker | Finance (controller) | Last sign-off on work over $50,000; decides which bills get paid |
+| Lena Ortiz | Property manager | Asked for Unit 4B to be furnished |
+
+**The story in one line:** a property company has two paperwork-heavy jobs (letting contractors work on its buildings, and buying furniture for its units); the AI does the reading, checking, and drafting, and four named people make every decision.
+
+**The paperwork, in plain words:** before a contractor can work on a Palmquay building it sends four papers: a **W-9** (the tax form), a **certificate of insurance** (proof it's insured), its **license**, and a **work request** (what job, which building, how much).
+
 ## The script
 | Time | On screen | Say |
 |---|---|---|
-| 0:00–0:07 | **Overview** tab. Let the tiles row sit, so the finished numbers are the first thing on screen. | This is an AI operations system I designed for a fictional Sarasota property company. |
-| 0:07–0:14 | **Overview** tab. Move the mouse down the "Waiting on people" table. | The AI does the paperwork. People approve, send, sign, and pay. |
-| 0:14–0:28 | **Onboarding** tab. Point at the Vendors table, scroll to "The record behind each vendor," open "Saltmarsh Roofing Co." and point at the "insurance end date" row. | Eight contractors sent paperwork. Saltmarsh Roofing's insurance expired, so intake blocked it, and here's the line it found. |
-| 0:28–0:36 | **Onboarding** tab, same section: scroll down to Saltmarsh's follow-up draft. Point at "DRAFT, not sent." | It drafted a follow-up, marked not sent. Dana, the facilities manager, sends it. |
-| 0:36–0:48 | **Onboarding** tab. Open "Skyquay Lift & Fire Inc." (last in the list) and scroll its packet to the sign-offs at the bottom. | A clean vendor gets an approval packet. This $120,000 job needs four signatures, in order, all blank. |
-| 0:48–1:14 | **Buying** tab. Point down the seven steps table: the /source row, then the /change row (it shows the $108 over budget). | Palmquay also buys furniture from approved suppliers, in seven steps, each with a planted problem. A sofa would have arrived 27 days late, so it found one that's on time. Then that one was backordered. The substitute puts the project $108 over budget, and the approved order can't change until Dana signs. |
-| 1:14–1:26 | **Buying** tab: scroll to "Invoices: three-way match" and point at the HOLD row. | It matches each invoice to the order and the delivery. This one bills $872 against $713, so it's held for Finance. |
-| 1:26–1:37 | **Checks** tab. Scroll to "The checker: a second AI" and point at its table. | A second AI, set up to only read, reviews the work. It flagged the mistakes we planted. |
-| 1:37–1:50 | **Audit log** tab. Click **Play** and let the board fill in (about 8 seconds). | Every action is one row in a hash-chained audit log, and the dashboard replays itself from it. |
-| 1:50–2:00 | **Overview** tab. | I designed the process, the rules, and the tests; Claude Code wrote the code. People approve every order and payment. |
+| 0:00–0:08 | **Overview** tab. Let the tiles row sit; the "Fictional company with sample records." note in the header stays on screen. | I built an AI system that helps property management companies handle contractor and purchasing paperwork, while people keep every approval. |
+| 0:08–0:32 | **Overview** tab. One slow sweep of the mouse across the five people cards under "Who works at Palmquay" (each has its own color). | To show it, I set up a fictional company: Palmquay Properties, a Sarasota company managing 14 buildings. Five employees handle this work: Lena, a property manager; Dana, the facilities manager; Marcus, the procurement lead; Priya, legal counsel; and Tom, the controller. Each keeps working in their own tools; this board shows what's waiting on whom. |
+| 0:32–0:49 | **Onboarding** tab. Point at the Vendors table. | Before a contractor can work on a Palmquay building, it sends four papers: a W-9 tax form, proof of insurance, a work request, and a license if its trade needs one. Eight contractors applied. |
+| 0:49–1:09 | **Onboarding** tab. Scroll to "The record behind each vendor," open "Saltmarsh Roofing Co." and point at the "insurance end date" row. | Take Saltmarsh Roofing, a Sarasota roofer. It asked for a $42,000 job re-coating the roof at Bayfront Commons, one of Palmquay's buildings, and sent all four papers. But its insurance had expired, so the AI marked it blocked. |
+| 1:09–1:19 | **Onboarding** tab, same section: scroll down to Saltmarsh's follow-up draft. Point at "DRAFT, not sent." | The AI drafted an email asking Saltmarsh for current insurance. It stays unsent until Dana reviews it. |
+| 1:19–1:38 | **Onboarding** tab. Open "Skyquay Lift & Fire Inc." (last in the list) and scroll its packet to the sign-offs at the bottom. | Skyquay Lift & Fire is the opposite: a $120,000 job modernizing two elevators at Bayfront Commons, with every paper in order. So the AI built its approval packet, with four sign-offs in order: Dana, Marcus, Priya, then Tom. |
+| 1:38–1:57 | **Buying** tab. Point at the /source row, then the /change row (it shows the $108 over budget). | Palmquay also furnishes apartments between tenants. Lena asked to furnish Unit 4B for $5,200. The sofa picked was backordered, and the replacement puts the project $108 over budget, so the change waits for Dana. |
+| 1:57–2:14 | **Buying** tab: scroll to "Invoices: three-way match" and point at the HOLD row. | Each bill is checked against its order and delivery. Supplier Keystone Coast Furniture billed three lamps, not two, at a higher price, so the bill is $872, not $713. It's held for Tom. |
+| 2:14–2:25 | **Checks** tab. Scroll to "The checker: a second AI" and point at its table. | A second AI, told to only read, caught the errors I planted to test it. |
+| 2:25–2:39 | **Overview** tab. | If your team chases paperwork, this is how it could work: AI reads and drafts; your people decide. I designed the process, rules, and tests; Claude Code wrote the code. |
+
+**Shorter cut (about 75-90 seconds, for a LinkedIn post):** beats 0:00-1:19, then 1:38-1:57, then the last beat.
 
 ## After you record
 1. After you click stop, Snipping Tool shows the video. Click **Save** (the floppy-disk icon). Name it `palmquay-demo.mp4` and save it to Videos.
-2. Watch it once with sound. Check: nothing personal on screen, every number readable, and it ends by 2:00. To trim the ends, open it in **Clipchamp** (already on this PC), drag the clip's edges, then **Export** at 1080p.
+2. Watch it once with sound. Check: nothing personal on screen, every number readable, and it ends by about 2:40. To trim the ends, open it in **Clipchamp** (already on this PC), drag the clip's edges, then **Export** at 1080p.
 3. Share it: drag the file into Google Drive, right-click it, **Share**, set General access to **Anyone with the link** (Viewer), then **Copy link**.
 4. LinkedIn: on your profile, **Add section** > **Recommended** > **Add featured** > **Add a link**, paste the Drive link, and title it "AI operations system: vendor onboarding and procurement (demo)". Add `docs/diagram.png` the same way with **Add media**.
 
