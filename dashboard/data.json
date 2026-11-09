@@ -1,5 +1,5 @@
 {
- "built": "2026-11-08T17:39:52",
+ "built": "2026-11-09T10:47:48",
  "facts": {
   "v.kestrelbay-air-heat.amount": 8500,
   "v.kestrelbay-air-heat.approvers": 1,
@@ -68,6 +68,11 @@
   "ic.LOWEST_NOT_SELECTED": 1,
   "ic.SINGLE_SOURCE": 2,
   "ic.CLAIM_CONTRADICTED": 1,
+  "w.role.property-manager": 1,
+  "w.role.facilities-manager": 15,
+  "w.role.procurement-lead": 1,
+  "w.role.legal": 2,
+  "w.role.finance": 2,
   "v.bayvane-plumbing.amount": 19750,
   "v.bayvane-plumbing.issues": 1,
   "v.bayvane-plumbing.approvers": 2,

@@ -1,0 +1,133 @@
+{
+  "_note": "Phase 3e answer key, written 11/9/2026 before tools/certs.py existed. 'certificate' = what each PDF says: the typed record's values (vendors/<slug>/documents/coi.md) with the one planted change made by tools/make_certs.py. 'flags' = every field where the record differs from the certificate. The certificate is the source; a person fixes the record. Nothing is sent.",
+  "certificates": {
+    "bayvane-plumbing": {
+      "Insured": "Bayvane Plumbing Inc.",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "Palmquay Properties",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0006",
+      "General liability per occurrence": "$1,000,000",
+      "General liability aggregate": "$2,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "None",
+      "Policy start": "2026-03-01",
+      "Policy end": "2027-03-01"
+    },
+    "brightcurrent-electric": {
+      "Insured": "Brightcurrent Electric Inc.",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "Palmquay Properties",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0003",
+      "General liability per occurrence": "$500,000",
+      "General liability aggregate": "$1,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "None",
+      "Policy start": "2026-03-01",
+      "Policy end": "2027-03-01"
+    },
+    "clearsail-janitorial": {
+      "Insured": "Clearsail Janitorial Services LLC",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "None listed",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0005",
+      "General liability per occurrence": "$1,000,000",
+      "General liability aggregate": "$2,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "None",
+      "Policy start": "2026-03-01",
+      "Policy end": "2027-03-01"
+    },
+    "fernhollow-grounds": {
+      "Insured": "Fernhollow Grounds LLC",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "Palmquay Properties",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0040",
+      "General liability per occurrence": "$1,000,000",
+      "General liability aggregate": "$2,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "None",
+      "Policy start": "2026-03-01",
+      "Policy end": "2027-03-01"
+    },
+    "gulfpine-pest": {
+      "Insured": "Gulfpine Pest Solutions LLC",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "Palmquay Properties",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0007",
+      "General liability per occurrence": "$1,000,000",
+      "General liability aggregate": "$2,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "None",
+      "Policy start": "2026-03-01",
+      "Policy end": "2027-03-01"
+    },
+    "kestrelbay-air-heat": {
+      "Insured": "Kestrelbay Air & Heat LLC",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "Palmquay Properties",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0001",
+      "General liability per occurrence": "$1,000,000",
+      "General liability aggregate": "$2,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "None",
+      "Policy start": "2026-03-01",
+      "Policy end": "2027-03-01"
+    },
+    "saltmarsh-roofing": {
+      "Insured": "Saltmarsh Roofing Co.",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "Palmquay Properties",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0002",
+      "General liability per occurrence": "$1,000,000",
+      "General liability aggregate": "$2,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "$5,000,000",
+      "Policy start": "2025-10-01",
+      "Policy end": "2026-09-30"
+    },
+    "skyquay-lift-fire": {
+      "Insured": "Skyquay Lift & Fire Inc.",
+      "Certificate holder": "Palmquay Properties",
+      "Additional insured": "Palmquay Properties",
+      "Insurer": "Demo Mutual Insurance Co. (fictional)",
+      "Policy number": "DEMO-GL-0008",
+      "General liability per occurrence": "$1,000,000",
+      "General liability aggregate": "$2,000,000",
+      "Auto liability": "$1,000,000",
+      "Workers' comp": "Statutory",
+      "Umbrella": "$5,000,000",
+      "Policy start": "2026-03-01",
+      "Policy end": "2027-03-01"
+    }
+  },
+  "flags": {
+    "bayvane-plumbing": [],
+    "brightcurrent-electric": [],
+    "clearsail-janitorial": [],
+    "fernhollow-grounds": [
+      {
+        "field": "Policy number",
+        "certificate": "DEMO-GL-0040",
+        "record": "DEMO-GL-0004"
+      }
+    ],
+    "gulfpine-pest": [],
+    "kestrelbay-air-heat": [],
+    "saltmarsh-roofing": [],
+    "skyquay-lift-fire": []
+  }
+}

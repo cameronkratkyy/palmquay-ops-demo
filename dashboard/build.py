@@ -485,21 +485,52 @@ def dot(name):
     return f'<span class="dot" style="background:{COLOR_OF[name]}"></span> ' if name in COLOR_OF else ""
 
 
+# The department hub (11/9, at the author's ask after an "AI Agent One" reel: a company drawn as a hub, each department with its owner and its
+# AI helpers). Each waiting decision maps to the skill whose output created it (from each skill's SKILL.md "It writes ..." line).
+SKILL_OF = {"send_followup": "/chase", "sign_packet": "/route", "review_disclosure": "/screen", "review_exclusion": "/screen",
+            "answer_scope": "/scope", "approve_change": "/change", "send_update": "/deliver", "task": "/deliver",
+            "decide_invoice": "/match", "approve_payment": "/match", "justify_line": "/request", "certify_request": "/request",
+            "send_reply": "/closeout", "send_credit": "/credit"}
+role_slug = lambda r: re.sub(r"[^a-z0-9]+", "-", r.lower()).strip("-")
+
+
+def hub_load():
+    """per owner role: how many decisions wait on them, and which skills put them there (a changed packet counts as /revise)"""
+    n, sk = {}, {}
+    for since, key, role, person, decision, options, suggest, rec_ in W:
+        n[role] = n.get(role, 0) + 1
+        kind, what = key.split(":", 1)
+        s = SKILL_OF[kind]
+        if kind == "sign_packet" and os.path.exists(os.path.join(ROOT, "vendors", what, "packet-v2.md")):
+            s = "/revise"
+        sk.setdefault(role, set()).add(s)
+    return n, sk
+
+
 def org_chart():
+    n_by, sk_by = hub_load()
     cards = []
     for role, name, color in ORG:
         does = (f"Asked for {E(unit)} to be furnished ({E(req['Budget'])} budget)" if role == requester_role
                 else "Approves: " + E(approves.get(role, "")))
+        uses = " ".join(f"<code>{s}</code>" for s in sorted(sk_by.get(role, ())))
         cards.append(f'<div class="person" data-person="{E(name)}" style="--pc:{color}">{ICON}<div class="pname">{E(name)}</div>'
                      f'<div class="title">{E(ORG_TITLE[role])}</div><div class="dept">{E(ORG_DEPT[role])}</div>'
-                     f'<div class="does">{does}</div></div><!-- /person -->')
+                     f'<div class="does">{does}</div>'
+                     f'<div class="uses">AI helpers: {uses or "none"}</div>'
+                     f'<div class="wait">Waiting on {E(name.split()[0])}: {k("w.role." + role_slug(role), n_by.get(role, 0))}</div></div><!-- /person -->')
     where = (f"Manages {company_line.group(1)} {E(company_line.group(2))} in {E(company_line.group(3))}" if company_line else "")
+    spokes = "".join(f'<line x1="50" y1="50" x2="{x}" y2="{y}"/>' for x, y in ((16.7, 14), (50, 14), (83.3, 14), (16.7, 86), (83.3, 86)))
     return ('<h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, '
-            f'Florida. {where}. These five people do the work in this demo; each one keeps working in their own tools, and this board shows '
-            'what is waiting on whom. Each person keeps the same color everywhere on the page.</p>'
-            '<div class="org" data-org><div class="people">' + "".join(cards) + '</div>'
-            '<div class="helpers"><span class="helper">AI assistant: reads the papers and drafts the next step; never sends, signs, orders, or pays</span>'
-            '<span class="helper">Checker AI: a second AI, told to only read, reviews the work</span></div></div><!-- ORG END -->')
+            f'Florida. {where}. Each department has one owner and the AI helpers whose work lands on them: '
+            'the AI drafts and checks, and the person decides.</p>'
+            '<div class="org" data-org data-hub><div class="people">' + "".join(cards)
+            + '<div class="core"><b>Palmquay Properties</b><span>Contractor approvals and furniture buying</span>'
+            f'<span>{k("w.total", len(W))} decisions waiting on people</span></div>'
+            '<div class="helper ai">AI assistant: reads the papers and drafts the next step; never sends, signs, orders, or pays</div>'
+            '<div class="helper chk">Checker AI: a second AI, told to only read, reviews the work</div>'
+            f'<svg class="spokes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{spokes}</svg>'
+            '</div></div><!-- ORG END -->')
 
 
 def overview():
@@ -616,7 +647,30 @@ def onboarding():
         parts = ["what intake checked"] + (["the follow-up draft"] if v["drafts"] else []) + (["the approval packet"] if v["packet"] else []) \
             + (["the change during sign-off"] if s in revisions else [])
         ev.append(details(f'{chip(it["status"])} <b>{E(it["legal_name"])}</b> <span class="muted">{", ".join(parts)}</span>', body))
-    return vt + xt + screening() + revisions_section() + "<h2>The record behind each vendor</h2>" + "".join(ev)
+    return vt + xt + screening() + revisions_section() + certificates_section() + "<h2>The record behind each vendor</h2>" + "".join(ev)
+
+
+def certificates_section():
+    """Phase 3e (11/9): each certificate PDF read by /certs and checked against the typed copy. No digits in the table (nothing to recount)."""
+    checks = sorted(glob.glob(os.path.join(ROOT, "vendors", "*", "documents", "coi-check.json")))
+    if not checks:
+        return ""
+    rows_ = []
+    for f in checks:
+        c = json.load(open(f, encoding="utf-8"))
+        s = c["vendor"]
+        if c["result"] == "match":
+            res = chip("OK", "matches the typed record")
+        else:
+            res = chip("FAIL", "differs") + " " + "; ".join(
+                f"{E(d['field'].lower())} on the certificate doesn't match the typed record" for d in c["differences"]) + "; the Facilities Manager fixes the record"
+        rows_.append(f'<tr data-cert="{s}" data-result="{c["result"]}"><td>{E(V[s]["intake"]["legal_name"])}</td>'
+                     f'<td><code data-file="{c["pdf"]}">{E(c["pdf"])}</code></td><td>{res}</td></tr>')
+    return ('<h2>Insurance certificates, read from the PDF</h2><p class="lead">Until now intake read a typed copy of each certificate. '
+            'Here the AI opens the certificate PDF itself, reads every field, and checks the typed copy against it. The certificate is the '
+            'source: where they differ, a person fixes the record. The AI changes nothing and sends nothing. Summary: '
+            '<code>docs/certificates.md</code>.</p><table data-audit><thead><tr><th>Vendor</th><th>Certificate PDF</th><th>Result</th></tr></thead>'
+            '<tbody>' + "".join(rows_) + "</tbody></table>")
 
 
 def revisions_section():
@@ -914,7 +968,7 @@ CSS = """
 *{box-sizing:border-box}body{margin:0;font:14px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
 header{background:var(--surface);border-bottom:1px solid var(--line);padding:16px 24px 0;position:sticky;top:0;z-index:5}
 .top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}h1{font-size:19px;margin:0}
-.stamp{font-size:12px;color:var(--ink2)}.org{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:6px}.people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.person{text-align:center;padding:10px 6px;border-radius:8px;border-top:4px solid var(--pc);background:var(--surface)}.avatar{width:52px;height:52px;display:block;margin:0 auto 6px}.pname{font-weight:600}.title{font-size:12.5px}.dept{font-size:11.5px;color:var(--ink2)}.does{font-size:11.5px;color:var(--ink2);margin-top:4px}.helpers{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.helper{font-size:12px;color:var(--ink2);border:1px dashed var(--line);border-radius:6px;padding:5px 9px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}.tiles{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:12px 0 4px}
+.stamp{font-size:12px;color:var(--ink2)}.org{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:6px}.people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.person{text-align:center;padding:10px 6px;border-radius:8px;border-top:4px solid var(--pc);background:var(--surface)}.avatar{width:52px;height:52px;display:block;margin:0 auto 6px}.pname{font-weight:600}.title{font-size:12.5px}.dept{font-size:11.5px;color:var(--ink2)}.does{font-size:11.5px;color:var(--ink2);margin-top:4px}.helpers{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.helper{font-size:12px;color:var(--ink2);border:1px dashed var(--line);border-radius:6px;padding:5px 9px}.org[data-hub] .people{position:relative;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"a b c" "ai core chk" "d . e";gap:10px 56px}.org[data-hub] .person{position:relative;z-index:1;padding:6px 6px 7px}.org[data-hub] .title,.org[data-hub] .dept{display:inline}.org[data-hub] .dept::before{content:" · "}.org[data-hub] .person:nth-child(1){grid-area:a}.org[data-hub] .person:nth-child(2){grid-area:b}.org[data-hub] .person:nth-child(3){grid-area:c}.org[data-hub] .person:nth-child(4){grid-area:d}.org[data-hub] .person:nth-child(5){grid-area:e}.org[data-hub] .avatar{width:34px;height:34px;margin-bottom:2px}.org[data-hub] .core{grid-area:core;z-index:1;justify-self:center;align-self:center;display:flex;flex-direction:column;justify-content:center;gap:3px;width:128px;height:128px;padding:10px;border-radius:50%;background:var(--accent);color:#fff;text-align:center;font-size:11.5px;line-height:1.3}.org[data-hub] .core b{font-size:13px}.org[data-hub] .helper{z-index:1;align-self:center;background:var(--card);font-size:11.5px;max-width:240px}.org[data-hub] .ai{grid-area:ai;justify-self:end}.org[data-hub] .chk{grid-area:chk;justify-self:start}.spokes{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}.spokes line{stroke:#9fb4c6;stroke-width:2;stroke-dasharray:5 5;vector-effect:non-scaling-stroke}.uses{font-size:11px;color:var(--ink2);margin-top:4px}.uses code{font-size:10.5px;padding:0 3px}.wait{font-size:11.5px;font-weight:600;margin-top:3px}@media (max-width:760px){.org[data-hub] .people{display:flex;flex-direction:column}.spokes{display:none}.org[data-hub] .core{width:auto;height:auto;border-radius:8px}}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}.tiles{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:12px 0 4px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px}.tile .lab{font-size:12px;color:var(--ink2)}
 .tile .big{font-size:23px;font-weight:600;line-height:1.25;font-variant-numeric:tabular-nums}.tile .small{font-size:11.5px;color:var(--ink2)}
 nav{display:flex;gap:2px;margin-top:6px}nav button{border:0;background:none;padding:9px 14px;font:inherit;color:var(--ink2);border-bottom:2px solid transparent;cursor:pointer}
@@ -1006,7 +1060,8 @@ def page():
             f"<style>{CSS}</style></head>"
             '<body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1>'
             f'<div class="stamp">Fictional company with sample records. Built {stamp} from those records; '
-            f"a test recounts every number in its tiles and tables.</div></div>{head_tiles}<nav>{nav}</nav></header><main>{body}</main>"
+            f'a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div></div>'
+            f"{head_tiles}<nav>{nav}</nav></header><main>{body}</main>"
             + data("replay-data", events) + data("replay-vendors", rvendors) + data("replay-acts", racts)
             + f"<script>{JS}</script></body></html>")
 

@@ -5,3 +5,5 @@
 eb44aab504ef2f070d4f6489212304e6c80d7666408d82ce88ae333b52a3851f  tests/frozen-3c.txt  locked 2026-11-06 10:12: hashes of 94 Phase 1-3a records that Phase 3c may not change
 9f2beb76312884c3978c7db413475ab15a22e70b75e7cdddaaf4985ba603eaf9  answer-key-3d.json  locked 2026-11-08 17:19 before any Phase 3d helper or skill existed
 a9aedeb40b20e77b3ac44069a3fc01c83a840c1cc54b88b253c9e80b653ff07c  tests/frozen-3d.txt  locked 2026-11-08 17:19: hashes of 154 records Phase 3d may not change
+a30fc9f7e7a03ad5724988427422a710c6132f083e06c39ea922af61c2ee24d5  answer-key-3e.json  locked 2026-11-09 10:41 before any Phase 3e reader or skill existed
+5064dddeae797ff7ff93567c3cba5c949be31f336c637ffd82744530681b36dc  tests/frozen-3e.txt  locked 2026-11-09 10:41: hashes of 164 records Phase 3e may not change

@@ -1,0 +1,27 @@
+{
+  "vendor": "clearsail-janitorial",
+  "pdf": "vendors/clearsail-janitorial/documents/coi.pdf",
+  "record": "vendors/clearsail-janitorial/documents/coi.md",
+  "fields_read": {
+    "Insured": "Clearsail Janitorial Services LLC",
+    "Certificate holder": "Palmquay Properties",
+    "Additional insured": "None listed",
+    "Insurer": "Demo Mutual Insurance Co. (fictional)",
+    "Policy number": "DEMO-GL-0005",
+    "General liability per occurrence": "$1,000,000",
+    "General liability aggregate": "$2,000,000",
+    "Auto liability": "$1,000,000",
+    "Workers' comp": "Statutory",
+    "Umbrella": "None",
+    "Policy start": "2026-03-01",
+    "Policy end": "2027-03-01"
+  },
+  "differences": [],
+  "result": "match",
+  "next_step": "None.",
+  "run": {
+    "by": "onboarding-assistant",
+    "tool": "tools/certs.py check",
+    "at": "2026-11-09T10:44:06"
+  }
+}

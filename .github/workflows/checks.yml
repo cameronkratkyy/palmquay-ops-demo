@@ -1,0 +1,51 @@
+# Re-run every acceptance check on each push, on a clean Windows machine (fictional company, sample records).
+# The checks run in copy mode (--copy): the one check that needs the author's own machine (Phase 1 C1) is told it runs on a copy.
+name: checks
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: File times from commit history
+        run: python -I -X utf8 tools/ci_file_times.py
+      - name: A standard PDF tool for Phase 3e (Git for Windows' pdftotext, or Poppler from Chocolatey)
+        shell: pwsh
+        run: |
+          $git = "C:\Program Files\Git\mingw64\bin\pdftotext.exe"
+          if (Test-Path $git) { Split-Path $git | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8; "pdftotext: $git" }
+          else { choco install poppler -y --no-progress; "pdftotext: " + (Get-Command pdftotext).Source }
+          exit 0
+      - name: Phase 1 (vendor intake answer key)
+        run: python -I -X utf8 tests/check_phase1.py --copy
+      - name: Phase 2 (skills, checker, audit log)
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_phase2.py --copy
+      - name: Phase 3a (buying workflow)
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_phase3a.py --copy
+      - name: Phase 3b (dashboard, diagram, script, explainer)
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_phase3b.py --copy
+      - name: Phase 3c (procurement controls)
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_phase3c.py --copy
+      - name: Phase 3d (real-world exceptions)
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_phase3d.py --copy
+      - name: Phase 3e (certificate PDFs)
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_phase3e.py
+      - name: Org chart and wording
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_orgchart.py

@@ -291,7 +291,13 @@ def main():
             dns[:] = [d for d in dns if d != "__pycache__"]
             now += [os.path.relpath(os.path.join(dp, x), ROOT).replace("\\", "/") for x in fs]
     added = sorted(set(now) - frozen_set)
-    extra = [a for a in added if a not in EXPECTED_NEW]
+    # 11/9: Phase 3e adds files after 3d. They're accepted only when 3e's own locked list names them (its hash must match LOCK.txt)
+    # or they're 3e's stated outputs; tests/check_phase3e.py verifies those files. Any other new file still fails here.
+    later = set()
+    if os.path.exists(p("tests", "frozen-3e.txt")) and locked.get("tests/frozen-3e.txt") == sha("tests/frozen-3e.txt"):
+        later = {ln.split()[1] for ln in read("tests/frozen-3e.txt").splitlines() if ln and not ln.startswith("#")}
+    later_out = re.compile(r"^(vendors/[a-z-]+/documents/coi-check\.json|audit/documents-log\.(csv|chain\.txt))$")
+    extra = [a for a in added if a not in EXPECTED_NEW and a not in later and not later_out.match(a)]
     absent = [e for e in EXPECTED_NEW if e not in added]
     rec(frozen and not changed and not extra and not absent, "D4 0 earlier records changed; the only new record files are the expected outputs",
         f"{len(frozen)} frozen, changed {len(changed)} {changed[:3]}; new {len(added)}, unexpected {extra[:3]}, expected but missing {absent[:3]}")
