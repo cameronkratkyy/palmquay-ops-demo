@@ -1,4 +1,4 @@
-# Video script: the Palmquay demo (v8, 11/8: two real-world exceptions added, a change during sign-off and a shipping credit for a late delivery; sofa scene reworded; the close names tariff charges and damaged deliveries; 3:30)
+# Video script: the Palmquay demo (v8.1, 11/8: the close now says the work is counted first and shown before and after; v8: two real-world exceptions added, a change during sign-off and a shipping credit for a late delivery; sofa scene reworded; the close names tariff charges and damaged deliveries; 3:30)
 
 *Fictional company, sample records. The demo happens in one window: `dashboard/index.html`, opened in Edge (Snipping Tool records it). Read the **Say** column out loud; the **On screen** column is what to click. The times assume about 150 words a minute, slower than normal talking, plus about 1.5 seconds for each click or scroll. If you run long, cut words, not clicks.*
 
@@ -37,8 +37,8 @@
 | 1:51–2:18 | **Buying** tab. Point at the /change row (it shows the $108 over budget). | Lena asked for Unit 4B's living room and bedroom, furnished for $5,200 by November 20, and Dana approved the order. Then the sofa was backordered past move-in; the supplier suggested a replacement that arrives in time but puts the project $108 over budget, so the AI wrote a change request, and the order stays as is until Dana signs. |
 | 2:18–2:33 | **Buying** tab: scroll to "Shipping credit for a late delivery" and point at its row. | Another item, the bed frame from supplier Gulfweave Furnishings, will arrive a week late, so the AI drafted Dana a request asking Gulfweave to credit half its $185 shipping charge. |
 | 2:33–2:54 | **Buying** tab: scroll to "Invoices: three-way match" and point at the HOLD row. | Each bill is checked against the order and the delivery. Supplier Keystone Coast Furniture billed three lamps, not two, at a higher price, so its bill is $872, not $713. The AI holds it and shows Tom the line; Tom decides what gets paid. |
-| 2:54–3:11 | **Checks** tab. Scroll to "The checker: a second AI" so its table shows; then click **Audit log** and **Play**. | A second AI, told to only read, caught the errors I planted to test it. And every step is written to a log you can replay. |
-| 3:11–3:30 | **Overview** tab. | If your team chases paperwork, this could streamline it and help the work move faster, and we'd tailor it to fit your workflow, including cases like tariff charges or damaged deliveries. I designed the process, rules, and tests; Claude Code wrote the code. |
+| 2:54–3:10 | **Checks** tab. Scroll to "The checker: a second AI" so its table shows; then click **Audit log** and **Play**. | A second AI, told to only read, caught the errors I planted. And every step is written to a log you can replay. |
+| 3:10–3:30 | **Overview** tab. | If your team chases paperwork, I'd count every step first, cut and automate what slows it down, and show you the before and after. Tailored to your workflow, including tariff charges or damaged deliveries. I designed the process, rules, and tests; Claude Code wrote the code. |
 
 **Shorter cut (about 2 minutes):** beats 0:00-1:11, then 1:51-2:18, then the last beat.
 
