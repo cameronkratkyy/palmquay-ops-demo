@@ -1,5 +1,7 @@
 # Palmquay: an AI operations system that does the paperwork and stops for a person
 
+[![checks](../../actions/workflows/checks.yml/badge.svg)](../../actions/workflows/checks.yml)
+
 **An AI that reads contractor and purchasing paperwork, catches what's wrong, drafts the next step, and leaves every signature, email, and payment to a named person.** It runs a fictional property company's contractor approvals and furniture buying, end to end, on sample records.
 
 - **Watch the walkthrough (3½ minutes):** [`video/palmquay-demo.mp4`](video/palmquay-demo.mp4), or the "Watch the walkthrough" link at the top of the live dashboard.
@@ -141,7 +143,7 @@ Run the Phase 3e check: `python -I -X utf8 tests/check_phase3e.py` (add `--selft
 | `tools/make_certs.py` | Test cases made before trusting a skill | Synthetic documents, test fixtures | Real PDFs made from the sample records, with one planted keying error, locked before the reader existed | Designed and directed synthetic PDF test documents with a planted data-entry error |
 | `tests/check_phase3e.py` | The regression check run after every change | Acceptance test, test-first, independent verification | Written before the reader; a standard PDF tool reads the same 96 values, and `--selftest` proves 4 planted breaks are caught | Designed and directed a test-first check that verifies an AI's PDF reading against an independent tool |
 | `audit/documents-log.csv` | The append-only run log | Audit trail, hash chain | The certificate check in its own tamper-evident log | Designed and directed an append-only, hash-chained log for document verification |
-| `.github/workflows/checks.yml` | The private system's rule: run the checks after every change | Continuous integration (CI) | Every push to GitHub re-runs every check on a clean Windows machine | Designed and directed continuous integration that re-runs every acceptance check on each push |
+| `.github/workflows/checks.yml` | The private system's rule: run the checks after every change | Continuous integration (CI) | Every push to GitHub re-runs every check on a clean Windows machine; the badge at the top shows the latest result | Designed and directed continuous integration that re-runs every acceptance check on each push |
 
 ## Run the check
 ```
