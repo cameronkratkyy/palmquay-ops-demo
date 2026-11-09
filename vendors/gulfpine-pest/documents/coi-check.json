@@ -1,0 +1,27 @@
+{
+  "vendor": "gulfpine-pest",
+  "pdf": "vendors/gulfpine-pest/documents/coi.pdf",
+  "record": "vendors/gulfpine-pest/documents/coi.md",
+  "fields_read": {
+    "Insured": "Gulfpine Pest Solutions LLC",
+    "Certificate holder": "Palmquay Properties",
+    "Additional insured": "Palmquay Properties",
+    "Insurer": "Demo Mutual Insurance Co. (fictional)",
+    "Policy number": "DEMO-GL-0007",
+    "General liability per occurrence": "$1,000,000",
+    "General liability aggregate": "$2,000,000",
+    "Auto liability": "$1,000,000",
+    "Workers' comp": "Statutory",
+    "Umbrella": "None",
+    "Policy start": "2026-03-01",
+    "Policy end": "2027-03-01"
+  },
+  "differences": [],
+  "result": "match",
+  "next_step": "None.",
+  "run": {
+    "by": "onboarding-assistant",
+    "tool": "tools/certs.py check",
+    "at": "2026-11-09T10:44:06"
+  }
+}

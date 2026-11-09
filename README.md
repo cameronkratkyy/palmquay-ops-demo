@@ -1,8 +1,14 @@
-# Vendor onboarding demo: an AI operations system for a fictional company
+# Palmquay: an AI operations system that does the paperwork and stops for a person
+
+**An AI that reads contractor and purchasing paperwork, catches what's wrong, drafts the next step, and leaves every signature, email, and payment to a named person.** It runs a fictional property company's contractor approvals and furniture buying, end to end, on sample records.
+
+- **Watch the walkthrough (3½ minutes):** [`video/palmquay-demo.mp4`](video/palmquay-demo.mp4), or the "Watch the walkthrough" link at the top of the live dashboard.
+- **Open the live dashboard:** the website link in this repo's About box. It's a static page built from the sample records; nothing loads from outside.
+- **Proof, not promises:** 79 pass/fail checks recount every result from the records and run again on every push, and a second AI, told to only read, reviews the work (it caught every error planted for it).
 
 *Designed and directed by this repo's owner; the code was written with Claude Code. No real names appear in these files on purpose (privacy check C6).*
 
-**Palmquay Properties is fictional.** It's a Sarasota company that manages 14 buildings and brings on contractors (HVAC, roofing, electrical, and more). Every company, person, policy, license, and tax ID here is fake. Email addresses use `.example`, a reserved domain that can't receive mail.
+**Palmquay Properties is fictional.** It's a Sarasota company that manages 14 buildings, rents some of its apartments furnished (so its facilities team also buys furniture, as in Unit 4B), and brings on contractors (HVAC, roofing, electrical, and more). Every company, person, policy, license, and tax ID here is a made-up sample. Email addresses use `.example`, a reserved domain that can't receive mail.
 
 **The pitch:** an AI operations system that runs vendor onboarding. It reads the paperwork, finds what's missing, drafts the follow-ups, builds the approval packet, checks its own work, and keeps an audit trail. A person approves and sends everything.
 
@@ -11,12 +17,13 @@ It copies the shape of the author's own working AI operations system (a private 
 ## Status
 | Phase | What | State |
 |---|---|---|
-| 1 | Company rules, folders, 8 fake vendors with planted problems, locked answer key, pass/fail check | Built 11/5/2026 |
+| 1 | Company rules, folders, 8 sample vendors with planted problems, locked answer key, pass/fail check | Built 11/5/2026 |
 | 2 | Skills (`/intake` `/chase` `/route` `/status`), compliance checker, audit log; 1 vendor end to end, then all 8 | Built 11/5/2026 (results: `docs/phase2-results.md`) |
 | 3a | Buying for a furnishing project: scope, suppliers, quotes, product approval, change control, deliveries, invoices (7 skills, 13 problems planted across the 7 steps, a separate procurement log) | Built 11/5/2026 (results: `docs/phase3a-results.md`) |
 | 3b | Dashboard, one-page diagram, 3-minute video script, plain-English explainer (covering onboarding and buying) | Built 11/6/2026 (results: `docs/phase3b-results.md`) |
 | 3c | Controls copied from a real public-agency procurement packet: conflict-of-interest disclosures, an exclusion check, quotes required by dollar size, the approval request with funding and a certification, running totals and a two-signature close-out | Built 11/6/2026 (results: `docs/phase3c-results.md`) |
 | 3d | Real-world exceptions a firm will ask about: a signer asks for a change after others signed (the packet restarts from the first approver), and a delivery a week past its promised date (a shipping-credit request drafted for a person) | Built 11/8/2026 (results: `docs/phase3d-results.md`) |
+| 3e | The AI reads each insurance certificate PDF itself and checks the typed copy against it: 8 real PDFs, 12 fields each, one planted keying error (a transposed policy number) caught, no false alarms. The dashboard's Overview is now a department hub: each owner, the AI helpers whose work lands on them, and what waits on them | Built 11/9/2026 (check: `tests/check_phase3e.py`) |
 
 **How it was made:** the author designed and directed this system. An AI coding assistant (Claude Code) wrote the files to that design, and every result is checked by the pass/fail scripts below, not taken on trust.
 
@@ -67,6 +74,17 @@ Firms ask "what happens if...?". This phase adds two things that happen after th
 
 Run the Phase 3d check: `python -I -X utf8 tests/check_phase3d.py` (add `--selftest` to prove it can fail).
 
+## Phase 3e: reading the real document
+Until now, intake read a typed copy of each contractor's insurance certificate (`documents/coi.md`). In real offices someone keys the certificate into a system, and keying makes mistakes. Phase 3e gives the AI the certificate PDF itself (`documents/coi.pdf`, 8 of them, made by `tools/make_certs.py` and locked with a hand-written answer key before the reader existed). `/certs` reads every field from each PDF and checks the typed copy against it. **The certificate is the source:** where they differ, the Facilities Manager fixes the record; the AI changes nothing and sends nothing.
+
+| Planted problem | What a real team calls it | What the system must do |
+|---|---|---|
+| Fernhollow's typed record says policy DEMO-GL-0004; its certificate says DEMO-GL-0040 (a transposed digit) | Data-entry error, vendor master data quality, document verification | Read all 96 fields from the 8 PDFs; flag exactly that one difference and nothing else; write one result per contractor, a summary a person reads (`docs/certificates.md`), and one row in its own hash-chained log (`audit/documents-log.csv`) |
+
+**Limits, plainly:** the reader uses Python's standard library only. It reads text PDFs with standard fonts (like these). It does not do OCR, and it doesn't yet map the embedded subset fonts that browser- and Word-made PDFs often use. Such a file comes back unreadable and goes to a person, never a pass. On 11/9 a browser-made PDF was tried and came back unreadable, as designed.
+
+Run the Phase 3e check: `python -I -X utf8 tests/check_phase3e.py` (add `--selftest` to prove it can fail). Its E2 has a standard PDF tool (`pdftotext`, from Xpdf or Poppler) read the same 96 values, so the reader is checked against something it didn't write.
+
 ## How each piece maps (for interviews)
 | Piece | Original in the private system | Industry term | What it shows a hiring manager | Resume line |
 |---|---|---|---|---|
@@ -105,11 +123,11 @@ Run the Phase 3d check: `python -I -X utf8 tests/check_phase3d.py` (add `--selft
 | `docs/explainer.md` + `docs/explainer.pdf` | The private system's interview notes | Talk track, one-pager | Each step said twice: plain English, then the industry term | Designed and directed a one-page explainer that maps each AI step to its industry term |
 | `tools/render.py` | Screenshots made with the browser already on the PC, no install | Headless rendering | The pictures are rebuilt from their source files, never edited by hand | Designed and directed scripted rendering of the dashboard, diagram, and explainer |
 | `tests/check_phase3b.py` | The regression check run after every change | Acceptance test, test-first, mutation testing | Written before the dashboard existed; recounts every number in the dashboard's tiles and tables, traces every spoken number, and proves each check can fail | Designed and directed a test-first acceptance check for the dashboard and demo materials |
-| `tools/make_controls.py` | Test cases made before trusting a skill | Synthetic data, test fixtures | The 3c inputs with one planted problem per control, all marked fake | Designed and directed synthetic test data for procurement controls with planted defects |
+| `tools/make_controls.py` | Test cases made before trusting a skill | Synthetic data, test fixtures | The 3c inputs with one planted problem per control, each marked as made up for the demo | Designed and directed synthetic test data for procurement controls with planted defects |
 | `tools/controls.py` | Scripts for exact checks instead of reading by eye | Deterministic tooling, guardrails | Name matching, dollar tiers, per-line competition, and running totals computed by a script; refuses to run twice | Designed and directed helper scripts that compute every procurement control exactly |
 | `tests/check_phase3c.py` | The regression check run after every change | Acceptance test, test-first, mutation testing | Written before the helper; recounts every 3c result its own way and proves no older record changed | Designed and directed a test-first acceptance check for procurement controls |
 | `audit/controls-log.csv` | The append-only run log | Audit trail, hash chain | Every control action in its own tamper-evident log; a discarded first run is kept, not deleted | Designed and directed an append-only, hash-chained log for procurement controls |
-| `company/exclusion-list.md` | New for the demo | Debarment list, exclusion screening | A fake stand-in for a government exclusion list that every vendor and supplier is checked against | Designed and directed exclusion screening for vendors and suppliers |
+| `company/exclusion-list.md` | New for the demo | Debarment list, exclusion screening | A made-up stand-in for a government exclusion list that every vendor and supplier is checked against | Designed and directed exclusion screening for vendors and suppliers |
 | `/screen` skill | The author's real agency packet: conflict-of-interest forms and clearances | Vendor due diligence, recusal | Disclosures and exclusion checks before anyone signs; a related approver is recused | Designed and directed conflict-of-interest and exclusion screening with approver recusal |
 | `/request` skill | The author's real agency packet: the procurement approval request and checklist | Purchase requisition, competitive thresholds, sole-source justification | Procurement type by dollar size, funding line, quotes per line, justifications, and a certification left for the approver | Designed and directed a procurement approval request with competition checks and a certification |
 | `/closeout` skill | The author's real agency packet: invoice rules and a two-signature completion certificate | Contract accounting, close-out | Running totals, open items, and a supplier's completion claim checked against the receipt | Designed and directed contract close-out with running totals and a two-signature certificate |
@@ -118,6 +136,12 @@ Run the Phase 3d check: `python -I -X utf8 tests/check_phase3d.py` (add `--selft
 | `audit/exceptions-log.csv` | The append-only run log | Audit trail, hash chain | Every exception step in its own tamper-evident log, replayed on the dashboard with the other three | Designed and directed an append-only, hash-chained log for exception handling |
 | `/revise` skill | Owner approval gates: nothing signed carries over to something changed | Contract revision, re-approval routing | A signer's change after others signed becomes a new version that restarts sign-off from the first approver | Designed and directed re-approval routing when a signer changes an approval packet mid-signature |
 | `/credit` skill | The anticipation step: what's late, and what we ask for | Expediting, vendor concessions | A delivery a week past its promised date becomes a polite shipping-credit request a person reviews and sends | Designed and directed late-delivery credit requests drafted for human review |
+| `/certs` skill | Read the real thing, not a summary of it | Document verification, intelligent document processing, vendor master data quality | The AI opens each certificate PDF, reads every field, and flags where the typed record disagrees; the certificate wins and a person fixes the record | Designed and directed AI document verification that checks typed vendor records against the source PDFs |
+| `tools/certs.py` | Scripts for exact checks instead of reading by eye | PDF text extraction, deterministic tooling | Opens the PDF, inflates its compressed streams, and reads the text in page order with no outside library; an unreadable file goes to a person, never a pass | Designed and directed a dependency-free PDF reader that routes unreadable documents to a person |
+| `tools/make_certs.py` | Test cases made before trusting a skill | Synthetic documents, test fixtures | Real PDFs made from the sample records, with one planted keying error, locked before the reader existed | Designed and directed synthetic PDF test documents with a planted data-entry error |
+| `tests/check_phase3e.py` | The regression check run after every change | Acceptance test, test-first, independent verification | Written before the reader; a standard PDF tool reads the same 96 values, and `--selftest` proves 4 planted breaks are caught | Designed and directed a test-first check that verifies an AI's PDF reading against an independent tool |
+| `audit/documents-log.csv` | The append-only run log | Audit trail, hash chain | The certificate check in its own tamper-evident log | Designed and directed an append-only, hash-chained log for document verification |
+| `.github/workflows/checks.yml` | The private system's rule: run the checks after every change | Continuous integration (CI) | Every push to GitHub re-runs every check on a clean Windows machine | Designed and directed continuous integration that re-runs every acceptance check on each push |
 
 ## Run the check
 ```

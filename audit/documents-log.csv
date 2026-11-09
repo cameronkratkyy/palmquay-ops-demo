@@ -1,0 +1,2 @@
+timestamp,actor,vendor,action,detail,result
+2026-11-09T10:44:06,onboarding-assistant,all,certificate_check,8 certificate PDFs read; 7 match; 1 differ (fernhollow-grounds: Policy number),DIFFERENCES_FOR_A_PERSON

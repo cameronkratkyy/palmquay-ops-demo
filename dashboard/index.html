@@ -3,7 +3,7 @@
 *{box-sizing:border-box}body{margin:0;font:14px/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
 header{background:var(--surface);border-bottom:1px solid var(--line);padding:16px 24px 0;position:sticky;top:0;z-index:5}
 .top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}h1{font-size:19px;margin:0}
-.stamp{font-size:12px;color:var(--ink2)}.org{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:6px}.people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.person{text-align:center;padding:10px 6px;border-radius:8px;border-top:4px solid var(--pc);background:var(--surface)}.avatar{width:52px;height:52px;display:block;margin:0 auto 6px}.pname{font-weight:600}.title{font-size:12.5px}.dept{font-size:11.5px;color:var(--ink2)}.does{font-size:11.5px;color:var(--ink2);margin-top:4px}.helpers{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.helper{font-size:12px;color:var(--ink2);border:1px dashed var(--line);border-radius:6px;padding:5px 9px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}.tiles{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:12px 0 4px}
+.stamp{font-size:12px;color:var(--ink2)}.org{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:6px}.people{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.person{text-align:center;padding:10px 6px;border-radius:8px;border-top:4px solid var(--pc);background:var(--surface)}.avatar{width:52px;height:52px;display:block;margin:0 auto 6px}.pname{font-weight:600}.title{font-size:12.5px}.dept{font-size:11.5px;color:var(--ink2)}.does{font-size:11.5px;color:var(--ink2);margin-top:4px}.helpers{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.helper{font-size:12px;color:var(--ink2);border:1px dashed var(--line);border-radius:6px;padding:5px 9px}.org[data-hub] .people{position:relative;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"a b c" "ai core chk" "d . e";gap:10px 56px}.org[data-hub] .person{position:relative;z-index:1;padding:6px 6px 7px}.org[data-hub] .title,.org[data-hub] .dept{display:inline}.org[data-hub] .dept::before{content:" · "}.org[data-hub] .person:nth-child(1){grid-area:a}.org[data-hub] .person:nth-child(2){grid-area:b}.org[data-hub] .person:nth-child(3){grid-area:c}.org[data-hub] .person:nth-child(4){grid-area:d}.org[data-hub] .person:nth-child(5){grid-area:e}.org[data-hub] .avatar{width:34px;height:34px;margin-bottom:2px}.org[data-hub] .core{grid-area:core;z-index:1;justify-self:center;align-self:center;display:flex;flex-direction:column;justify-content:center;gap:3px;width:128px;height:128px;padding:10px;border-radius:50%;background:var(--accent);color:#fff;text-align:center;font-size:11.5px;line-height:1.3}.org[data-hub] .core b{font-size:13px}.org[data-hub] .helper{z-index:1;align-self:center;background:var(--card);font-size:11.5px;max-width:240px}.org[data-hub] .ai{grid-area:ai;justify-self:end}.org[data-hub] .chk{grid-area:chk;justify-self:start}.spokes{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}.spokes line{stroke:#9fb4c6;stroke-width:2;stroke-dasharray:5 5;vector-effect:non-scaling-stroke}.uses{font-size:11px;color:var(--ink2);margin-top:4px}.uses code{font-size:10.5px;padding:0 3px}.wait{font-size:11.5px;font-weight:600;margin-top:3px}@media (max-width:760px){.org[data-hub] .people{display:flex;flex-direction:column}.spokes{display:none}.org[data-hub] .core{width:auto;height:auto;border-radius:8px}}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}.tiles{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin:12px 0 4px}
 .tile{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px}.tile .lab{font-size:12px;color:var(--ink2)}
 .tile .big{font-size:23px;font-weight:600;line-height:1.25;font-variant-numeric:tabular-nums}.tile .small{font-size:11.5px;color:var(--ink2)}
 nav{display:flex;gap:2px;margin-top:6px}nav button{border:0;background:none;padding:9px 14px;font:inherit;color:var(--ink2);border-bottom:2px solid transparent;cursor:pointer}
@@ -34,7 +34,7 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 .rc{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:12.5px;transition:background .3s}.rc.flash{background:#fff4d6}
 .rc .badges{font-size:11px;color:var(--ink2)}table.log td{font-size:12px}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
-</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-08 17:39 from those records; a test recounts every number in its tiles and tables.</div>
+</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-09 10:47 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
 </div>
 <div class="tiles" data-audit><div class="tile"><div class="lab">Vendors</div>
 <div class="big"><span class="n" data-k="v.total">8</span></div>
@@ -65,33 +65,45 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <div class="small"><span class="n" data-k="g.drafts">9</span> drafts unsent · <span class="n" data-k="g.blank">9</span> sign-offs blank</div>
 </div>
 </div>
-<nav><button type="button" data-for="overview" data-tab-label="Overview" aria-selected="false">Overview</button><button type="button" data-for="onboarding" data-tab-label="Onboarding" aria-selected="false">Onboarding</button><button type="button" data-for="buying" data-tab-label="Buying" aria-selected="false">Buying</button><button type="button" data-for="checks" data-tab-label="Checks" aria-selected="false">Checks</button><button type="button" data-for="audit" data-tab-label="Audit log" aria-selected="false">Audit log</button><button type="button" data-for="map" data-tab-label="Map" aria-selected="false">Map</button></nav></header><main><section data-tab="overview" id="tab-overview" class=on><h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, Florida. Manages 14 commercial and apartment buildings in Sarasota and Manatee counties. These five people do the work in this demo; each one keeps working in their own tools, and this board shows what is waiting on whom. Each person keeps the same color everywhere on the page.</p><div class="org" data-org><div class="people"><div class="person" data-person="Lena Ortiz" style="--pc:#1d6fa5"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Lena Ortiz</div>
+<nav><button type="button" data-for="overview" data-tab-label="Overview" aria-selected="false">Overview</button><button type="button" data-for="onboarding" data-tab-label="Onboarding" aria-selected="false">Onboarding</button><button type="button" data-for="buying" data-tab-label="Buying" aria-selected="false">Buying</button><button type="button" data-for="checks" data-tab-label="Checks" aria-selected="false">Checks</button><button type="button" data-for="audit" data-tab-label="Audit log" aria-selected="false">Audit log</button><button type="button" data-for="map" data-tab-label="Map" aria-selected="false">Map</button></nav></header><main><section data-tab="overview" id="tab-overview" class=on><h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, Florida. Manages 14 commercial and apartment buildings in Sarasota and Manatee counties. Each department has one owner and the AI helpers whose work lands on them: the AI drafts and checks, and the person decides.</p><div class="org" data-org data-hub><div class="people"><div class="person" data-person="Lena Ortiz" style="--pc:#1d6fa5"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Lena Ortiz</div>
 <div class="title">Property Manager</div>
 <div class="dept">Property management</div>
 <div class="does">Asked for Unit 4B to be furnished ($5,200 budget)</div>
+<div class="uses">AI helpers: <code>/scope</code></div>
+<div class="wait">Waiting on Lena: <span class="n" data-k="w.role.property-manager">1</span></div>
 </div>
 <!-- /person --><div class="person" data-person="Dana Reyes" style="--pc:#d9822b"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Dana Reyes</div>
 <div class="title">Facilities Manager</div>
 <div class="dept">Facilities</div>
 <div class="does">Approves: Every vendor (first sign-off)</div>
+<div class="uses">AI helpers: <code>/change</code> <code>/chase</code> <code>/closeout</code> <code>/credit</code> <code>/deliver</code> <code>/request</code> <code>/revise</code></div>
+<div class="wait">Waiting on Dana: <span class="n" data-k="w.role.facilities-manager">15</span></div>
 </div>
 <!-- /person --><div class="person" data-person="Marcus Hale" style="--pc:#2e8b57"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Marcus Hale</div>
 <div class="title">Procurement Lead</div>
 <div class="dept">Procurement</div>
 <div class="does">Approves: Work over $10,000</div>
+<div class="uses">AI helpers: <code>/route</code></div>
+<div class="wait">Waiting on Marcus: <span class="n" data-k="w.role.procurement-lead">1</span></div>
 </div>
 <!-- /person --><div class="person" data-person="Priya Natarajan" style="--pc:#7b4fb3"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Priya Natarajan</div>
 <div class="title">Legal Counsel</div>
 <div class="dept">Legal</div>
 <div class="does">Approves: Work over $50,000</div>
+<div class="uses">AI helpers: <code>/screen</code></div>
+<div class="wait">Waiting on Priya: <span class="n" data-k="w.role.legal">2</span></div>
 </div>
 <!-- /person --><div class="person" data-person="Tom Becker" style="--pc:#b83b5e"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Tom Becker</div>
 <div class="title">Controller</div>
 <div class="dept">Finance</div>
 <div class="does">Approves: Work over $50,000 (last sign-off)</div>
+<div class="uses">AI helpers: <code>/match</code></div>
+<div class="wait">Waiting on Tom: <span class="n" data-k="w.role.finance">2</span></div>
 </div>
-<!-- /person --></div>
-<div class="helpers"><span class="helper">AI assistant: reads the papers and drafts the next step; never sends, signs, orders, or pays</span><span class="helper">Checker AI: a second AI, told to only read, reviews the work</span></div>
+<!-- /person --><div class="core"><b>Palmquay Properties</b><span>Contractor approvals and furniture buying</span><span><span class="n" data-k="w.total">21</span> decisions waiting on people</span></div>
+<div class="helper ai">AI assistant: reads the papers and drafts the next step; never sends, signs, orders, or pays</div>
+<div class="helper chk">Checker AI: a second AI, told to only read, reviews the work</div>
+<svg class="spokes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="50" y1="50" x2="16.7" y2="14"/><line x1="50" y1="50" x2="50" y2="14"/><line x1="50" y1="50" x2="83.3" y2="14"/><line x1="50" y1="50" x2="16.7" y2="86"/><line x1="50" y1="50" x2="83.3" y2="86"/></svg></div>
 </div>
 <!-- ORG END --><h2>Waiting on people</h2><p class="lead">Every decision the AI stopped for, oldest first. The AI suggests; the named person decides. Rules for what counts: <code>dashboard/README.md</code>. Onboarding runs as of the demo date 2026-11-05; the furnishing project's scripted events run to 2026-11-12.</p><table data-audit><thead><tr><th>Since</th>
 <th>Who decides</th>
@@ -620,6 +632,42 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <td>Dana Reyes (2026-11-06), Marcus Hale (2026-11-09)</td>
 <td><span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">version 2</span>: <span class="n" data-k="v.skyquay-lift-fire.approvers">4</span> sign-offs, blank, in order</td>
 <td>Dana Reyes, Facilities Manager voids <span class="src" data-src="vendors/skyquay-lift-fire/packet-v2.md" title="Quoted from vendors/skyquay-lift-fire/packet-v2.md">version 1</span> and sends the new one; Dana Reyes, Facilities Manager signs first again</td>
+</tr>
+</tbody></table><h2>Insurance certificates, read from the PDF</h2><p class="lead">Until now intake read a typed copy of each certificate. Here the AI opens the certificate PDF itself, reads every field, and checks the typed copy against it. The certificate is the source: where they differ, a person fixes the record. The AI changes nothing and sends nothing. Summary: <code>docs/certificates.md</code>.</p><table data-audit><thead><tr><th>Vendor</th>
+<th>Certificate PDF</th>
+<th>Result</th>
+</tr>
+</thead><tbody><tr data-cert="bayvane-plumbing" data-result="match"><td>Bayvane Plumbing Inc.</td>
+<td><code data-file="vendors/bayvane-plumbing/documents/coi.pdf">vendors/bayvane-plumbing/documents/coi.pdf</code></td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>matches the typed record</span></td>
+</tr>
+<tr data-cert="brightcurrent-electric" data-result="match"><td>Brightcurrent Electric Inc.</td>
+<td><code data-file="vendors/brightcurrent-electric/documents/coi.pdf">vendors/brightcurrent-electric/documents/coi.pdf</code></td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>matches the typed record</span></td>
+</tr>
+<tr data-cert="clearsail-janitorial" data-result="match"><td>Clearsail Janitorial Services LLC</td>
+<td><code data-file="vendors/clearsail-janitorial/documents/coi.pdf">vendors/clearsail-janitorial/documents/coi.pdf</code></td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>matches the typed record</span></td>
+</tr>
+<tr data-cert="fernhollow-grounds" data-result="differs"><td>Fernhollow Grounds LLC</td>
+<td><code data-file="vendors/fernhollow-grounds/documents/coi.pdf">vendors/fernhollow-grounds/documents/coi.pdf</code></td>
+<td><span class="chip st-FAIL"><i aria-hidden="true">&#10005;</i>differs</span> policy number on the certificate doesn't match the typed record; the Facilities Manager fixes the record</td>
+</tr>
+<tr data-cert="gulfpine-pest" data-result="match"><td>Gulfpine Pest Control Inc.</td>
+<td><code data-file="vendors/gulfpine-pest/documents/coi.pdf">vendors/gulfpine-pest/documents/coi.pdf</code></td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>matches the typed record</span></td>
+</tr>
+<tr data-cert="kestrelbay-air-heat" data-result="match"><td>Kestrelbay Air &amp; Heat LLC</td>
+<td><code data-file="vendors/kestrelbay-air-heat/documents/coi.pdf">vendors/kestrelbay-air-heat/documents/coi.pdf</code></td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>matches the typed record</span></td>
+</tr>
+<tr data-cert="saltmarsh-roofing" data-result="match"><td>Saltmarsh Roofing Co.</td>
+<td><code data-file="vendors/saltmarsh-roofing/documents/coi.pdf">vendors/saltmarsh-roofing/documents/coi.pdf</code></td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>matches the typed record</span></td>
+</tr>
+<tr data-cert="skyquay-lift-fire" data-result="match"><td>Skyquay Lift &amp; Fire Inc.</td>
+<td><code data-file="vendors/skyquay-lift-fire/documents/coi.pdf">vendors/skyquay-lift-fire/documents/coi.pdf</code></td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>matches the typed record</span></td>
 </tr>
 </tbody></table><h2>The record behind each vendor</h2><details><summary><span class="chip st-HOLD"><i aria-hidden="true">&#10074;&#10074;</i>HOLD</span> <b>Bayvane Plumbing Inc.</b> <span class="muted">what intake checked, the follow-up draft</span></summary><p class="muted">What <code>/intake</code> checked, quoted from <code>vendors/bayvane-plumbing/intake.json</code>.</p><table><thead><tr><th>Check</th>
 <th>Found</th>
@@ -2075,21 +2123,21 @@ Payment is approved by Finance (?). The assistant flags differences and never ma
 <td>Real-world exceptions (a change during sign-off, a shipping credit) against their locked answer key (its check of the older phases runs separately)</td>
 <td><span class="n" data-k="c.p3d.pass">12</span> of <span class="n" data-k="c.p3d.total">12</span> <span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span></td>
 </tr>
-</tbody></table><details><summary>Phase 1: every line it printed (0.2 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
+</tbody></table><details><summary>Phase 1: every line it printed (0.1 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
 PASS - C2 CLAUDE.md states every rule and matches rules.json - 34 of 34 found; missing []
 PASS - C3 8 vendors, each with its record and exactly the key&#x27;s documents - 8 folders, 8 records, 8 of 8 document sets match
 PASS - C4 recomputed from the documents = answer key - 8 of 8 match; mismatches {}
 PASS - C4b the key covers every planted problem + a clean small and a clean large job - 6 of 6 problem types; clean small [&#x27;kestrelbay-air-heat&#x27;]; clean large [&#x27;skyquay-lift-fire&#x27;]
 PASS - C5 answer key unchanged since it was locked - lock 973099662faf..., now 973099662faf...
-PASS - C6 no personal words; every ID is visibly fake - 222 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked fake
-PASS - C7 README maps each piece (industry term + resume line) - 48 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;]</pre></details><details><summary>Phase 2: every line it printed (4.3 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
+PASS - C6 no personal words; every ID is visibly fake - 244 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked fake
+PASS - C7 README maps each piece (industry term + resume line) - 54 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (4.7 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
 PASS - P1b /status prints one correct line per vendor - exit 0; 8 lines; 8 of 8 right (stage, status, blocker, days waiting); problems {} 
 PASS - P2 /chase: 1 good draft per BLOCKED/HOLD vendor, 0 sends - 6 of 6 drafts pass (vendor, item, why, deadline 2026-11-12, how to send, .example contact, no threats, no unsupported facts); 0 drafts for READY vendors []; sends 0 (audit rows marked sent 0, network imports []); problems {}
 PASS - P3 /route: packet for each READY vendor, approvers in order, sign-offs blank - 2 of 2 packets pass; packets for vendors not READY []; approvers {&#x27;kestrelbay-air-heat&#x27;: [&#x27;Facilities Manager&#x27;], &#x27;skyquay-lift-fire&#x27;: [&#x27;Facilities Manager&#x27;, &#x27;Procurement Lead&#x27;, &#x27;Legal&#x27;, &#x27;Finance&#x27;]}; problems {}
 PASS - P4 read-only compliance-checker reviewed everything and caught both plants - agent tools [&#x27;Glob&#x27;, &#x27;Grep&#x27;, &#x27;Read&#x27;]; latest review reviews/2026-11-05-02-all-vendors.md: 18 files, 18 unchanged since review; 16 of 16 real files marked OK by the checker; planted wrong deadline caught True; planted missed name mismatch caught True; problems []
 PASS - P5 audit log: 1 row per action, append-only (hash chain) - 18 rows; 18 actions taken (8 intake + 6 chase drafts + 2 route packets + 2 checker reviews); chain 18 of 18 rows verify; problems []
-PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 222 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
-PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 48 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (4.6 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
+PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 244 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
+PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 54 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (4.9 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
 PASS - Q0b recomputed from the inputs = answer key (the data really has the planted problems) - 7 activities recomputed; differ from key []; PO total recomputed 4898 vs stated 4898; error none
 PASS - Q1 /scope: brief = key; every request field in brief.md; nothing invented - projects/unit-4b/out/brief.json: = key; 16 of 16 request fields in brief.md; invented measurement False
 PASS - Q2 /source: late items and the in-time alternative = key - projects/unit-4b/out/source.json: = key
@@ -2117,7 +2165,7 @@ PASS - D0b the check&#x27;s own recount from the raw records equals the hand-wri
 PASS - D1 /revise = key: version 2 with the change word for word, earlier signers sign again, route restarts, sign-offs blank - 0 key differences; problems []
 PASS - D2 /credit = key: one polite draft per supplier with the order, item, dates, freight, and ask; not sent - 1 drafts; problems []; harsh words []
 PASS - D3 exceptions log: 1 row per action, right actors, chain verifies, 0 people-only results - 3 rows; actions {&#x27;packet_revision&#x27;: 1, &#x27;freight_credit&#x27;: 1, &#x27;checker_review&#x27;: 1}; not exactly once []; people-only results 0; problems []
-PASS - D4 0 earlier records changed; the only new record files are the expected outputs - 154 frozen, changed 0 []; new 6, unexpected [], expected but missing []
+PASS - D4 0 earlier records changed; the only new record files are the expected outputs - 154 frozen, changed 0 []; new 24, unexpected [], expected but missing []
 PASS - D5 2 skills with front matter; CLAUDE.md section 12 states every Phase 3d rule - 2 of 2 skills ok []; 13 of 13 rules found; missing []
 PASS - D6 the dashboard shows both: waiting rows, quotes from the new records, the replay - 21 waiting rows; 3 exceptions events in the replay; problems []
 PASS - D7 Phases 1, 2, 3a, 3b, 3c and the org-chart check still pass (skipped by --skip-old-phases) - skipped

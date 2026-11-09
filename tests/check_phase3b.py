@@ -404,6 +404,11 @@ def recount(runs):
     E["w.total"] = len(W)
     E["w.onb"] = sum(1 for k in W if k.split(":")[0] in ("send_followup", "sign_packet", "review_disclosure", "review_exclusion"))
     E["w.buy"] = E["w.total"] - E["w.onb"]
+    # 11/9 department hub: each owner's count of waiting decisions, recounted from the same records (every role in people.md + the requester, 0 if none)
+    roles_all = set(W.values()) | {role(req["Requested by"])} | {
+        re.sub(r"\s*\(.*?\)", "", r_).strip() for r_ in re.findall(r"^\|\s*([A-Z][^|]+?)\s*\|\s*[A-Z][a-z]+ [A-Z][a-z]+\s*\|", read("company", "people.md"), re.M)}
+    for r_ in roles_all:
+        E["w.role." + re.sub(r"[^a-z0-9]+", "-", r_.lower()).strip("-")] = sum(1 for v in W.values() if v == r_)
 
     # the older checks, live
     tags = [x for x in ("p1", "p2", "p3a", "p3c", "p3d") if runs[x][2] != 99]
@@ -766,7 +771,12 @@ def b4(sets, page):
 
 # Length cap. Was 2:00 / 300 words; raised 11/8 when the author chose the longer, more-context script ("Keep 2:33"),
 # then again the same day when he asked for full context in every scene ("it can be over 2 minutes that's fine").
-MAX_SECONDS, MAX_WORDS = 210, 450
+# 11/9: raised from 3:30 / 450 words to 4:15 / 590 when he approved script v9.4 (D151: "D151 yes, load v9.4"; 574 words, 13 beats).
+MAX_SECONDS, MAX_WORDS = 255, 590
+# 11/9: the spoken credit line ("I designed the process... Claude Code wrote the code") was cut at his word ("just explain that we
+# can save companies a lot of time"). The no-overclaim rule still holds: the script file must still say who built what, AND the
+# dashboard itself (Map tab) must carry the credit, so a viewer who opens the live demo sees it. Both are checked below.
+CREDIT = ("Designed and directed by the author", "Claude Code")
 
 
 def b5(sets, page):
@@ -787,13 +797,15 @@ def b5(sets, page):
     found, bad_n, bad_d, bad_i = trace(say, sets)
     over = overclaims(t)
     first_ok = bool(rows) and rows[0][0].startswith("0:00") and "**Overview**" in rows[0][1] and times[0][-1] <= 10
+    page_text = open(page, encoding="utf-8").read() if os.path.exists(page) else ""
+    credit_on_page = all(c in page_text for c in CREDIT)
     ok = (rows and len(words) <= MAX_WORDS and flat == sorted(flat) and flat and flat[-1] <= MAX_SECONDS and first_ok and not no_tab
-          and not bad_paths and not bad_n and not bad_d and not bad_i and not over and re.search(r"\bdesign", t, re.I))
-    rec(ok, "B5 video script: 3:30 or less, one window, starts on the finished dashboard, numbers trace",
+          and not bad_paths and not bad_n and not bad_d and not bad_i and not over and re.search(r"\bdesign", t, re.I) and credit_on_page)
+    rec(ok, f"B5 video script: {MAX_SECONDS // 60}:{MAX_SECONDS % 60:02d} or less, one window, starts on the finished dashboard, numbers trace, credit on the page",
         f"{len(rows)} beats; {len(words)} spoken words (want {MAX_WORDS} or fewer): {len(words) / 150 * 60:.0f} s at 150 a minute, "
         f"{len(words) / 177 * 60:.0f} s at 177; last beat ends {flat[-1] if flat else '?'} s; first beat on the Overview tab within 10 s: {first_ok}; "
         f"beats naming no dashboard tab {no_tab}; paths missing {bad_paths}; {len(found)} numbers, untraced {bad_n}; dates {bad_d}; IDs {bad_i}; "
-        f"overclaims {over}; says 'designed': {bool(re.search(r'design', t, re.I))}")
+        f"overclaims {over}; says 'designed': {bool(re.search(r'design', t, re.I))}; dashboard carries the credit {CREDIT}: {credit_on_page}")
 
 
 def b6(sets):

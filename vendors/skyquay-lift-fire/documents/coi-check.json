@@ -1,0 +1,27 @@
+{
+  "vendor": "skyquay-lift-fire",
+  "pdf": "vendors/skyquay-lift-fire/documents/coi.pdf",
+  "record": "vendors/skyquay-lift-fire/documents/coi.md",
+  "fields_read": {
+    "Insured": "Skyquay Lift & Fire Inc.",
+    "Certificate holder": "Palmquay Properties",
+    "Additional insured": "Palmquay Properties",
+    "Insurer": "Demo Mutual Insurance Co. (fictional)",
+    "Policy number": "DEMO-GL-0008",
+    "General liability per occurrence": "$1,000,000",
+    "General liability aggregate": "$2,000,000",
+    "Auto liability": "$1,000,000",
+    "Workers' comp": "Statutory",
+    "Umbrella": "$5,000,000",
+    "Policy start": "2026-03-01",
+    "Policy end": "2027-03-01"
+  },
+  "differences": [],
+  "result": "match",
+  "next_step": "None.",
+  "run": {
+    "by": "onboarding-assistant",
+    "tool": "tools/certs.py check",
+    "at": "2026-11-09T10:44:06"
+  }
+}
