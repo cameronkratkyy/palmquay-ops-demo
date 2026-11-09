@@ -6,7 +6,7 @@
 
 **The pitch:** an AI operations system that runs vendor onboarding. It reads the paperwork, finds what's missing, drafts the follow-ups, builds the approval packet, checks its own work, and keeps an audit trail. A person approves and sends everything.
 
-It copies the shape of the author's own working AI operations system (a private one that runs a small business), moved onto fake data so it can be shown.
+It copies the shape of the author's own working AI operations system (a private one that runs a small business), moved onto sample records so it can be shown.
 
 ## Status
 | Phase | What | State |
@@ -14,7 +14,7 @@ It copies the shape of the author's own working AI operations system (a private 
 | 1 | Company rules, folders, 8 fake vendors with planted problems, locked answer key, pass/fail check | Built 11/5/2026 |
 | 2 | Skills (`/intake` `/chase` `/route` `/status`), compliance checker, audit log; 1 vendor end to end, then all 8 | Built 11/5/2026 (results: `docs/phase2-results.md`) |
 | 3a | Buying for a furnishing project: scope, suppliers, quotes, product approval, change control, deliveries, invoices (7 skills, 13 problems planted across the 7 steps, a separate procurement log) | Built 11/5/2026 (results: `docs/phase3a-results.md`) |
-| 3b | Dashboard, one-page diagram, 2-minute video script, plain-English explainer (covering onboarding and buying) | Built 11/6/2026 (results: `docs/phase3b-results.md`) |
+| 3b | Dashboard, one-page diagram, 3-minute video script, plain-English explainer (covering onboarding and buying) | Built 11/6/2026 (results: `docs/phase3b-results.md`) |
 | 3c | Controls copied from a real public-agency procurement packet: conflict-of-interest disclosures, an exclusion check, quotes required by dollar size, the approval request with funding and a certification, running totals and a two-signature close-out | Built 11/6/2026 (results: `docs/phase3c-results.md`) |
 | 3d | Real-world exceptions a firm will ask about: a signer asks for a change after others signed (the packet restarts from the first approver), and a delivery a week past its promised date (a shipping-credit request drafted for a person) | Built 11/8/2026 (results: `docs/phase3d-results.md`) |
 
@@ -39,8 +39,8 @@ Run the Phase 3a check: `python -I -X utf8 tests/check_phase3a.py` (add `--selft
 
 ## Phase 3b: showing it
 - **Dashboard:** double-click `dashboard/index.html` (no server, no internet). Six tabs: Overview, Onboarding, Buying, Checks, Audit log (with a replay), Map. Rebuild with `python -I -X utf8 dashboard/build.py`. Rules and proof: `dashboard/README.md`.
-- **One-page diagram:** `docs/diagram.png` (for LinkedIn Featured) and `docs/diagram.pdf` (for email), both made from `docs/diagram.html`.
-- **2-minute video script:** `docs/video-script.md`, recorded in one window with Snipping Tool.
+- **One-page diagram:** `docs/diagram.png` (for sharing) and `docs/diagram.pdf` (for email), both made from `docs/diagram.html`.
+- **3-minute video:** script `docs/video-script.md`; the recorded walkthrough (the author's voice over the live dashboard) is at `video/index.html`.
 - **Explainer:** `docs/explainer.md` and `docs/explainer.pdf`, one page to talk from.
 - Re-make the pictures: `python -I -X utf8 tools/render.py`. Check everything: `python -I -X utf8 tests/check_phase3b.py` (add `--selftest` to prove it can fail).
 
@@ -101,7 +101,7 @@ Run the Phase 3d check: `python -I -X utf8 tests/check_phase3d.py` (add `--selft
 | `/match` skill | Never let money move without a person | Three-way match, accounts payable controls | Invoice vs. order vs. receipt; differences flagged for Finance; nothing marked paid | Designed and directed three-way invoice matching that flags differences for Finance |
 | `dashboard/build.py` + `dashboard/index.html` | The private system's mission-control dashboard, built from its own records | Operations dashboard, observability, reconciliation | One screen: decisions waiting on people, every vendor, the project, the checks, the log replay; a test recounts every number in its tiles and tables | Designed and directed an operations dashboard whose tile and table numbers are all recounted from the source records by an automated test |
 | `docs/diagram.png` + `docs/diagram.pdf` | The system map in the private system's architecture notes | Architecture diagram, process map | Who does what in one picture: AI steps in blue, people in amber, the controls underneath | Designed and directed a one-page architecture diagram of an AI-assisted onboarding and procurement process |
-| `docs/video-script.md` | New for the demo | Product demo script | A 2-minute walkthrough in one window; every spoken number traced to a record | Designed and directed a 2-minute product demo of an AI operations workflow |
+| `docs/video-script.md` | New for the demo | Product demo script | A 3-minute walkthrough in one window; every spoken number traced to a record | Designed and directed a 3-minute product demo of an AI operations workflow |
 | `docs/explainer.md` + `docs/explainer.pdf` | The private system's interview notes | Talk track, one-pager | Each step said twice: plain English, then the industry term | Designed and directed a one-page explainer that maps each AI step to its industry term |
 | `tools/render.py` | Screenshots made with the browser already on the PC, no install | Headless rendering | The pictures are rebuilt from their source files, never edited by hand | Designed and directed scripted rendering of the dashboard, diagram, and explainer |
 | `tests/check_phase3b.py` | The regression check run after every change | Acceptance test, test-first, mutation testing | Written before the dashboard existed; recounts every number in the dashboard's tiles and tables, traces every spoken number, and proves each check can fail | Designed and directed a test-first acceptance check for the dashboard and demo materials |
