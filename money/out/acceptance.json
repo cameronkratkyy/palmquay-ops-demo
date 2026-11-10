@@ -1,0 +1,143 @@
+{
+ "whitlock": {
+  "home": "3-bed house, Saltwhistle Ln, Sarasota",
+  "asked": 260000,
+  "lease": null,
+  "range": [
+   225000,
+   240000
+  ],
+  "proposed": 235000,
+  "ready": 320000,
+  "fund": 50000,
+  "flags": [
+   "RENT_ABOVE_EVIDENCE",
+   "REPAIRS_NEED_FUNDING"
+  ],
+  "suggest": "CONDITIONAL",
+  "reviewed": "2026-10-27",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ },
+ "petrakis": {
+  "home": "4-bed house, Kestrelwood Ct, Sarasota",
+  "asked": 295000,
+  "lease": null,
+  "range": [
+   285000,
+   300000
+  ],
+  "proposed": 295000,
+  "ready": 0,
+  "fund": 50000,
+  "flags": [],
+  "suggest": "ACCEPT",
+  "reviewed": "2026-10-28",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ },
+ "fontaine": {
+  "home": "2-bed house, Brinemoor Dr, Venice",
+  "asked": 200000,
+  "lease": null,
+  "range": [
+   195000,
+   210000
+  ],
+  "proposed": 200000,
+  "ready": 40000,
+  "fund": 50000,
+  "flags": [],
+  "suggest": "ACCEPT",
+  "reviewed": "2026-10-27",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ },
+ "coralwick": {
+  "home": "3-bed townhome, Driftmark Way, Lakewood Ranch",
+  "asked": 260000,
+  "lease": null,
+  "range": [
+   250000,
+   265000
+  ],
+  "proposed": 260000,
+  "ready": 0,
+  "fund": 50000,
+  "flags": [],
+  "suggest": "ACCEPT",
+  "reviewed": "2026-10-26",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ },
+ "haddad": {
+  "home": "3-bed house, Lanternfish Cir, Venice",
+  "asked": null,
+  "lease": 235000,
+  "range": [
+   230000,
+   245000
+  ],
+  "proposed": 235000,
+  "ready": 0,
+  "fund": 50000,
+  "flags": [],
+  "suggest": "ACCEPT",
+  "reviewed": "2026-10-28",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ },
+ "varma": {
+  "home": "2-bed condo, Heronmark Blvd, Sarasota",
+  "asked": 250000,
+  "lease": null,
+  "range": [
+   240000,
+   255000
+  ],
+  "proposed": 250000,
+  "ready": 25000,
+  "fund": 50000,
+  "flags": [],
+  "suggest": "ACCEPT",
+  "reviewed": "2026-10-29",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ },
+ "brandt": {
+  "home": "3-bed house, Gullhaven Ter, Bradenton",
+  "asked": null,
+  "lease": 205000,
+  "range": [
+   200000,
+   215000
+  ],
+  "proposed": 205000,
+  "ready": 0,
+  "fund": 50000,
+  "flags": [],
+  "suggest": "ACCEPT",
+  "reviewed": "2026-10-26",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ },
+ "marsh": {
+  "home": "2-bed condo, Seagrape Hollow Way, Bradenton",
+  "asked": 220000,
+  "lease": null,
+  "range": [
+   190000,
+   205000
+  ],
+  "proposed": 195000,
+  "ready": 0,
+  "fund": 50000,
+  "flags": [
+   "RENT_ABOVE_EVIDENCE"
+  ],
+  "suggest": "CONDITIONAL",
+  "reviewed": "2026-10-28",
+  "decision": "",
+  "decided_by": "Broker of Record"
+ }
+}

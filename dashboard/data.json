@@ -1,5 +1,5 @@
 {
- "built": "2026-11-10T10:34:11",
+ "built": "2026-11-10T11:26:16",
  "facts": {
   "v.kestrelbay-air-heat.amount": 8500,
   "v.kestrelbay-air-heat.approvers": 1,
@@ -34,7 +34,7 @@
   "i.onb": 6,
   "i.buy": 13,
   "i.ctl": 6,
-  "c.suite": 94,
+  "c.suite": 102,
   "c.pass": 53,
   "c.total": 53,
   "a.rows": 34,
@@ -307,7 +307,7 @@
   "o.wait.controller": 1,
   "o.wait.total": 24,
   "o.rule.deadline_days": 7,
-  "o.rows": 26,
+  "o.rows": 32,
   "p.headroom": 302,
   "p.king_needs": 124,
   "p.sofa_late": 27,
@@ -373,6 +373,7 @@
   "c.suite.orgchart": 8,
   "c.suite.phase3f": 6,
   "c.suite.phase3g": 9,
+  "c.suite.phase3h": 8,
   "a.reviews": 6,
   "g.blank_lines": 2,
   "a.onb_links": 18,

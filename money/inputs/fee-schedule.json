@@ -1,0 +1,23 @@
+{
+ "_note": "Phase 3h: Palmquay's sample fee schedule and money rules (fictional company, sample records). Every number tools/money.py and tests/check_phase3h.py use comes from this file or the other files in money/inputs/. v2 after an accuracy review: the three-comparable rule, the reserve, and the repair limit are Palmquay's policy, not Florida law; holding back money for a pending quote is an agreement term.",
+ "management_fee_pct": 9,
+ "management_fee_basis": "rent actually collected that month (no rent collected, no management fee)",
+ "leasing_fee_pct_of_first_month": 75,
+ "leasing_fee_when": "once, when Palmquay places a new tenant in a vacant home",
+ "renewal_fee": 500,
+ "renewal_fee_when": "once, when a tenant renews a lease (not every month, and not in this sample month)",
+ "owner_reserve": 500,
+ "owner_reserve_note": "Owner money held in the trust account for the owner's repairs. It is not Palmquay's revenue.",
+ "repair_approval_limit": 500,
+ "repair_approval_note": "Palmquay may pay a repair invoice up to $500 from the owner's funds; above that, the owner approves it first.",
+ "payout_day": 10,
+ "days_in_month_convention": 30,
+ "context_examples": {
+  "grade": "vendor marketing (C): published prices of real Sarasota-area managers, read by a research assistant on 11/10/2026; examples of offers, not a market average",
+  "management_fee": "7% to 11.9% of rent",
+  "leasing_fee": "70% to 100% of one month's rent",
+  "renewal_fee": "about $500"
+ },
+ "policy_not_law": "Three leased comparables, the middle one as the rent to plan on, the $500 reserve, and the $500 repair limit are Palmquay's own policy and agreement terms. No Florida rule sets them.",
+ "pending_hold_note": "The management agreement lets Palmquay hold back owner funds for a repair quote or bill awaiting the owner's approval, on that owner's ledger only, until the owner answers."
+}

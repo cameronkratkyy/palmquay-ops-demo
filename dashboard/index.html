@@ -42,7 +42,7 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 input[data-min]{width:64px;font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:4px;text-align:right;background:var(--surface)}
 td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
-</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-10 10:34 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
+</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-10 11:26 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
 </div>
 <div class="tiles" data-audit><div class="tile"><div class="lab">Vendors</div>
 <div class="big"><span class="n" data-k="v.total">8</span></div>
@@ -61,7 +61,7 @@ td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 <div class="small"><span class="n" data-k="i.onb">6</span> onboarding · <span class="n" data-k="i.buy">13</span> buying · <span class="n" data-k="i.ctl">6</span> controls</div>
 </div>
 <div class="tile"><div class="lab">Checks in the suite</div>
-<div class="big"><span class="n" data-k="c.suite">94</span></div>
+<div class="big"><span class="n" data-k="c.suite">102</span></div>
 <div class="small"><span class="n" data-k="c.pass">53</span> of <span class="n" data-k="c.total">53</span> re-run at build <span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span> · all run on each push</div>
 </div>
 <div class="tile"><div class="lab">Audit log rows</div>
@@ -2128,7 +2128,191 @@ Decision, Date and Signature are left blank on purpose: a person fills them in.
 <li>Not on this tab: The walk-through, condition photos, repairs, utilities, rent pricing, and marketing are tracked elsewhere. A paperwork sign-off here doesn&#x27;t mean they happened.</li>
 </ul><h2>What the AI does, and doesn't</h2><ul class="plain"><li><b>Does:</b> reads each packet and the county record a coordinator saved; lists what's there and what isn't; compares names, dollars, and dates across documents and quotes each one; drafts the follow-ups, the tenant letter, and the setup sheet.</li>
 <li><b>Doesn't:</b> sign, send, move money, enter anything in any software, look anything up on its own, choose a tax form, or call a title, a bank account, coverage, or a deposit "verified." A missing document is "not found in the packet," never "doesn't exist." Rules that rest on law quote it; the rest is Palmquay's sample policy in <code>company/owner-rules.json</code>. A real office has its broker, counsel, and CPA confirm them.</li>
-</ul><h2>The records behind each owner</h2><details><summary>James Brandt and Kelly Brandt: Single-family house, Gullhaven Ter, Bradenton (Manatee County) (<span class="chip st-READY"><i aria-hidden="true">&#10003;</i>READY</span>)</summary><h4><code>owners/brandt/documents/ach.md</code></h4><pre data-file="owners/brandt/documents/ach.md"># Owner payment (ACH direct deposit) authorization (sample)
+</ul><h2>The business side</h2><p class="lead">Paperwork is the means; the money is the point. Four views: whether to take a home, where a month's money goes and who gets paid, the trust check at month end, and what it all means for the firm.</p><div data-money><h2>Before signing: is the door worth taking?</h2><p class="lead">A management company earns nothing from a home it can't rent at a price the owner accepts, or one that needs repairs nobody has paid for. So before the agreement, staff gather leased rents for similar homes nearby and walk the home; the AI compares the owner's ask with that evidence and the repair estimate with the money set aside, and drafts a suggestion. Gail Mercer (Broker of Record) decides: accept, accept with conditions, or decline. Suggested here: <span class="n" data-b="b.acc.accept">6</span> accept, <span class="n" data-b="b.acc.conditional">2</span> with conditions (agree a listing rent the evidence supports; the owner funds the repair gap first). A declined owner never reaches the list above. Three comparables, the middle one, the reserve, and the repair limit are Palmquay's own policy and agreement terms, not Florida law; the broker also weighs condition, lease dates, and concessions before adopting a rent.</p><div class="scroll"><table><thead><tr><th>Owner</th>
+<th>Rent now</th>
+<th>Leased comparables</th>
+<th>Rent to plan on</th>
+<th>Repairs vs money set aside</th>
+<th>AI flags</th>
+<th>AI suggests</th>
+<th>Decision</th>
+</tr>
+</thead><tbody><tr><td>Gregory Whitlock and Ana Whitlock</td>
+<td>owner asked <span class="n" data-b="b.acc.whitlock.asked">$2,600.00</span></td>
+<td><span class="n" data-b="b.acc.whitlock.lo">$2,250.00</span> to <span class="n" data-b="b.acc.whitlock.hi">$2,400.00</span></td>
+<td><span class="n" data-b="b.acc.whitlock.plan">$2,350.00</span></td>
+<td><span class="n" data-b="b.acc.whitlock.ready">$3,200.00</span> vs <span class="n" data-b="b.acc.whitlock.fund">$500.00</span></td>
+<td><span class="code" data-src="money/out/acceptance.json" title="Quoted from money/out/acceptance.json">RENT_ABOVE_EVIDENCE</span> <span class="code" data-src="money/out/acceptance.json" title="Quoted from money/out/acceptance.json">REPAIRS_NEED_FUNDING</span></td>
+<td><span class="chip st-HOLD"><i aria-hidden="true">&#10074;&#10074;</i>Conditional</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+<tr><td>Nadia Petrakis</td>
+<td>owner asked <span class="n" data-b="b.acc.petrakis.asked">$2,950.00</span></td>
+<td><span class="n" data-b="b.acc.petrakis.lo">$2,850.00</span> to <span class="n" data-b="b.acc.petrakis.hi">$3,000.00</span></td>
+<td><span class="n" data-b="b.acc.petrakis.plan">$2,950.00</span></td>
+<td><span class="n" data-b="b.acc.petrakis.ready">$0.00</span> vs <span class="n" data-b="b.acc.petrakis.fund">$500.00</span></td>
+<td>none</td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>Accept</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+<tr><td>Claire Fontaine</td>
+<td>owner asked <span class="n" data-b="b.acc.fontaine.asked">$2,000.00</span></td>
+<td><span class="n" data-b="b.acc.fontaine.lo">$1,950.00</span> to <span class="n" data-b="b.acc.fontaine.hi">$2,100.00</span></td>
+<td><span class="n" data-b="b.acc.fontaine.plan">$2,000.00</span></td>
+<td><span class="n" data-b="b.acc.fontaine.ready">$400.00</span> vs <span class="n" data-b="b.acc.fontaine.fund">$500.00</span></td>
+<td>none</td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>Accept</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+<tr><td>Coralwick Rentals LLC</td>
+<td>owner asked <span class="n" data-b="b.acc.coralwick.asked">$2,600.00</span></td>
+<td><span class="n" data-b="b.acc.coralwick.lo">$2,500.00</span> to <span class="n" data-b="b.acc.coralwick.hi">$2,650.00</span></td>
+<td><span class="n" data-b="b.acc.coralwick.plan">$2,600.00</span></td>
+<td><span class="n" data-b="b.acc.coralwick.ready">$0.00</span> vs <span class="n" data-b="b.acc.coralwick.fund">$500.00</span></td>
+<td>none</td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>Accept</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+<tr><td>Beverly Haddad</td>
+<td>tenant pays <span class="n" data-b="b.acc.haddad.lease">$2,350.00</span></td>
+<td><span class="n" data-b="b.acc.haddad.lo">$2,300.00</span> to <span class="n" data-b="b.acc.haddad.hi">$2,450.00</span></td>
+<td><span class="n" data-b="b.acc.haddad.plan">$2,350.00</span></td>
+<td><span class="n" data-b="b.acc.haddad.ready">$0.00</span> vs <span class="n" data-b="b.acc.haddad.fund">$500.00</span></td>
+<td>none</td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>Accept</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+<tr><td>Sunita Varma</td>
+<td>owner asked <span class="n" data-b="b.acc.varma.asked">$2,500.00</span></td>
+<td><span class="n" data-b="b.acc.varma.lo">$2,400.00</span> to <span class="n" data-b="b.acc.varma.hi">$2,550.00</span></td>
+<td><span class="n" data-b="b.acc.varma.plan">$2,500.00</span></td>
+<td><span class="n" data-b="b.acc.varma.ready">$250.00</span> vs <span class="n" data-b="b.acc.varma.fund">$500.00</span></td>
+<td>none</td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>Accept</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+<tr><td>James Brandt and Kelly Brandt</td>
+<td>tenant pays <span class="n" data-b="b.acc.brandt.lease">$2,050.00</span></td>
+<td><span class="n" data-b="b.acc.brandt.lo">$2,000.00</span> to <span class="n" data-b="b.acc.brandt.hi">$2,150.00</span></td>
+<td><span class="n" data-b="b.acc.brandt.plan">$2,050.00</span></td>
+<td><span class="n" data-b="b.acc.brandt.ready">$0.00</span> vs <span class="n" data-b="b.acc.brandt.fund">$500.00</span></td>
+<td>none</td>
+<td><span class="chip st-OK"><i aria-hidden="true">&#10003;</i>Accept</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+<tr><td>Helen Marsh</td>
+<td>owner asked <span class="n" data-b="b.acc.marsh.asked">$2,200.00</span></td>
+<td><span class="n" data-b="b.acc.marsh.lo">$1,900.00</span> to <span class="n" data-b="b.acc.marsh.hi">$2,050.00</span></td>
+<td><span class="n" data-b="b.acc.marsh.plan">$1,950.00</span></td>
+<td><span class="n" data-b="b.acc.marsh.ready">$0.00</span> vs <span class="n" data-b="b.acc.marsh.fund">$500.00</span></td>
+<td><span class="code" data-src="money/out/acceptance.json" title="Quoted from money/out/acceptance.json">RENT_ABOVE_EVIDENCE</span></td>
+<td><span class="chip st-HOLD"><i aria-hidden="true">&#10074;&#10074;</i>Conditional</span></td>
+<td class="muted">blank: Gail Mercer decides</td>
+</tr>
+</tbody></table></div>
+<!-- /money --></div>
+<div data-money><h2>December: where each dollar goes</h2><p class="lead">This is how the owner, the vendors, and Palmquay itself get paid. Rent lands in the owner-funds trust account. Once earned under the agreement, Palmquay's fee (<span class="n" data-b="b.rule.fee_pct">9</span>% of rent actually collected) moves from there to its own operating account, and that's where its people get paid. Client funds and tenant deposits never pay Palmquay's payroll. Repairs up to <span class="n" data-b="b.rule.limit">$500.00</span> are paid from the owner's funds; above that the owner approves first. A <span class="n" data-b="b.rule.reserve">$500.00</span> reserve stays for repairs, and the rest goes to the owner. Below: the first full month for the two homes with tenants (scripted after the demo date, like the furnishing project). The AI drafts the statements and the payment batch; Owen Pratt (Trust Accountant) reviews them, and a person releases the payments in the bank's system.</p><div class="scroll"><table><thead><tr><th>Owner statement, December</th>
+<th class="num">James Brandt and Kelly Brandt</th>
+<th class="num">Beverly Haddad</th>
+</tr>
+</thead><tbody><tr><td>Owner funds at the start of the month (the reserve)</td>
+<td class="num"><span class="n" data-b="b.st.brandt.opening">$500.00</span></td>
+<td class="num"><span class="n" data-b="b.st.haddad.opening">$500.00</span></td>
+</tr>
+<tr><td>Rent collected</td>
+<td class="num"><span class="n" data-b="b.st.brandt.rent">$2,050.00</span></td>
+<td class="num"><span class="n" data-b="b.st.haddad.rent">$2,350.00</span></td>
+</tr>
+<tr><td>Management fee</td>
+<td class="num">-<span class="n" data-b="b.st.brandt.fee">$184.50</span></td>
+<td class="num">-<span class="n" data-b="b.st.haddad.fee">$211.50</span></td>
+</tr>
+<tr><td>Repairs paid</td>
+<td class="num">-<span class="n" data-b="b.st.brandt.repairs_paid">$185.00</span></td>
+<td class="num">-<span class="n" data-b="b.st.haddad.repairs_paid">$0.00</span></td>
+</tr>
+<tr><td>Held for the owner&#x27;s approval</td>
+<td class="num">-<span class="n" data-b="b.st.brandt.held">$0.00</span></td>
+<td class="num">-<span class="n" data-b="b.st.haddad.held">$640.00</span></td>
+</tr>
+<tr><td>Reserve kept for repairs</td>
+<td class="num">-<span class="n" data-b="b.st.brandt.reserve_kept">$500.00</span></td>
+<td class="num">-<span class="n" data-b="b.st.haddad.reserve_kept">$500.00</span></td>
+</tr>
+<tr class=bh-total><td>Proposed payout to the owner</td>
+<td class="num"><span class="n" data-b="b.st.brandt.payout">$1,680.50</span></td>
+<td class="num"><span class="n" data-b="b.st.haddad.payout">$1,498.50</span></td>
+</tr>
+</tbody></table></div>
+<div class="scroll"><table><thead><tr><th>Payment batch (draft)</th>
+<th>What</th>
+<th class="num">Amount</th>
+<th>Status</th>
+</tr>
+</thead><tbody><tr><td>Palmquay Properties (its operating account)</td>
+<td>management fee on James Brandt and Kelly Brandt&#x27;s rent</td>
+<td class="num"><span class="n" data-b="b.st.brandt.fee">$184.50</span></td>
+<td class="muted">draft, not paid</td>
+</tr>
+<tr><td>Coastline Air Service</td>
+<td>A/C tune-up at James Brandt and Kelly Brandt&#x27;s home</td>
+<td class="num"><span class="n" data-b="b.batch.CAS-1207">$185.00</span></td>
+<td class="muted">draft, not paid</td>
+</tr>
+<tr><td>Owner payout to James Brandt and Kelly Brandt</td>
+<td>ACH to the confirmed account</td>
+<td class="num"><span class="n" data-b="b.st.brandt.payout">$1,680.50</span></td>
+<td class="muted">draft, not paid</td>
+</tr>
+<tr><td>Palmquay Properties (its operating account)</td>
+<td>management fee on Beverly Haddad&#x27;s rent</td>
+<td class="num"><span class="n" data-b="b.st.haddad.fee">$211.50</span></td>
+<td class="muted">draft, not paid</td>
+</tr>
+<tr><td>Owner payout to Beverly Haddad</td>
+<td>ACH to the confirmed account</td>
+<td class="num"><span class="n" data-b="b.st.haddad.payout">$1,498.50</span></td>
+<td class="muted">draft, not paid</td>
+</tr>
+<tr class="bh-total"><td>Total</td>
+<td></td>
+<td class="num"><span class="n" data-b="b.batch.total">$3,760.00</span></td>
+<td></td>
+</tr>
+<tr><td>Mangrove Plumbing Co.</td>
+<td>held: <span class="code" data-src="money/out/payment-batch-2026-12.json" title="Quoted from money/out/payment-batch-2026-12.json">INVOICE_NEEDS_OWNER_APPROVAL</span> (a quote over the limit for work not yet done; nothing scheduled or paid; held on that owner's ledger as the agreement allows; Lena Ortiz has a draft asking the owner)</td>
+<td class="num"><span class="n" data-b="b.batch.MPC-0412">$640.00</span></td>
+<td class="muted">not in the batch</td>
+</tr>
+</tbody></table></div>
+<!-- /money --></div>
+<div data-money><h2>Month-end trust check</h2><p class="lead">A summary of the written monthly reconciliation Florida's broker rule (61J2-14.012) requires for each trust account: the bank balance, the brokerage's books, and what it owes clients should agree, and any difference is explained with the corrective action. Owen Pratt prepares it; Gail Mercer signs and dates it (blank here). "Bank" is the statement balance at month end; every December payment had cleared. The deposit account shows an unresolved funding shortfall: the part of one tenant's deposit the outgoing manager hasn't transferred. The tenant's credit stays at the full amount, no other client's money covers it. As of month end, the written demand drafted in November has no answer on file, so the report names the next step for people to decide: a second demand, and whether to bring in counsel.</p><div class="scroll"><table><thead><tr><th>Account, end of December</th>
+<th class="num">Bank</th>
+<th class="num">Books</th>
+<th class="num">Owed to clients</th>
+<th class="num">Difference</th>
+</tr>
+</thead><tbody><tr><td>Owner funds trust account</td>
+<td class="num"><span class="n" data-b="b.rec.own.bank">$1,640.00</span></td>
+<td class="num"><span class="n" data-b="b.rec.own.book">$1,640.00</span></td>
+<td class="num"><span class="n" data-b="b.rec.own.liabilities">$1,640.00</span></td>
+<td class="num"><span class="n" data-b="b.rec.own.difference">$0.00</span></td>
+</tr>
+<tr><td>Tenant deposit trust account</td>
+<td class="num"><span class="n" data-b="b.rec.dep.bank">$4,300.00</span></td>
+<td class="num"><span class="n" data-b="b.rec.dep.book">$4,300.00</span></td>
+<td class="num"><span class="n" data-b="b.rec.dep.liabilities">$4,500.00</span></td>
+<td class="num"><span class="n" data-b="b.rec.dep.difference">$200.00</span></td>
+</tr>
+</tbody></table></div>
+<!-- /money --></div>
+<div data-money><h2>What Palmquay earns, and what the workflow is worth</h2><p class="lead">The question an owner of a management company asks first. Facts below come from the sample records; the numbers marked "assumption" are starting points to replace with your own.</p><ul class="plain"><li><b>Earned in December</b> (management fees from the two homes with tenants): <span class="n" data-b="b.eco.december_fees">$396.00</span>.</li>
+<li><b>A full-occupancy scenario:</b> if all <span class="n" data-b="b.eco.doors">8</span> doors are rented at the rent to plan on and every rent is collected, <span class="n" data-b="b.eco.monthly_fees_all_rented">$1,687.50</span> a month in management fees alone, about <span class="n" data-b="b.eco.revenue_per_door_month">$210.94</span> per door. For context only, not a like-for-like comparison: an industry survey (<span class="src" data-src="money/inputs/assumptions.json" title="Quoted from money/inputs/assumptions.json">NARPM&#x27;s 2022 Financial Performance Guide, 2021 data</span>) reported about <span class="n" data-b="b.bench.rpu">$222.00</span> of revenue per occupied home a month from all fees among its participants, and an adjusted average profit margin of about <span class="n" data-b="b.bench.margin">11</span>% after normalizing owner pay. It is historical, and not a Sarasota figure.</li>
+<li><b>Possible leasing fees:</b> placing tenants in the <span class="n" data-b="b.eco.vacant">6</span> vacant homes earns <span class="n" data-b="b.eco.leasing_fees_vacant">$10,762.50</span> once, when each lease is signed (<span class="n" data-b="b.rule.leasing_pct">75</span>% of each first month's rent).</li>
+<li><b>A slow day costs both sides:</b> every day those homes sit unrented, owners miss <span class="n" data-b="b.eco.vacant_rent_per_day">$478.33</span> in rent and Palmquay <span class="n" data-b="b.eco.vacant_fee_per_day">$43.05</span> in fees (a <span class="n" data-b="b.rule.days_month">30</span>-day month). If problems surface on day one and each home's rent starts <span class="n" data-b="b.as.days">5</span> days earlier (assumption), and the rent is collected, owners get <span class="n" data-b="b.eco.rent_sooner">$2,391.67</span> of additional gross rent and Palmquay <span class="n" data-b="b.eco.fees_sooner">$215.25</span> of additional fees.</li>
+<li><b>Staff time:</b> <span class="n" data-b="b.as.min_hand">180</span> minutes per new owner by hand vs. <span class="n" data-b="b.as.min_sys">60</span> reviewing the AI's drafts (assumptions), at <span class="n" data-b="b.as.cost_hour">$25.00</span> an hour for a coordinator, pay plus taxes and benefits (assumption): <span class="n" data-b="b.eco.staff_saved_per_owner">$50.00</span> per owner, <span class="n" data-b="b.eco.staff_saved_all">$400.00</span> for these owners. That is time freed for more doors or other work; it becomes cash saved only if paid hours actually go down.</li>
+</ul><!-- /money --></div>
+<h2>The records behind each owner</h2><details><summary>James Brandt and Kelly Brandt: Single-family house, Gullhaven Ter, Bradenton (Manatee County) (<span class="chip st-READY"><i aria-hidden="true">&#10003;</i>READY</span>)</summary><h4><code>owners/brandt/documents/ach.md</code></h4><pre data-file="owners/brandt/documents/ach.md"># Owner payment (ACH direct deposit) authorization (sample)
 
 *Sample records for a demo. Not a real person, property, policy, bank account, or tax ID.*
 
@@ -4086,7 +4270,7 @@ Not on this sheet: The walk-through, condition photos, repairs, utilities, rent 
 | Management accepted | Gail Mercer, Broker of Record | Blocked: AGREEMENT_UNSIGNED_OWNER | | |
 | Accounting approved | Owen Pratt, Trust Accountant | Nothing blocking | | |
 | Leasing-ready or takeover complete | Lena Ortiz, Property Manager | Blocked: LEAD_DISCLOSURE_MISSING | | |
-| Entered in the software by a person | Talia Brooks, Owner Onboarding Coordinator | After the three above | | |</pre></details><h2>The new-owner log</h2><p class="lead">Its own append-only log, <code>audit/owners-log.csv</code>: <span class="n" data-k="o.rows">26</span> rows, one per action; the hash chain verifies. Kept apart from the four logs the Audit log tab replays.</p><div class="scroll"><table class="log"><thead><tr><th>Time</th>
+| Entered in the software by a person | Talia Brooks, Owner Onboarding Coordinator | After the three above | | |</pre></details><h2>The new-owner log</h2><p class="lead">Its own append-only log, <code>audit/owners-log.csv</code>: <span class="n" data-k="o.rows">32</span> rows, one per action; the hash chain verifies. Kept apart from the four logs the Audit log tab replays.</p><div class="scroll"><table class="log"><thead><tr><th>Time</th>
 <th>Actor</th>
 <th>Owner</th>
 <th>Action</th>
@@ -4243,6 +4427,42 @@ Not on this sheet: The walk-through, condition photos, repairs, utilities, rent 
 <td>DRAFTED; not entered in any software; 4 sign-offs blank</td>
 </tr>
 <tr><td class="nowrap">2026-11-10T10:33:56</td>
+<td>owner-assistant</td>
+<td>all owners</td>
+<td>checker_review</td>
+<td>overall PASS</td>
+</tr>
+<tr><td class="nowrap">2026-11-10T10:56:59</td>
+<td>owner-assistant</td>
+<td>all owners</td>
+<td>acceptance_review</td>
+<td>DRAFTED; 6 accept, 2 conditional suggested; decisions left blank for the broker, not signed</td>
+</tr>
+<tr><td class="nowrap">2026-11-10T10:57:00</td>
+<td>owner-assistant</td>
+<td>brandt + haddad</td>
+<td>month_close</td>
+<td>DRAFTED; statements not sent, batch not paid, reconciliation not signed</td>
+</tr>
+<tr><td class="nowrap">2026-11-10T10:58:05</td>
+<td>owner-assistant</td>
+<td>brandt + haddad</td>
+<td>month_close</td>
+<td>DRAFTED; statements not sent, batch not paid, reconciliation not signed; earlier run set aside in money/discarded-first-month/</td>
+</tr>
+<tr><td class="nowrap">2026-11-10T11:06:08</td>
+<td>owner-assistant</td>
+<td>brandt + haddad</td>
+<td>month_close</td>
+<td>DRAFTED; statements not sent, batch not paid, reconciliation not signed; earlier run set aside in money/discarded-first-month/</td>
+</tr>
+<tr><td class="nowrap">2026-11-10T11:16:41</td>
+<td>owner-assistant</td>
+<td>brandt + haddad</td>
+<td>month_close</td>
+<td>DRAFTED; statements not sent, batch not paid, reconciliation not signed; earlier run set aside in money/discarded-first-month/</td>
+</tr>
+<tr><td class="nowrap">2026-11-10T11:26:00</td>
 <td>owner-assistant</td>
 <td>all owners</td>
 <td>checker_review</td>
@@ -4991,7 +5211,7 @@ Palmquay Properties (fictional)</pre></details><details><summary><code>projects/
 | INV-GW-5521 | MATCH | as ordered |  |  |
 | INV-KC-3307 | HOLD | $872 | $713 | $159 |
 
-Payment is approved by Finance (?). The assistant flags differences and never marks an invoice paid.</pre></details></section><section data-tab="checks" id="tab-checks"><h2>Acceptance checks</h2><p class="lead">Each check was written before the work it tests, recomputes every result its own way, and prints what it counted. A check that can't fail proves nothing, so each check script also has a self-test that plants breaks in a throwaway copy. The suite has <span class="n" data-k="c.suite">94</span> checks, and every one runs on each push. The first rows were re-run when this page was built; the rest test this page itself or the PDFs, so they run after it.</p><table data-audit><thead><tr><th>Phase</th>
+Payment is approved by Finance (?). The assistant flags differences and never marks an invoice paid.</pre></details></section><section data-tab="checks" id="tab-checks"><h2>Acceptance checks</h2><p class="lead">Each check was written before the work it tests, recomputes every result its own way, and prints what it counted. A check that can't fail proves nothing, so each check script also has a self-test that plants breaks in a throwaway copy. The suite has <span class="n" data-k="c.suite">102</span> checks, and every one runs on each push. The first rows were re-run when this page was built; the rest test this page itself or the PDFs, so they run after it.</p><table data-audit><thead><tr><th>Phase</th>
 <th>What it checks</th>
 <th>Result</th>
 </tr>
@@ -5035,21 +5255,25 @@ Payment is approved by Finance (?). The assistant flags differences and never ma
 <td>The New owners tab: every owner recounted from the raw packets against a locked answer key, the drafts, the setup sheets, the owners log, and every number on that tab</td>
 <td><span class="n" data-k="c.suite.phase3g">9</span> checks, run after the build and on every push</td>
 </tr>
+<tr><td><span class="id plain">Phase 3h</span></td>
+<td>The business side of the New owners tab: the acceptance review, the month&#x27;s statements and payment batch, the trust reconciliation, and the firm&#x27;s numbers, recounted to the cent from the inputs</td>
+<td><span class="n" data-k="c.suite.phase3h">8</span> checks, run after the build and on every push</td>
+</tr>
 </tbody></table><details><summary>Phase 1: every line it printed (0.2 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
 PASS - C2 CLAUDE.md states every rule and matches rules.json - 34 of 34 found; missing []
 PASS - C3 8 vendors, each with its record and exactly the key&#x27;s documents - 8 folders, 8 records, 8 of 8 document sets match
 PASS - C4 recomputed from the documents = answer key - 8 of 8 match; mismatches {}
 PASS - C4b the key covers every planted problem + a clean small and a clean large job - 6 of 6 problem types; clean small [&#x27;kestrelbay-air-heat&#x27;]; clean large [&#x27;skyquay-lift-fire&#x27;]
 PASS - C5 answer key unchanged since it was locked - lock 973099662faf..., now 973099662faf...
-PASS - C6 no personal words; every ID is visibly marked as sample - 438 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked as sample
-PASS - C7 README maps each piece (industry term + resume line) - 66 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;, &#x27;`dashboard/by-hand.json` + the By hand vs. system tab&#x27;, &#x27;`tests/check_phase3f.py`&#x27;, &#x27;`tools/make_owners.py`&#x27;, &#x27;`company/owner-rules.json`&#x27;, &#x27;`tools/owners.py`&#x27;, &#x27;`/owner-intake` skill&#x27;, &#x27;`/takeover` skill&#x27;, &#x27;`/owner-chase` skill&#x27;, &#x27;`/owner-setup` skill&#x27;, &#x27;`tests/check_phase3g.py`&#x27;, &#x27;`audit/owners-log.csv`&#x27;, &#x27;`tests/suite.json`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (6.5 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
+PASS - C6 no personal words; every ID is visibly marked as sample - 488 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked as sample
+PASS - C7 README maps each piece (industry term + resume line) - 69 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;, &#x27;`dashboard/by-hand.json` + the By hand vs. system tab&#x27;, &#x27;`tests/check_phase3f.py`&#x27;, &#x27;`tools/make_owners.py`&#x27;, &#x27;`company/owner-rules.json`&#x27;, &#x27;`tools/owners.py`&#x27;, &#x27;`/owner-intake` skill&#x27;, &#x27;`/takeover` skill&#x27;, &#x27;`/owner-chase` skill&#x27;, &#x27;`/owner-setup` skill&#x27;, &#x27;`tests/check_phase3g.py`&#x27;, &#x27;`audit/owners-log.csv`&#x27;, &#x27;`money/inputs/`&#x27;, &#x27;`tools/money.py`&#x27;, &#x27;`tests/check_phase3h.py`&#x27;, &#x27;`tests/suite.json`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (7.3 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
 PASS - P1b /status prints one correct line per vendor - exit 0; 8 lines; 8 of 8 right (stage, status, blocker, days waiting); problems {} 
 PASS - P2 /chase: 1 good draft per BLOCKED/HOLD vendor, 0 sends - 6 of 6 drafts pass (vendor, item, why, deadline 2026-11-12, how to send, .example contact, no threats, no unsupported facts); 0 drafts for READY vendors []; sends 0 (audit rows marked sent 0, network imports []); problems {}
 PASS - P3 /route: packet for each READY vendor, approvers in order, sign-offs blank - 2 of 2 packets pass; packets for vendors not READY []; approvers {&#x27;kestrelbay-air-heat&#x27;: [&#x27;Facilities Manager&#x27;], &#x27;skyquay-lift-fire&#x27;: [&#x27;Facilities Manager&#x27;, &#x27;Procurement Lead&#x27;, &#x27;Legal&#x27;, &#x27;Finance&#x27;]}; problems {}
 PASS - P4 read-only compliance-checker reviewed everything and caught both plants - agent tools [&#x27;Glob&#x27;, &#x27;Grep&#x27;, &#x27;Read&#x27;]; latest review reviews/2026-11-05-02-all-vendors.md: 18 files, 18 unchanged since review; 16 of 16 real files marked OK by the checker; planted wrong deadline caught True; planted missed name mismatch caught True; problems []
 PASS - P5 audit log: 1 row per action, append-only (hash chain) - 18 rows; 18 actions taken (8 intake + 6 chase drafts + 2 route packets + 2 checker reviews); chain 18 of 18 rows verify; problems []
-PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 438 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
-PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 66 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (6.8 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
+PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 488 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
+PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 69 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (7.3 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
 PASS - Q0b recomputed from the inputs = answer key (the data really has the planted problems) - 7 activities recomputed; differ from key []; PO total recomputed 4898 vs stated 4898; error none
 PASS - Q1 /scope: brief = key; every request field in brief.md; nothing invented - projects/unit-4b/out/brief.json: = key; 16 of 16 request fields in brief.md; invented measurement False
 PASS - Q2 /source: late items and the in-time alternative = key - projects/unit-4b/out/source.json: = key
@@ -5101,7 +5325,9 @@ python -I -X utf8 tests/check_orgchart.py
 python -I -X utf8 tests/check_phase3f.py
 python -I -X utf8 tests/check_phase3f.py --selftest
 python -I -X utf8 tests/check_phase3g.py
-python -I -X utf8 tests/check_phase3g.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">6</span>.</p><table data-audit><thead><tr><th>When</th>
+python -I -X utf8 tests/check_phase3g.py --selftest
+python -I -X utf8 tests/check_phase3h.py
+python -I -X utf8 tests/check_phase3h.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">6</span>.</p><table data-audit><thead><tr><th>When</th>
 <th>Subject</th>
 <th>What it reviewed</th>
 <th>Result</th>
@@ -5540,7 +5766,7 @@ python -I -X utf8 tests/check_phase3g.py --selftest</pre></details><h2>The check
     <div class="dg-ctrl"><b>People approve</b>The AI never sends, signs, orders, or pays. It stops and asks.<span class="dg-term">human in the loop, segregation of duties</span></div>
     <div class="dg-ctrl"><b>A second AI, the checker</b>Set up to only read, it reviews the work, with planted mistakes mixed in.<span class="dg-term">maker-checker review, least privilege by design</span></div>
     <div class="dg-ctrl"><b>Audit log</b>Every action is one row. Rows are hash-chained, so an edit shows.<span class="dg-term">audit trail, tamper evidence</span></div>
-    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 94 of 94 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
+    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 102 of 102 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
     <div class="dg-ctrl"><b>One screen</b>A dashboard rebuilt from the records; a test recounts every number in its tiles and tables.<span class="dg-term">observability, reconciliation</span></div>
   </div>
 

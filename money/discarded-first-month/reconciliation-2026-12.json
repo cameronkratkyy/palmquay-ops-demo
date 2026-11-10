@@ -1,0 +1,14 @@
+{
+ "owner_funds": {
+  "bank": 164000,
+  "book": 164000,
+  "liabilities": 164000,
+  "difference": 0
+ },
+ "deposits": {
+  "bank": 430000,
+  "book": 430000,
+  "liabilities": 450000,
+  "difference": 20000
+ }
+}

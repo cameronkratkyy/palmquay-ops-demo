@@ -1,0 +1,56 @@
+{
+ "lines": [
+  {
+   "payee": "Palmquay Properties operating account",
+   "what": "management fee, 9% of rent collected (brandt)",
+   "amount": 18450,
+   "source": "rent received 2026-12-01, money/inputs/month-2026-12.md",
+   "authority": "the owner's management agreement",
+   "status": "draft, not paid"
+  },
+  {
+   "payee": "Coastline Air Service (fictional)",
+   "what": "A/C tune-up (brandt)",
+   "invoice": "CAS-1207",
+   "amount": 18500,
+   "source": "invoice CAS-1207",
+   "authority": "under the $500.00 repair limit in the fee schedule",
+   "status": "draft, not paid"
+  },
+  {
+   "payee": "owner payout (brandt)",
+   "what": "owner distribution by ACH",
+   "amount": 168050,
+   "source": "money/out/statements/2026-12-brandt.md",
+   "authority": "the owner's management agreement; account confirmed by call on 2026-11-16",
+   "status": "draft, not paid"
+  },
+  {
+   "payee": "Palmquay Properties operating account",
+   "what": "management fee, 9% of rent collected (haddad)",
+   "amount": 21150,
+   "source": "rent received 2026-12-01, money/inputs/month-2026-12.md",
+   "authority": "the owner's management agreement",
+   "status": "draft, not paid"
+  },
+  {
+   "payee": "owner payout (haddad)",
+   "what": "owner distribution by ACH",
+   "amount": 149850,
+   "source": "money/out/statements/2026-12-haddad.md",
+   "authority": "the owner's management agreement; account confirmed by call on 2026-11-16",
+   "status": "draft, not paid"
+  }
+ ],
+ "held": [
+  {
+   "invoice": "MPC-0412",
+   "payee": "Mangrove Plumbing Co. (fictional)",
+   "owner": "haddad",
+   "amount": 64000,
+   "code": "INVOICE_NEEDS_OWNER_APPROVAL",
+   "reason": "over the $500.00 repair limit, and no owner approval on file"
+  }
+ ],
+ "total": 376000
+}

@@ -1084,6 +1084,133 @@ def o_waiting():
     return w
 
 
+# ------------------------------------------------------------- Phase 3h: the business side -------------------------------------------------------------
+# 11/10 (the author: "they care about how much money they are making and how their employees get paid ... how does this benefit the money we
+# make"). Reads money/inputs/ and money/out/; every number is a data-b span that tests/check_phase3h.py recounts in cents from the inputs.
+def m_usd(cents):
+    return f"${cents // 100:,}.{cents % 100:02d}"
+
+
+def mb(key, value, is_money=True):
+    return f'<span class="n" data-b="{key}">{m_usd(value) if is_money else value}</span>'
+
+
+def money_sections():
+    base = path("money", "out")
+    if not os.path.exists(os.path.join(base, "economics.json")):
+        return ""
+    fs = jread("money", "inputs", "fee-schedule.json")
+    asm = jread("money", "inputs", "assumptions.json")
+    acc = jread("money", "out", "acceptance.json")
+    st = jread("money", "out", "statements.json")
+    pb = jread("money", "out", "payment-batch-2026-12.json")
+    rc = jread("money", "out", "reconciliation-2026-12.json")
+    eco = jread("money", "out", "economics.json")
+    gm, ta, pm = o_team.get("Broker of Record", ""), o_team.get("Trust Accountant", ""), o_team.get("Property Manager", "")
+    name = lambda o: OW[o]["intake"]["name"].replace("; ", " and ") if o in OW else o
+    pct = mb("b.rule.fee_pct", fs["management_fee_pct"], False)
+
+    rows = []
+    for o, a in acc.items():
+        now = (f'owner asked {mb(f"b.acc.{o}.asked", a["asked"])}' if a["asked"] is not None else f'tenant pays {mb(f"b.acc.{o}.lease", a["lease"])}')
+        flags = " ".join(q("money/out/acceptance.json", f_, "code") for f_ in a["flags"]) or "none"
+        rows.append(f'<tr><td>{E(name(o))}</td><td>{now}</td><td>{mb(f"b.acc.{o}.lo", a["range"][0])} to {mb(f"b.acc.{o}.hi", a["range"][1])}</td>'
+                    f'<td>{mb(f"b.acc.{o}.plan", a["proposed"])}</td><td>{mb(f"b.acc.{o}.ready", a["ready"])} vs {mb(f"b.acc.{o}.fund", a["fund"])}</td>'
+                    f'<td>{flags}</td><td>{chip("OK" if a["suggest"] == "ACCEPT" else "HOLD", a["suggest"].title())}</td><td class="muted">blank: {E(gm)} decides</td></tr>')
+    n_acc = sum(a["suggest"] == "ACCEPT" for a in acc.values())
+    s1 = ('<div data-money><h2>Before signing: is the door worth taking?</h2><p class="lead">A management company earns nothing from a home it can\'t '
+          'rent at a price the owner accepts, or one that needs repairs nobody has paid for. So before the agreement, staff gather leased rents for '
+          'similar homes nearby and walk the home; the AI compares the owner\'s ask with that evidence and the repair estimate with the money set aside, '
+          f'and drafts a suggestion. {E(gm)} (Broker of Record) decides: accept, accept with conditions, or decline. Suggested here: '
+          f'{mb("b.acc.accept", n_acc, False)} accept, {mb("b.acc.conditional", len(acc) - n_acc, False)} with conditions (agree a listing rent the '
+          'evidence supports; the owner funds the repair gap first). A declined owner never reaches the list above. Three comparables, the middle one, '
+          'the reserve, and the repair limit are Palmquay\'s own policy and agreement terms, not Florida law; the broker also weighs condition, lease '
+          'dates, and concessions before adopting a rent.</p>'
+          '<div class="scroll"><table><thead><tr><th>Owner</th><th>Rent now</th><th>Leased comparables</th><th>Rent to plan on</th>'
+          '<th>Repairs vs money set aside</th><th>AI flags</th><th>AI suggests</th><th>Decision</th></tr></thead><tbody>'
+          + "".join(rows) + '</tbody></table></div><!-- /money --></div>')
+
+    lines = [("Owner funds at the start of the month (the reserve)", "opening", ""), ("Rent collected", "rent", ""),
+             ("Management fee", "fee", "-"), ("Repairs paid", "repairs_paid", "-"), ("Held for the owner's approval", "held", "-"),
+             ("Reserve kept for repairs", "reserve_kept", "-"), ("Proposed payout to the owner", "payout", "")]
+    owners_ = list(st)
+    srows = "".join(f'<tr{" class=bh-total" if k_ == "payout" else ""}><td>{E(lab)}</td>'
+                    + "".join(f'<td class="num">{sign}{mb(f"b.st.{o}.{k_}", st[o][k_])}</td>' for o in owners_) + "</tr>" for lab, k_, sign in lines)
+    held = pb["held"]
+    def bline(l):
+        o = re.search(r"\((\w+)\)\s*$", l["what"] if not l["payee"].startswith("owner payout") else l["payee"]).group(1)
+        if l["payee"].startswith("owner payout"):
+            who_, what_ = f"Owner payout to {name(o)}", "ACH to the confirmed account"
+        elif l.get("invoice"):
+            who_, what_ = l["payee"].replace(" (fictional)", ""), re.sub(r"\s*\(\w+\)$", "", l["what"]) + f" at {name(o)}'s home"
+        else:
+            who_, what_ = "Palmquay Properties (its operating account)", f"management fee on {name(o)}'s rent"
+        amt = mb("b.batch." + l["invoice"], l["amount"]) if l.get("invoice") else m_usd_tag(l)
+        return f'<tr><td>{E(who_)}</td><td>{E(what_)}</td><td class="num">{amt}</td><td class="muted">{E(l["status"])}</td></tr>'
+    brows = "".join(bline(l) for l in pb["lines"])
+    s2 = ('<div data-money><h2>December: where each dollar goes</h2><p class="lead">This is how the owner, the vendors, and Palmquay itself get paid. '
+          f'Rent lands in the owner-funds trust account. Once earned under the agreement, Palmquay\'s fee ({pct}% of rent actually collected) moves from '
+          'there to its own operating account, and that\'s where its people get paid. Client funds and tenant deposits never pay Palmquay\'s payroll. Repairs up to '
+          f'{mb("b.rule.limit", fs["repair_approval_limit"] * 100)} are paid from the owner\'s funds; above that the owner approves first. A '
+          f'{mb("b.rule.reserve", fs["owner_reserve"] * 100)} reserve stays for repairs, and the rest goes to the owner. Below: the first full month for '
+          f'the two homes with tenants (scripted after the demo date, like the furnishing project). The AI drafts the statements and the payment batch; '
+          f'{E(ta)} (Trust Accountant) reviews them, and a person releases the payments in the bank\'s system.</p>'
+          '<div class="scroll"><table><thead><tr><th>Owner statement, December</th>' + "".join(f"<th class=\"num\">{E(name(o))}</th>" for o in owners_)
+          + '</tr></thead><tbody>' + srows + '</tbody></table></div>'
+          '<div class="scroll"><table><thead><tr><th>Payment batch (draft)</th><th>What</th><th class="num">Amount</th><th>Status</th></tr></thead><tbody>'
+          + brows + f'<tr class="bh-total"><td>Total</td><td></td><td class="num">{mb("b.batch.total", pb["total"])}</td><td></td></tr>'
+          + "".join(f'<tr><td>{E(h["payee"].replace(" (fictional)", ""))}</td><td>held: {q("money/out/payment-batch-2026-12.json", h["code"], "code")} '
+                    f'(a quote over the limit for work not yet done; nothing scheduled or paid; held on that owner\'s ledger as the agreement allows; {E(pm)} has a draft asking the owner)</td><td class="num">{mb("b.batch." + h["invoice"], h["amount"])}</td>'
+                    '<td class="muted">not in the batch</td></tr>' for h in held)
+          + '</tbody></table></div><!-- /money --></div>')
+
+    rr = "".join(f'<tr><td>{lab}</td><td class="num">{mb(f"b.rec.{k_}.bank", rc[a_]["bank"])}</td><td class="num">{mb(f"b.rec.{k_}.book", rc[a_]["book"])}</td>'
+                 f'<td class="num">{mb(f"b.rec.{k_}.liabilities", rc[a_]["liabilities"])}</td><td class="num">{mb(f"b.rec.{k_}.difference", rc[a_]["difference"])}</td></tr>'
+                 for lab, a_, k_ in (("Owner funds trust account", "owner_funds", "own"), ("Tenant deposit trust account", "deposits", "dep")))
+    s3 = ('<div data-money><h2>Month-end trust check</h2><p class="lead">A summary of the written monthly reconciliation Florida\'s broker rule '
+          '(61J2-14.012) requires for each trust account: the bank balance, the brokerage\'s books, and what it owes clients should agree, and any '
+          f'difference is explained with the corrective action. {E(ta)} prepares it; {E(gm)} signs and dates it (blank here). "Bank" is the statement '
+          'balance at month end; every December payment had cleared. The deposit account shows an unresolved funding shortfall: the part of one '
+          'tenant\'s deposit the outgoing manager hasn\'t transferred. The tenant\'s credit stays at the full amount, no other client\'s money covers '
+          'it. As of month end, the written demand drafted in November has no answer on file, so the report names the next step for people to '
+          'decide: a second demand, and whether to bring in counsel.</p>'
+          '<div class="scroll"><table><thead><tr><th>Account, end of December</th><th class="num">Bank</th><th class="num">Books</th>'
+          '<th class="num">Owed to clients</th><th class="num">Difference</th></tr></thead><tbody>' + rr + '</tbody></table></div><!-- /money --></div>')
+
+    e = eco
+    bench = q("money/inputs/assumptions.json", "NARPM's 2022 Financial Performance Guide, 2021 data")
+    s4 = ('<div data-money><h2>What Palmquay earns, and what the workflow is worth</h2><p class="lead">The question an owner of a management company '
+          'asks first. Facts below come from the sample records; the numbers marked "assumption" are starting points to replace with your own.</p>'
+          '<ul class="plain">'
+          f'<li><b>Earned in December</b> (management fees from the two homes with tenants): {mb("b.eco.december_fees", e["december_fees"])}.</li>'
+          f'<li><b>A full-occupancy scenario:</b> if all {mb("b.eco.doors", len(acc), False)} doors are rented at the rent to plan on and every rent is collected, '
+          f'{mb("b.eco.monthly_fees_all_rented", e["monthly_fees_all_rented"])} a month in management fees alone, about {mb("b.eco.revenue_per_door_month", e["revenue_per_door_month"])} '
+          f'per door. For context only, not a like-for-like comparison: an industry survey ({bench}) reported about {mb("b.bench.rpu", asm["benchmark"]["revenue_per_unit_month"] * 100)} '
+          f'of revenue per occupied home a month from all fees among its participants, and an adjusted average profit margin of about '
+          f'{mb("b.bench.margin", asm["benchmark"]["profit_margin_pct"], False)}% after normalizing owner pay. It is historical, and not a Sarasota figure.</li>'
+          f'<li><b>Possible leasing fees:</b> placing tenants in the {mb("b.eco.vacant", sum(1 for a in acc.values() if a["lease"] is None), False)} vacant homes earns '
+          f'{mb("b.eco.leasing_fees_vacant", e["leasing_fees_vacant"])} once, when each lease is signed ({mb("b.rule.leasing_pct", fs["leasing_fee_pct_of_first_month"], False)}% of each first month\'s rent).</li>'
+          f'<li><b>A slow day costs both sides:</b> every day those homes sit unrented, owners miss {mb("b.eco.vacant_rent_per_day", e["vacant_rent_per_day"])} in rent and '
+          f'Palmquay {mb("b.eco.vacant_fee_per_day", e["vacant_fee_per_day"])} in fees (a {mb("b.rule.days_month", fs["days_in_month_convention"], False)}-day month). '
+          f'If problems surface on day one and each home\'s rent starts {mb("b.as.days", asm["days_sooner"], False)} days earlier (assumption), and the rent is collected, '
+          f'owners get {mb("b.eco.rent_sooner", e["rent_sooner"])} of additional gross rent and Palmquay {mb("b.eco.fees_sooner", e["fees_sooner"])} of additional fees.</li>'
+          f'<li><b>Staff time:</b> {mb("b.as.min_hand", asm["minutes_per_owner_by_hand"], False)} minutes per new owner by hand vs. '
+          f'{mb("b.as.min_sys", asm["minutes_per_owner_with_system"], False)} reviewing the AI\'s drafts (assumptions), at {mb("b.as.cost_hour", asm["coordinator_cost_per_hour"] * 100)} '
+          f'an hour for a coordinator, pay plus taxes and benefits (assumption): {mb("b.eco.staff_saved_per_owner", e["staff_saved_per_owner"])} per owner, '
+          f'{mb("b.eco.staff_saved_all", e["staff_saved_all"])} for these owners. That is time freed for more doors or other work; it becomes cash saved only if paid hours actually go down.</li>'
+          '</ul><!-- /money --></div>')
+    return ('<h2>The business side</h2><p class="lead">Paperwork is the means; the money is the point. Four views: whether to take a home, '
+            'where a month\'s money goes and who gets paid, the trust check at month end, and what it all means for the firm.</p>'
+            + s1 + s2 + s3 + s4)
+
+
+def m_usd_tag(l):
+    """A batch line without an invoice: a fee or a payout, tagged by its statement key."""
+    o = l["payee"].split("(")[-1].rstrip(")") if l["payee"].startswith("owner payout") else l["what"].split("(")[-1].rstrip(")")
+    k_ = "payout" if l["payee"].startswith("owner payout") else "fee"
+    return mb(f"b.st.{o}.{k_}", l["amount"])
+
+
 def owners_tab():
     if not OW:
         return '<h2>New owners</h2><p class="lead">Not run yet.</p>'
@@ -1294,7 +1421,7 @@ def owners_tab():
             '<div class="scroll"><table class="log"><thead><tr><th>Time</th><th>Actor</th><th>Owner</th><th>Action</th><th>Result</th></tr></thead>'
             f"<tbody>{lrows}</tbody></table></div>")
     return (lead + bar + strip + owners_t + matrix + waiting_t + tenants + problems + open_
-            + "<h2>The records behind each owner</h2>" + "".join(ev_) + log_)
+            + money_sections() + "<h2>The records behind each owner</h2>" + "".join(ev_) + log_)
 
 
 def checks():
@@ -1314,7 +1441,9 @@ def checks():
              "phase3f": ("Phase 3f", "The By hand vs. system tab: every count recounted from the raw records, every minute labeled as an assumption, "
                                      "and one check count everywhere"),
              "phase3g": ("Phase 3g", "The New owners tab: every owner recounted from the raw packets against a locked answer key, the drafts, "
-                                     "the setup sheets, the owners log, and every number on that tab")}
+                                     "the setup sheets, the owners log, and every number on that tab"),
+             "phase3h": ("Phase 3h", "The business side of the New owners tab: the acceptance review, the month's statements and payment batch, "
+                                     "the trust reconciliation, and the firm's numbers, recounted to the cent from the inputs")}
     for f, n in SUITE_AFTER:
         name = f[len("check_"):-3]
         label, what_ = after.get(name, (name, "A check script listed in tests/suite.json"))

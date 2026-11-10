@@ -1,0 +1,5 @@
+# Phase 3h inputs (v2 after the accuracy review: wording only; the answer key is unchanged). Phase 3h may only add files.
+028f516b2835e32f9bc255bd911156d9051908db309da268872cecb01b31215c  money/inputs/assumptions.json
+61170ba96ed561edce8e1fbd0542fe69212d4f549dcb04a2d1a328df0a0cd1af  money/inputs/fee-schedule.json
+f575a253493d994fed745b14e4a82addf0d93cbba2c2dd55677f502fa7fcfca9  money/inputs/month-2026-12.md
+0d1618c63e1ca9e8f645c93213dc11e44b60925ec8c9ffa56923e231d317ff51  money/inputs/rent-evidence.md
