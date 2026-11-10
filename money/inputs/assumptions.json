@@ -1,0 +1,15 @@
+{
+ "_note": "Phase 3h assumptions (fictional company, sample records). These are NOT measured and NOT facts about any real firm: they are starting numbers a viewer should replace with their own. The page labels each one as an assumption.",
+ "coordinator_cost_per_hour": 25,
+ "coordinator_cost_note": "Assumption: what an hour of an onboarding coordinator's time costs the firm, pay plus taxes and benefits. Replace with your own.",
+ "minutes_per_owner_by_hand": 180,
+ "minutes_per_owner_with_system": 60,
+ "minutes_note": "Assumption, not measured: reading the packet, comparing names, chasing, and typing the setup sheet by hand, versus reviewing the AI's drafts and flags.",
+ "days_sooner": 5,
+ "days_sooner_note": "Assumption, not measured: how many days earlier each vacant home's rent-paying start date moves when problems surface on day one instead of one at a time, assuming the rent is collected.",
+ "benchmark": {
+  "grade": "industry survey (B): NARPM's 2022 Financial Performance Guide, 2021 data; about $222 revenue per occupied unit a month for its qualifying sample (the full study had 153 participating companies); adjusted average profit margin about 11% after normalizing owner pay. Historical context from study participants, not a Sarasota figure or an all-US average",
+  "revenue_per_unit_month": 222,
+  "profit_margin_pct": 11
+ }
+}

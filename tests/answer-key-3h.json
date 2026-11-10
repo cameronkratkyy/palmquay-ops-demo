@@ -1,0 +1,36 @@
+{
+ "_note": "Phase 3h answer key, worked out by hand 11/10/2026 from money/inputs/ before tools/money.py existed, then locked in tests/LOCK.txt. Money in cents. Fictional company, sample records.",
+ "acceptance": {
+  "whitlock": {"range": [225000, 240000], "proposed": 235000, "flags": ["RENT_ABOVE_EVIDENCE", "REPAIRS_NEED_FUNDING"], "suggest": "CONDITIONAL"},
+  "petrakis": {"range": [285000, 300000], "proposed": 295000, "flags": [], "suggest": "ACCEPT"},
+  "fontaine": {"range": [195000, 210000], "proposed": 200000, "flags": [], "suggest": "ACCEPT"},
+  "coralwick": {"range": [250000, 265000], "proposed": 260000, "flags": [], "suggest": "ACCEPT"},
+  "haddad": {"range": [230000, 245000], "proposed": 235000, "flags": [], "suggest": "ACCEPT"},
+  "varma": {"range": [240000, 255000], "proposed": 250000, "flags": [], "suggest": "ACCEPT"},
+  "brandt": {"range": [200000, 215000], "proposed": 205000, "flags": [], "suggest": "ACCEPT"},
+  "marsh": {"range": [190000, 205000], "proposed": 195000, "flags": ["RENT_ABOVE_EVIDENCE"], "suggest": "CONDITIONAL"}
+ },
+ "statements": {
+  "brandt": {"opening": 50000, "rent": 205000, "fee": 18450, "repairs_paid": 18500, "held": 0, "reserve_kept": 50000, "payout": 168050},
+  "haddad": {"opening": 50000, "rent": 235000, "fee": 21150, "repairs_paid": 0, "held": 64000, "reserve_kept": 50000, "payout": 149850}
+ },
+ "held_invoices": {"MPC-0412": "INVOICE_NEEDS_OWNER_APPROVAL"},
+ "batch_total": 376000,
+ "reconciliation": {
+  "owner_funds": {"bank": 164000, "book": 164000, "liabilities": 164000, "difference": 0},
+  "deposits": {"bank": 430000, "book": 430000, "liabilities": 450000, "difference": 20000}
+ },
+ "economics": {
+  "december_fees": 39600,
+  "monthly_fees_all_rented": 168750,
+  "revenue_per_door_month": 21094,
+  "leasing_fees_vacant": 1076250,
+  "vacant_rent_per_day": 47833,
+  "vacant_fee_per_day": 4305,
+  "rent_sooner": 239167,
+  "fees_sooner": 21525,
+  "staff_saved_per_owner": 5000,
+  "staff_saved_all": 40000
+ },
+ "totals": {"accept": 6, "conditional": 2}
+}

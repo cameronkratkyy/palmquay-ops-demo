@@ -1,0 +1,20 @@
+{
+ "brandt": {
+  "opening": 50000,
+  "rent": 205000,
+  "fee": 18450,
+  "repairs_paid": 18500,
+  "held": 0,
+  "reserve_kept": 50000,
+  "payout": 168050
+ },
+ "haddad": {
+  "opening": 50000,
+  "rent": 235000,
+  "fee": 21150,
+  "repairs_paid": 0,
+  "held": 64000,
+  "reserve_kept": 50000,
+  "payout": 149850
+ }
+}

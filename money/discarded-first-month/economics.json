@@ -1,0 +1,12 @@
+{
+ "december_fees": 39600,
+ "monthly_fees_all_rented": 168750,
+ "revenue_per_door_month": 21094,
+ "leasing_fees_vacant": 1076250,
+ "vacant_rent_per_day": 47833,
+ "vacant_fee_per_day": 4305,
+ "rent_sooner": 239167,
+ "fees_sooner": 21525,
+ "staff_saved_per_owner": 5000,
+ "staff_saved_all": 40000
+}
