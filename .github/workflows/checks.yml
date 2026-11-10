@@ -52,7 +52,7 @@ jobs:
       - name: Phase 3g (new property owners)
         if: success() || failure()
         run: python -I -X utf8 tests/check_phase3g.py --copy
-      - name: Phase 3h (the business side: acceptance, the month's money, firm economics)
+      - name: Phase 3h (the business side - acceptance, the month's money, firm economics)
         if: success() || failure()
         run: python -I -X utf8 tests/check_phase3h.py --copy
       - name: Phase 3f (by hand vs. system, one check count everywhere)
