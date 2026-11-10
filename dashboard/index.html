@@ -20,7 +20,7 @@ code,.code{background:var(--soft);padding:1px 4px;border-radius:4px}.id.plain{fo
 .st-BLOCKED i,.st-FAIL i{background:var(--crit)}.st-PERSON i{background:var(--serious)}.st-SUBMITTED i{background:#8f8e88}
 details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:6px 0;padding:6px 10px}summary{cursor:pointer;padding:2px 0}
 pre{white-space:pre-wrap;font:12px/1.45 Consolas,"Cascadia Mono",monospace;background:#fbfbf9;border:1px solid var(--line);padding:10px;border-radius:6px;max-height:460px;overflow:auto}
-.budget{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}.bnums{display:flex;gap:28px;flex-wrap:wrap;font-size:15px;font-weight:600}
+.stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:4px 0 10px}.stage{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:10px 11px;font-size:12.5px}.sname{font-weight:600;font-size:14px}.snum{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;margin-right:4px}.slab{font-size:11px;color:var(--ink2);margin-top:7px}.qbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 10px}.qbar>div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:18px;font-weight:600}.qbar .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-weight:600}.money .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money .arr{color:var(--ink2)}td.nw{white-space:nowrap}tr.stagerow th{background:var(--soft);font-size:12px;letter-spacing:.02em}@media (max-width:760px){.stages,.qbar{grid-template-columns:1fr}}.budget{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}.bnums{display:flex;gap:28px;flex-wrap:wrap;font-size:15px;font-weight:600}
 .bnums .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.meter{position:relative;height:16px;background:var(--soft);border-radius:4px;margin:12px 0 6px}
 .seg{position:absolute;top:0;bottom:0}.seg.committed{left:0;background:var(--accent);border-radius:4px 0 0 4px}
 .seg.pending{background:repeating-linear-gradient(45deg,#d9a03a 0 4px,#f5d58f 4px 8px);border-radius:0 4px 4px 0;border-left:2px solid var(--surface)}
@@ -42,7 +42,7 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 input[data-min]{width:64px;font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:4px;text-align:right;background:var(--surface)}
 td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
-</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-10 09:19 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
+</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-10 09:35 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
 </div>
 <div class="tiles" data-audit><div class="tile"><div class="lab">Vendors</div>
 <div class="big"><span class="n" data-k="v.total">8</span></div>
@@ -1799,20 +1799,171 @@ Decision, Date and Signature are left blank on purpose: a person fills them in.
 </div>
 <div class="legend"><span><i class="sw committed"></i>Committed on the approved order</span><span><i class="sw pending"></i>Pending change request</span><span><i class="sw line"></i>Budget</span></div>
 </div>
-<h2>The seven buying steps</h2><p class="lead">Each ran once, in order, and caught the problem planted for it. Quotes are word for word from the step's output file.</p><table data-audit><thead><tr><th>Step</th>
+<h2>How Palmquay buys</h2><p class="lead">Five stages, the record each one makes, and where that record usually lives at a property management company. The tool names are examples, and the suppliers in this sample project are fictional. This demo reads exported sample records and does not connect to any of them, and people place orders, confirm deliveries, and release money.</p><div class="stages"><div class="stage"><div class="sname"><span class="snum">1</span> Request</div>
+<div class="wait"><span class="n" data-k="bq.request">1</span> waiting on a person</div>
+<div class="slab">Record</div>
+<div>The request and its scope: what the unit needs, the measurements, and the install date.</div>
+<div class="slab">Where it usually lives (examples)</div>
+<div>A work order or project in the property management software (AppFolio, for example), or an email from the property manager.</div>
+<div class="slab">The AI</div>
+<div>Reads the plan and flags missing measurements and conflicts.</div>
+<div class="slab">Decides</div>
+<div>Lena Ortiz, Property Manager</div>
+</div>
+<div class="stage"><div class="sname"><span class="snum">2</span> Approve</div>
+<div class="wait"><span class="n" data-k="bq.approve">4</span> waiting on a person</div>
+<div class="slab">Record</div>
+<div>Supplier quotes, the product check, and the approval packet.</div>
+<div class="slab">Where it usually lives (examples)</div>
+<div>Quotes from supplier business accounts (Wayfair Professional for furniture, Home Depot Pro for supplies); the approval in the software or by email.</div>
+<div class="slab">The AI</div>
+<div>Compares delivered cost and lead times, checks each product against the plan, and drafts the packet.</div>
+<div class="slab">Decides</div>
+<div>Dana Reyes, Facilities Manager</div>
+</div>
+<div class="stage"><div class="sname"><span class="snum">3</span> Order</div>
+<div class="wait"><span class="n" data-k="bq.order">0</span> waiting on a person</div>
+<div class="slab">Record</div>
+<div>The purchase order.</div>
+<div class="slab">Where it usually lives (examples)</div>
+<div>A purchase order in the property management software, or an order placed in the supplier&#x27;s business account.</div>
+<div class="slab">The AI</div>
+<div>Nothing. A person places the order.</div>
+<div class="slab">Decides</div>
+<div>Dana Reyes, Facilities Manager</div>
+</div>
+<div class="stage"><div class="sname"><span class="snum">4</span> Receive</div>
+<div class="wait"><span class="n" data-k="bq.receive">5</span> waiting on a person</div>
+<div class="slab">Record</div>
+<div>The delivery check: what arrived, what is late, and what went to the wrong unit.</div>
+<div class="slab">Where it usually lives (examples)</div>
+<div>Supplier tracking pages and the delivery receipt.</div>
+<div class="slab">The AI</div>
+<div>Matches tracking to the order, opens tasks, and drafts the update and any shipping-credit request.</div>
+<div class="slab">Decides</div>
+<div>Dana Reyes, Facilities Manager</div>
+</div>
+<div class="stage"><div class="sname"><span class="snum">5</span> Bill &amp; pay</div>
+<div class="wait"><span class="n" data-k="bq.pay">2</span> waiting on a person</div>
+<div class="slab">Record</div>
+<div>The vendor bill, checked against the order and what arrived, then the payment.</div>
+<div class="slab">Where it usually lives (examples)</div>
+<div>Bills and bill pay in the property management software or a bill-pay service; small buys on a company card. When the property belongs to a client owner, the cost shows up on that owner&#x27;s monthly statement.</div>
+<div class="slab">The AI</div>
+<div>Matches each invoice to the order and the receipt and holds any difference. It never marks anything paid.</div>
+<div class="slab">Decides</div>
+<div>Tom Becker, Finance</div>
+</div>
+</div>
+<div class="qbar" data-audit><div><span class="lab">Answers needed</span> <span class="n" data-k="bq.request">1</span></div>
+<div><span class="lab">Waiting at the approval stage</span> <span class="n" data-k="bq.approve">4</span></div>
+<div><span class="lab">Late or wrong deliveries</span> <span class="n" data-k="p.exc">2</span></div>
+<div><span class="lab">Invoices on hold</span> <span class="n" data-k="p.inv_hold">1</span></div>
+<div><span class="lab">Ready to pay</span> <span class="n" data-k="bq.ready_pay">1</span></div>
+</div>
+<h2>Open items, by stage</h2><p class="lead">Everything in this project that is waiting on a person, in stage order: the same items as the decisions list on the Overview tab.</p><table data-audit><thead><tr><th>Stage</th>
+<th>What is waiting</th>
+<th>Who decides</th>
+<th>Since</th>
+<th>Record</th>
+</tr>
+</thead><tbody><tr><td>Request</td>
+<td>What is bedroom wall B? It was left blank. The approved order has a queen bed, which needs <span class="n" data-k="p.queen_needs">108</span> in on the shortest wall; wall A is <span class="n" data-k="p.wall">120</span> in.</td>
+<td>Lena Ortiz, Property Manager</td>
+<td class="nw">2026-11-05</td>
+<td><code data-file="projects/unit-4b/out/brief.md">projects/unit-4b/out/brief.md</code></td>
+</tr>
+<tr><td>Approve</td>
+<td>Sign the certification on the approval request for order <span class="id">PQ-1042</span> (standard purchase, <span class="n" data-k="p.committed">$4,898</span>, budget line <span class="src" data-src="projects/unit-4b/controls/approval-request.md" title="Quoted from projects/unit-4b/controls/approval-request.md">FAC-TURN-2026</span>)?</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-06</td>
+<td><code data-file="projects/unit-4b/controls/approval-request.md">projects/unit-4b/controls/approval-request.md</code></td>
+</tr>
+<tr><td>Approve</td>
+<td>Write the single-source justification for <span class="id">GW-BED-Q</span> (bed frame, queen, <span class="n" data-k="rq.GW-BED-Q.line">$690</span>): only Gulfweave Furnishings offers one that meets the plan.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-06</td>
+<td><code data-file="projects/unit-4b/controls/approval-request.md">projects/unit-4b/controls/approval-request.md</code></td>
+</tr>
+<tr><td>Approve</td>
+<td>Write the single-source justification for <span class="id">MH-DR-60</span> (dresser, <span class="n" data-k="rq.MH-DR-60.line">$640</span>): only Mangrove Home Supply offers one that meets the plan.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-06</td>
+<td><code data-file="projects/unit-4b/controls/approval-request.md">projects/unit-4b/controls/approval-request.md</code></td>
+</tr>
+<tr><td>Approve</td>
+<td>Approve change request <span class="id">CR-001</span>? The approved sofa is backordered to 2026-12-01. The substitute arrives 2026-11-09 for +<span class="n" data-k="p.cr_delta">$410</span>, a total of <span class="n" data-k="p.cr_total">$5,308</span>.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-07</td>
+<td><code data-file="projects/unit-4b/out/change-request-CR-001.md">projects/unit-4b/out/change-request-CR-001.md</code></td>
+</tr>
+<tr><td>Receive</td>
+<td>Send the shipping-credit request to Gulfweave Furnishings? Its queen bed frame <span class="id">GW-BED-Q</span> is now <span class="n" data-k="ex.credit_days">7</span> days past its promised date; the draft asks for <span class="src" data-src="projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md" title="Quoted from projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md">$92.50</span>, half of its <span class="n" data-k="ex.credit_freight">$185</span> freight.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-12</td>
+<td><code data-file="projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md">projects/unit-4b/exceptions/credit-request-gulfweave-2026-11-12.md</code></td>
+</tr>
+<tr><td>Receive</td>
+<td>Send the reply refusing Gulfweave Furnishings's completion notice? <span class="id">GW-BED-Q</span> and <span class="id">GW-CT-48</span> aren't on the receipt.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-12</td>
+<td><code data-file="projects/unit-4b/controls/drafts/reply-gulfweave-2026-11-12.md">projects/unit-4b/controls/drafts/reply-gulfweave-2026-11-12.md</code></td>
+</tr>
+<tr><td>Receive</td>
+<td>Send the delivery update to Lena Ortiz? The bed frame is <span class="n" data-k="p.bed_late">5</span> days late and the dresser is addressed to the wrong unit.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-12</td>
+<td><code data-file="projects/unit-4b/out/drafts/update-2026-11-12.md">projects/unit-4b/out/drafts/update-2026-11-12.md</code></td>
+</tr>
+<tr><td>Receive</td>
+<td>Task <span class="id">T1</span>: get a firm new date for the bed frame <span class="id">GW-BED-Q</span> from Gulfweave Furnishings. Due 2026-11-13.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-12</td>
+<td><code data-file="projects/unit-4b/out/tasks.md">projects/unit-4b/out/tasks.md</code></td>
+</tr>
+<tr><td>Receive</td>
+<td>Task <span class="id">T2</span>: correct the dresser's ship-to address with Mangrove Home Supply (<span class="id">Unit 4D</span> to <span class="id">Unit 4B</span>). Due 2026-11-13.</td>
+<td>Dana Reyes, Facilities Manager</td>
+<td class="nw">2026-11-12</td>
+<td><code data-file="projects/unit-4b/out/tasks.md">projects/unit-4b/out/tasks.md</code></td>
+</tr>
+<tr><td>Bill &amp; pay</td>
+<td>Approve payment of invoice <span class="id">INV-GW-5521</span> (<span class="n" data-k="p.inv_match_total">$535</span>)? It matches the order and the receipt.</td>
+<td>Tom Becker, Finance</td>
+<td class="nw">2026-11-12</td>
+<td><code data-file="projects/unit-4b/out/match.md">projects/unit-4b/out/match.md</code></td>
+</tr>
+<tr><td>Bill &amp; pay</td>
+<td>Invoice <span class="id">INV-KC-3307</span> bills <span class="n" data-k="p.inv_billed">$872</span>; the order and the receipt support <span class="n" data-k="p.inv_expected">$713</span>. Pay as billed, or ask for a corrected invoice?</td>
+<td>Tom Becker, Finance</td>
+<td class="nw">2026-11-12</td>
+<td><code data-file="projects/unit-4b/out/match.md">projects/unit-4b/out/match.md</code></td>
+</tr>
+</tbody></table><h2>Where the money is</h2><p class="lead">From the approved budget to the bill. Finance releases every payment; the AI never does.</p><div class="money" data-audit><div><span class="lab">Approved budget</span><span class="n" data-k="p.budget">$5,200</span></div>
+<span class="arr" aria-hidden="true">&#8594;</span><div><span class="lab">Committed on order <span class="id">PQ-1042</span></span><span class="n" data-k="p.committed">$4,898</span></div>
+<span class="arr" aria-hidden="true">&#8594;</span><div><span class="lab">Billed so far</span><span class="n" data-k="bq.billed">$1,407</span></div>
+<span class="arr" aria-hidden="true">&#8594;</span><div><span class="lab">Held for Finance</span><span class="n" data-k="p.inv_diff">$159</span></div>
+<span class="arr" aria-hidden="true">&#8594;</span><div><span class="lab">Paid</span>none yet; <span class="n" data-k="bq.unpaid">2</span> of <span class="n" data-k="bq.invoices">2</span> invoices unpaid</div>
+<span class="arr" aria-hidden="true">&#8594;</span><div><span class="lab">Charged to</span>budget line <span class="id">FAC-TURN-2026</span></div>
+</div>
+<h2>The seven buying steps, by stage</h2><p class="lead">The same seven steps, grouped under the stage they belong to. Each ran once, in order, and caught the problem planted for it. Change control sits on its own because a change can come up at any stage. Quotes are word for word from the step's output file.</p><table data-audit><thead><tr><th>Step</th>
 <th>Ran</th>
 <th>Caught</th>
 <th class="num">Flags</th>
 <th>Detail</th>
 <th>Who decides</th>
 </tr>
-</thead><tbody><tr><td><code>/scope</code><div class="muted">Requirements and scope</div>
+</thead><tbody><tr class="stagerow"><th colspan="6">Request</th>
+</tr>
+<tr><td><code>/scope</code><div class="muted">Requirements and scope</div>
 </td>
 <td><span class="chip st-DONE"><i aria-hidden="true">&#10003;</i>ran</span></td>
 <td><span class="code" data-src="company/rules.json" title="Quoted from company/rules.json">MISSING_MEASUREMENT</span> <span class="code" data-src="company/rules.json" title="Quoted from company/rules.json">SCOPE_CONFLICT</span></td>
 <td class="num"><span class="n" data-k="pa.scope">2</span></td>
 <td>A king needs <span class="n" data-k="p.king_needs">124</span> in; the wall is <span class="n" data-k="p.wall">120</span> in. <span class="src" data-src="projects/unit-4b/out/brief.md" title="Quoted from projects/unit-4b/out/brief.md">Before we order, please send: Bedroom wall B; and confirm a queen bed instead of a king.</span></td>
 <td>Lena Ortiz answers (wall B still not recorded)</td>
+</tr>
+<tr class="stagerow"><th colspan="6">Approve</th>
 </tr>
 <tr><td><code>/source</code><div class="muted">Supplier lead times</div>
 </td>
@@ -1838,6 +1989,12 @@ Decision, Date and Signature are left blank on purpose: a person fills them in.
 <td><span class="src" data-src="projects/unit-4b/out/approval.md" title="Quoted from projects/unit-4b/out/approval.md">98 in wide vs 96 in max</span> · <span class="src" data-src="projects/unit-4b/out/approval.md" title="Quoted from projects/unit-4b/out/approval.md">chrome vs brushed nickel</span> · <span class="src" data-src="projects/unit-4b/out/approval.md" title="Quoted from projects/unit-4b/out/approval.md">the listing doesn&#x27;t state the fabric; the plan needs pet-friendly performance</span></td>
 <td>A person decides the unclear chair</td>
 </tr>
+<tr class="stagerow"><th colspan="6">Order</th>
+</tr>
+<tr><td colspan="6">Purchase order <span class="id">PQ-1042</span> was approved by Dana Reyes, Facilities Manager; no AI step runs here. The substitute sofa waits on change request <span class="id">CR-001</span>.</td>
+</tr>
+<tr class="stagerow"><th colspan="6">Any stage: change control</th>
+</tr>
 <tr><td><code>/change</code><div class="muted">Budget and change control</div>
 </td>
 <td><span class="chip st-DONE"><i aria-hidden="true">&#10003;</i>ran</span></td>
@@ -1845,6 +2002,8 @@ Decision, Date and Signature are left blank on purpose: a person fills them in.
 <td class="num"><span class="n" data-k="pa.change">1</span></td>
 <td>+<span class="n" data-k="p.cr_delta">$410</span> for the substitute; total <span class="n" data-k="p.cr_total">$5,308</span>, <span class="n" data-k="p.cr_over">$108</span> over. <span class="src" data-src="projects/unit-4b/out/change-request-CR-001.md" title="Quoted from projects/unit-4b/out/change-request-CR-001.md">MH-SOF-118 backordered; new ship date 2026-12-01</span></td>
 <td>Dana Reyes, Facilities Manager approves or rejects (waiting)</td>
+</tr>
+<tr class="stagerow"><th colspan="6">Receive</th>
 </tr>
 <tr><td><code>/deliver</code><div class="muted">Deliveries and exceptions</div>
 </td>
@@ -1854,6 +2013,8 @@ Decision, Date and Signature are left blank on purpose: a person fills them in.
 <td>Bed frame <span class="n" data-k="p.bed_late">5</span> days late; the dresser is shipping to <span class="src" data-src="projects/unit-4b/out/tasks.md" title="Quoted from projects/unit-4b/out/tasks.md">Unit 4D</span>, not <span class="id plain">Unit 4B</span>. <span class="n" data-k="p.exc">2</span> exceptions, <span class="n" data-k="p.tasks">2</span> tasks opened.</td>
 <td>Dana Reyes, Facilities Manager sends the update (waiting)</td>
 </tr>
+<tr class="stagerow"><th colspan="6">Bill &amp; pay</th>
+</tr>
 <tr><td><code>/match</code><div class="muted">Invoice three-way match</div>
 </td>
 <td><span class="chip st-DONE"><i aria-hidden="true">&#10003;</i>ran</span></td>
@@ -1861,6 +2022,21 @@ Decision, Date and Signature are left blank on purpose: a person fills them in.
 <td class="num"><span class="n" data-k="pa.match">2</span></td>
 <td>Billed <span class="n" data-k="p.inv_billed">$872</span>, should be <span class="n" data-k="p.inv_expected">$713</span>: <span class="n" data-k="p.inv_diff">$159</span> held for Finance. Lamps billed <span class="src" data-src="projects/unit-4b/out/match.md" title="Quoted from projects/unit-4b/out/match.md">3 x $139</span>, ordered <span class="src" data-src="projects/unit-4b/out/match.md" title="Quoted from projects/unit-4b/out/match.md">2 x $129</span>.</td>
 <td>Tom Becker, Finance approves payment (waiting)</td>
+</tr>
+</tbody></table><h2>Approval limits</h2><p class="lead">Palmquay's purchasing policy (fictional), read from <code data-file="company/rules.json">company/rules.json</code>. Every number below comes from that file.</p><table data-audit><tbody><tr><th>Who approves an order</th>
+<td>Up to <span class="n" data-k="pol.tier1">$10,000</span>: the Facilities Manager. Up to <span class="n" data-k="pol.tier2">$50,000</span>: the Procurement Lead too. Above that: Legal and Finance too.</td>
+</tr>
+<tr><th>How many prices</th>
+<td>Up to <span class="n" data-k="pol.small">$2,500</span>: one written quote or catalog price. Up to <span class="n" data-k="pol.standard">$25,000</span>: prices from at least <span class="n" data-k="pol.min_suppliers">2</span> approved suppliers for every line over <span class="n" data-k="pol.line_min">$500</span>. Above that: a formal bid.</td>
+</tr>
+<tr><th>This order</th>
+<td>Order <span class="id">PQ-1042</span>, <span class="n" data-k="p.committed">$4,898</span>: a standard purchase, approved by Dana Reyes, Facilities Manager.</td>
+</tr>
+<tr><th>Money set aside</th>
+<td><span class="n" data-k="p.budget">$5,200</span> approved on budget line <span class="id">FAC-TURN-2026</span>; Finance owns the budget line.</td>
+</tr>
+<tr><th>Not in these sample records</th>
+<td>A client owner's repair limit, which each management agreement sets, and a company card's limit, which the card program sets. A real setup would add both here.</td>
 </tr>
 </tbody></table><h2>Deliveries as of 2026-11-12</h2><table data-audit><thead><tr><th>Item</th>
 <th>Supplier</th>
@@ -2394,21 +2570,21 @@ Payment is approved by Finance (?). The assistant flags differences and never ma
 <td>The By hand vs. system tab: every count recounted from the raw records, every minute labeled as an assumption, and one check count everywhere</td>
 <td><span class="n" data-k="c.suite.phase3f">6</span> checks, run after the build and on every push</td>
 </tr>
-</tbody></table><details><summary>Phase 1: every line it printed (0.1 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
+</tbody></table><details><summary>Phase 1: every line it printed (0.2 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
 PASS - C2 CLAUDE.md states every rule and matches rules.json - 34 of 34 found; missing []
 PASS - C3 8 vendors, each with its record and exactly the key&#x27;s documents - 8 folders, 8 records, 8 of 8 document sets match
 PASS - C4 recomputed from the documents = answer key - 8 of 8 match; mismatches {}
 PASS - C4b the key covers every planted problem + a clean small and a clean large job - 6 of 6 problem types; clean small [&#x27;kestrelbay-air-heat&#x27;]; clean large [&#x27;skyquay-lift-fire&#x27;]
 PASS - C5 answer key unchanged since it was locked - lock 973099662faf..., now 973099662faf...
-PASS - C6 no personal words; every ID is visibly marked as sample - 251 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked as sample
-PASS - C7 README maps each piece (industry term + resume line) - 57 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;, &#x27;`dashboard/by-hand.json` + the By hand vs. system tab&#x27;, &#x27;`tests/check_phase3f.py`&#x27;, &#x27;`tests/suite.json`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (4.8 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
+PASS - C6 no personal words; every ID is visibly marked as sample - 252 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked as sample
+PASS - C7 README maps each piece (industry term + resume line) - 57 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;, &#x27;`dashboard/by-hand.json` + the By hand vs. system tab&#x27;, &#x27;`tests/check_phase3f.py`&#x27;, &#x27;`tests/suite.json`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (5.6 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
 PASS - P1b /status prints one correct line per vendor - exit 0; 8 lines; 8 of 8 right (stage, status, blocker, days waiting); problems {} 
 PASS - P2 /chase: 1 good draft per BLOCKED/HOLD vendor, 0 sends - 6 of 6 drafts pass (vendor, item, why, deadline 2026-11-12, how to send, .example contact, no threats, no unsupported facts); 0 drafts for READY vendors []; sends 0 (audit rows marked sent 0, network imports []); problems {}
 PASS - P3 /route: packet for each READY vendor, approvers in order, sign-offs blank - 2 of 2 packets pass; packets for vendors not READY []; approvers {&#x27;kestrelbay-air-heat&#x27;: [&#x27;Facilities Manager&#x27;], &#x27;skyquay-lift-fire&#x27;: [&#x27;Facilities Manager&#x27;, &#x27;Procurement Lead&#x27;, &#x27;Legal&#x27;, &#x27;Finance&#x27;]}; problems {}
 PASS - P4 read-only compliance-checker reviewed everything and caught both plants - agent tools [&#x27;Glob&#x27;, &#x27;Grep&#x27;, &#x27;Read&#x27;]; latest review reviews/2026-11-05-02-all-vendors.md: 18 files, 18 unchanged since review; 16 of 16 real files marked OK by the checker; planted wrong deadline caught True; planted missed name mismatch caught True; problems []
 PASS - P5 audit log: 1 row per action, append-only (hash chain) - 18 rows; 18 actions taken (8 intake + 6 chase drafts + 2 route packets + 2 checker reviews); chain 18 of 18 rows verify; problems []
-PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 251 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
-PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 57 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (4.8 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
+PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 252 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
+PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 57 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (5.3 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
 PASS - Q0b recomputed from the inputs = answer key (the data really has the planted problems) - 7 activities recomputed; differ from key []; PO total recomputed 4898 vs stated 4898; error none
 PASS - Q1 /scope: brief = key; every request field in brief.md; nothing invented - projects/unit-4b/out/brief.json: = key; 16 of 16 request fields in brief.md; invented measurement False
 PASS - Q2 /source: late items and the in-time alternative = key - projects/unit-4b/out/source.json: = key
