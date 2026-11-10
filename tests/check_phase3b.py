@@ -36,7 +36,7 @@ ROOT = sys.argv[sys.argv.index("--root") + 1] if "--root" in sys.argv else os.pa
 EXPIRY_WINDOW = 60  # the dashboard lists insurance and licenses that ended, or end within this many days of the demo date
 SKILLS = ["intake", "chase", "route", "status", "scope", "source", "quote", "approve", "change", "deliver", "match",
           "screen", "request", "closeout"]  # Phase 3c added the last three (11/6)
-TABS = ["overview", "onboarding", "buying", "checks", "audit", "map"]
+TABS = ["overview", "byhand", "onboarding", "buying", "checks", "audit", "map"]  # 11/9: "byhand" added (Phase 3f)
 ACT_OUT = {"scope_brief": "brief.json", "source_check": "source.json", "quote_compare": "quotes.json",
            "product_approval": "approval.json", "change_request": "change-request-CR-001.json",
            "delivery_exceptions": "deliveries.json", "invoice_match": "match.json"}
@@ -471,6 +471,13 @@ def recount(runs):
     E["g.blank_lines"] = sum(1 for f in glob.glob(p("projects", proj, "out", "*.md"))
                              if re.search(r"Approved by: _{3,}", open(f, encoding="utf-8").read()))
 
+    # 11/9 (Phase 3f): the By hand vs. system tab and the suite's check count are recounted by tests/check_phase3f.py from the raw records
+    # (it never imports the builder either). Its facts join this check's own, so B1 still requires every tagged number to be recounted.
+    if os.path.exists(p("tests", "check_phase3f.py")):
+        r3f = subprocess.run([sys.executable, "-I", "-X", "utf8", p("tests", "check_phase3f.py"), "--facts", "--root", ROOT],
+                             capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT, timeout=300)
+        if r3f.returncode == 0 and r3f.stdout.strip().startswith("{"):
+            E.update({k_: v_ for k_, v_ in json.loads(r3f.stdout).items() if k_ not in E})
     extra = {"skills": len(glob.glob(p(".claude", "skills", "*", "SKILL.md"))),
              "people": len([l for l in read("company", "people.md").splitlines() if re.match(r"^\| [A-Z]", l) and "Role" not in l]),
              "suppliers": len([l for l in read("company", "approved-suppliers.md").splitlines() if "| Approved |" in l])}

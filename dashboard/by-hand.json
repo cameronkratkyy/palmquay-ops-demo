@@ -1,0 +1,15 @@
+{
+ "_note": "Minutes per touch for the dashboard's 'By hand vs. system' tab (fictional company, sample records). The touch COUNTS are not here: dashboard/build.py counts them from the records and tests/check_phase3f.py recounts them its own way. These MINUTES are assumptions, not measurements. One value per kind of touch, the same on both sides, so the comparison comes only from the counts. A viewer can change any of them on the page; the totals update.",
+ "status": "Starting assumptions, not measured. The author's numbers to set.",
+ "types": [
+  {"id": "write", "label": "Emails written from scratch", "minutes": 8, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "review", "label": "AI drafts a person reviews and sends", "minutes": 2, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "check", "label": "Checks by eye or calculator", "minutes": 0.5, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "lookup", "label": "Lookups in another list, catalog, or record", "minutes": 1, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "typed", "label": "Fields typed again from another record", "minutes": 0.25, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "form", "label": "Packets and forms put together", "minutes": 10, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "flag", "label": "AI flags a person reads", "minutes": 2, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "task", "label": "Supplier tasks (a call or an email)", "minutes": 10, "basis": "Starting assumption, not measured: the author's number to set"},
+  {"id": "sign", "label": "Sign-offs and approvals", "minutes": 3, "basis": "Starting assumption, not measured: the author's number to set"}
+ ]
+}

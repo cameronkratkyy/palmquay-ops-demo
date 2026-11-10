@@ -47,7 +47,7 @@ MEANING = {
     "CLAIM_CONTRADICTED": "A supplier said all delivered; the receipt disagrees",
     "MISSING_DISCLOSURE": "No conflict-of-interest disclosure", "PAID_SOLICITATION": "Someone was paid to help win the work",
     "FORMAL_BID_REQUIRED": "Too large for quotes: needs a formal bid", "FUNDS_SHORT": "The budget line doesn't cover it"}
-TABS = [("overview", "Overview"), ("onboarding", "Onboarding"), ("buying", "Buying"), ("checks", "Checks"),
+TABS = [("overview", "Overview"), ("byhand", "By hand vs. system"), ("onboarding", "Onboarding"), ("buying", "Buying"), ("checks", "Checks"),
         ("audit", "Audit log"), ("map", "Map")]
 
 K = {}  # every tagged fact on the page: key -> value
@@ -251,6 +251,11 @@ for tag, f, label in (("p1", "check_phase1.py", "Phase 1"), ("p2", "check_phase2
                    "total": int(m[-1][1]) if m else None, "lines": lines, "secs": round(time.time() - t1, 1)}
 
 
+SUITE = jread("tests", "suite.json")["checks"]  # every check script and its count; tests/check_phase3f.py (F5) proves each number
+SUITE_OFF = [v["file"] for v in CHECKS.values() if v["total"] != SUITE.get(os.path.basename(v["file"]))]  # a re-run total that disagrees
+SUITE_AFTER = [(f, n) for f, n in SUITE.items() if f"tests/{f}" not in [v["file"] for v in CHECKS.values()]]  # not re-run at build
+
+
 def chain(tool, cmd):
     rc, so = run([path("tools", tool), cmd])
     m = re.search(r"(\d+) rows, (\d+) of (\d+) chain links verify -> OK", so)
@@ -449,12 +454,14 @@ def tiles():
     t.append(("Problems caught", k("i.total", len(onb_codes) + len(buy_codes) + len(ctl_codes)),
               f"{k('i.onb', len(onb_codes))} onboarding · {k('i.buy', len(buy_codes))} buying · {k('i.ctl', len(ctl_codes))} controls"))
     ok = all(CHECKS[c]["pass"] is not None for c in CHECKS)
-    if ok:
+    if ok:  # 11/9: the tile shows the whole suite (tests/suite.json), so it says the same number as the README; the build re-runs part of it
         passed, total = sum(CHECKS[c]["pass"] for c in CHECKS), sum(CHECKS[c]["total"] for c in CHECKS)
-        t.append(("Checks, run at build", f"{k('c.pass', passed)} of {k('c.total', total)}",
-                  chip("PASS" if passed == total else "FAIL", "PASS" if passed == total else "FAIL") + " run at build; " + ident("Phase 3b", True) + "'s check runs separately"))
+        good = passed == total and not SUITE_OFF
+        t.append(("Checks in the suite", k("c.suite", sum(SUITE.values())),
+                  f"{k('c.pass', passed)} of {k('c.total', total)} re-run at build " + chip("PASS" if good else "FAIL", "PASS" if good else "FAIL")
+                  + " · all run on each push"))
     else:
-        t.append(("Checks, run at build", "not run", "a check printed no result"))
+        t.append(("Checks in the suite", "not run", "a check printed no result"))
     t.append(("Audit log rows", k("a.rows", len(onb_rows) + len(proc_rows) + len(ctl_rows) + len(exc_rows)),
               f"{k('a.onb', len(onb_rows))} onboarding + {k('a.proc', len(proc_rows))} buying + {k('a.ctl', len(ctl_rows))} controls"
               + (f" + {k('a.exc', len(exc_rows))} exceptions" if exc_rows else "") + ", hash-chained"))
@@ -888,12 +895,24 @@ def checks():
         res = (f'{k(f"c.{c}.pass", v["pass"])} of {k(f"c.{c}.total", v["total"])} ' + chip("PASS" if v["pass"] == v["total"] and v["rc"] == 0 else "FAIL",
                "PASS" if v["pass"] == v["total"] and v["rc"] == 0 else "FAIL")) if v["pass"] is not None else chip("FAIL", "no result")
         rows.append(f'<tr><td>{ident(v["label"], True)}</td><td>{E(what[c])}</td><td>{res}</td></tr>')
-    t = ('<h2>Acceptance checks, run when this page was built</h2><p class="lead">Each check was written before the work it tests, recomputes '
+    after = {"phase3b": ("Phase 3b", "This page, the diagram, the video script, and the explainer. It rebuilds this page to test it, so it runs after the build"),
+             "phase3e": ("Phase 3e", "The AI's reading of the certificate PDFs, checked against a standard PDF tool"),
+             "orgchart": ("Org chart", "The department hub on the Overview and the sample-records wording on this page"),
+             "phase3f": ("Phase 3f", "The By hand vs. system tab: every count recounted from the raw records, every minute labeled as an assumption, "
+                                     "and one check count everywhere")}
+    for f, n in SUITE_AFTER:
+        name = f[len("check_"):-3]
+        label, what_ = after.get(name, (name, "A check script listed in tests/suite.json"))
+        rows.append(f'<tr><td>{ident(label, True) if re.search(r"\d", label) else E(label)}</td><td>{E(what_)}</td><td>{k("c.suite." + name, n)} checks, run after the build and on every push</td></tr>')
+    t = ('<h2>Acceptance checks</h2><p class="lead">Each check was written before the work it tests, recomputes '
          'every result its own way, and prints what it counted. A check that can\'t fail proves nothing, so each check script also has a self-test that plants '
-         'breaks in a throwaway copy.</p><table data-audit><thead><tr><th>Phase</th><th>What it checks</th><th>Result</th></tr></thead><tbody>'
+         f'breaks in a throwaway copy. The suite has {k("c.suite", sum(SUITE.values()))} checks, and every one runs on each push. The first rows were re-run '
+         'when this page was built; the rest test this page itself or the PDFs, so they run after it.</p>'
+         '<table data-audit><thead><tr><th>Phase</th><th>What it checks</th><th>Result</th></tr></thead><tbody>'
          + "".join(rows) + "</tbody></table>")
     t += "".join(details(f'{E(v["label"])}: every line it printed ({v["secs"]} s)', "<pre>" + E("\n".join(v["lines"])) + "</pre>") for v in CHECKS.values())
-    cmds = "\n".join(f"python -I -X utf8 {v['file']}\npython -I -X utf8 {v['file']} --selftest" for v in CHECKS.values())
+    cmds = "\n".join(f"python -I -X utf8 {x}" + (f"\npython -I -X utf8 {x} --selftest" if "--selftest" in read(*x.split("/")) else "")
+                     for x in [v["file"] for v in CHECKS.values()] + [f"tests/{f}" for f, _ in SUITE_AFTER])
     t += details("Run them yourself (self-tests take longer)", f"<pre>{E(cmds)}</pre>")
     rr = []
     for lg, r in reviews:
@@ -910,6 +929,228 @@ def checks():
           f'<tr><td>Approval lines left blank on the purchase request and change request</td><td class="num">{k("g.blank_lines", len(blank_lines))}</td></tr>'
           '</tbody></table>')
     return t
+
+
+# ------------------------------------------------------------- by hand vs. with the system (Phase 3f, 11/9) -------------------------------------------------------------
+# The same work counted two ways (asked for 11/9: "how many more emails, touchpoints, time... if they didn't have it"). The counts come from
+# the records by the rule written in each step; tests/check_phase3f.py recounts each one from the raw records. The minutes are assumptions
+# from dashboard/by-hand.json (one value per kind of touch, the same on both sides), never a measurement; a viewer can change them.
+BH = jread("dashboard", "by-hand.json")
+BH_TYPES = [t["id"] for t in BH["types"]]
+BH_MIN = {t["id"]: t["minutes"] for t in BH["types"]}
+BH_WORDS = {"write": ("email written", "emails written"), "review": ("draft reviewed and sent", "drafts reviewed and sent"),
+            "check": ("check by eye", "checks by eye"), "lookup": ("lookup", "lookups"), "typed": ("field typed again", "fields typed again"),
+            "form": ("packet or form", "packets or forms"), "flag": ("flag read", "flags read"), "task": ("supplier task", "supplier tasks"),
+            "sign": ("sign-off", "sign-offs")}
+# (id, half, skill, step, industry term, what the work is). Plain sentences only: every number on this tab is a tagged count.
+BH_STEPS = [
+    ("intake", "Onboarding", "/intake", "Check each contractor's paperwork against the policy", "Vendor compliance review",
+     "Required documents, insurance amounts and end dates, license dates, and the legal name on every page."),
+    ("certs", "Onboarding", "/certs", "Check each typed insurance record against its PDF", "Document verification",
+     "Every field on each certificate, compared with what someone keyed into the record. A person fixes what differs, either way."),
+    ("screen", "Onboarding", "/screen", "Screen for conflicts of interest and exclusions", "Vendor due diligence, debarment screening",
+     "Read each conflict-of-interest disclosure, then search the exclusion list (companies and people that can't be hired or paid) once for each name in the papers and each approved supplier."),
+    ("chase", "Onboarding", "/chase", "Follow up with blocked or held contractors", "Exception follow-up",
+     "One email each: what's missing, why it's required, and the deadline."),
+    ("route", "Onboarding", "/route", "Build approval packets and route them", "Approval routing",
+     "Copy the job and the approvers into a packet; each approver signs in order."),
+    ("revise", "Onboarding", "/revise", "Restart sign-off after a requested change", "Contract revision, re-approval",
+     "See who already signed, build a new version with the change marked, and route it from the first approver again."),
+    ("scope", "Buying", "/scope", "Check the request's measurements", "Requirements gathering",
+     "Every wall length present, and whether the requested bed fits the room."),
+    ("ask", "Buying", "", "Ask suppliers for quotes", "Request for quote",
+     "One request per quote on file. The system doesn't draft these yet, so a person writes them either way."),
+    ("source", "Buying", "/source", "Check lead times against the install date", "Lead-time check",
+     "Look up each item's lead time and work out when it would arrive."),
+    ("quote", "Buying", "/quote", "Compare quotes and draft the purchase request", "Quote comparison, purchase requisition",
+     "Recompute every line and subtotal, read the notes for extra charges, and check each quote's valid-until date; then draft the purchase request, which the Facilities Manager approves."),
+    ("approve", "Buying", "/approve", "Check each product against the design plan", "Specification review",
+     "Width and depth on every line, plus finish and fabric where the plan names one."),
+    ("request", "Controls", "/request", "Fill in the approval request", "Purchase requisition with funding",
+     "In-spec prices from every approved catalog for each line big enough to need competing prices, the procurement type, the funds, and the certification."),
+    ("change", "Buying", "/change", "Price the backorder substitute", "Change order",
+     "The new total, the gap to the budget, and the new delivery date; then a change request and its approval."),
+    ("deliver", "Buying", "/deliver", "Check deliveries against the order", "Expediting, exception management",
+     "Each item's tracking: its arrival against the install date and its address against the order. A task per problem, and an update to the requester."),
+    ("credit", "Buying", "/credit", "Ask for a shipping credit on a late item", "Vendor concession",
+     "Each item's arrival against the date the order promised, the credit math, and a polite request."),
+    ("match", "Buying", "/match", "Match invoices to the order and the receipt", "Three-way match",
+     "Price and quantity against the order, quantity against what arrived, and the freight. Finance decides each invoice."),
+    ("closeout", "Controls", "/closeout", "Close out the order", "Contract close-out",
+     "The running totals, and a supplier's notice that everything was delivered, checked against the receipt line by line; a reply when it's wrong; the completion certificate's signatures."),
+]
+
+
+def bh_counts():
+    """The builder's count of each step's touches, from the system's own records (the check recounts from the raw records its own way)."""
+    H = {s[0]: {} for s in BH_STEPS}
+    S = {s[0]: {} for s in BH_STEPS}
+
+    def add(side, st, t, n):
+        if n:
+            side[st][t] = side[st].get(t, 0) + n
+
+    def both(st, t, n):
+        add(H, st, t, n)
+        add(S, st, t, n)
+
+    def typed_on(rel, s, export_text=""):
+        """Fields on a packet whose value already exists in the vendor's work request or vendor record, the change copied from the
+        e-signature export, and role, name, email for each signer. Returns (typed fields, signers)."""
+        src = {r.get("Value") for f in (("vendors", s, "documents", "request.md"), ("vendors", s, "vendor.md")) for r in table_rows(read(*f), "Field")}
+        t = read(*rel.split("/"))
+        head = sum(1 for r in table_rows(t, "Field") if r.get("Value") and r["Value"] in src)
+        changed = sum(1 for r in table_rows(t, "What") if r.get("Version 2") and r["Version 2"] in export_text)
+        signers = [r for r in table_rows(t.split("## Sign-offs", 1)[1], "#") if r.get("#", "").isdigit()] if "## Sign-offs" in t else []
+        return head + changed + 3 * len(signers), len(signers)
+
+    add(H, "intake", "check", sum(len(V[s]["intake"]["evidence"]) for s in slugs))
+    add(S, "intake", "flag", len(onb_codes))
+    cks = [json.load(open(f, encoding="utf-8")) for f in sorted(glob.glob(path("vendors", "*", "documents", "coi-check.json")))]
+    add(H, "certs", "check", sum(len(c["fields_read"]) for c in cks))
+    both("certs", "typed", sum(len(c["differences"]) for c in cks))
+    add(S, "certs", "flag", sum(len(c["differences"]) for c in cks))
+    add(H, "screen", "check", sum(1 for sc in screens.values() for e in sc["evidence"] if not e["check"].startswith("exclusion list")))
+    add(H, "screen", "lookup", len({n for sc in screens.values() for n in sc["names_checked"]}) + len(sup_screen["suppliers"]))
+    add(S, "screen", "flag", sum(len(sc["codes"]) for sc in screens.values()))
+    n_follow = sum(len(V[s]["drafts"]) for s in slugs)
+    add(H, "chase", "write", n_follow)
+    add(S, "chase", "review", n_follow)
+    for s in slugs:
+        if V[s]["packet"]:
+            ty, sg = typed_on(V[s]["packet"], s)
+            add(H, "route", "form", 1)
+            add(H, "route", "typed", ty)
+            both("route", "sign", sg)
+    for s, rv in revisions.items():
+        ty, sg = typed_on(rv["packet"], s, read(*rv["sources"][1].split("/")))
+        add(H, "revise", "check", len(rv["route"]))
+        add(H, "revise", "form", 1)
+        add(H, "revise", "typed", ty)
+        both("revise", "sign", sg)
+    both("ask", "write", len(quotes["quotes"]))
+    add(H, "scope", "check", len(brief["_measurements"]) + 1)
+    add(S, "scope", "flag", len(per_act["scope"]))
+    add(H, "source", "lookup", src["items_checked"])
+    add(H, "source", "check", src["items_checked"])
+    add(S, "source", "flag", len(per_act["source"]))
+    qfiles = sorted(glob.glob(P("quotes", "*.md")))
+    add(H, "quote", "check", sum(len(table_rows(open(f, encoding="utf-8").read(), "SKU")) for f in qfiles) + 3 * len(quotes["quotes"]))
+    if os.path.exists(P("out", "purchase-request-draft.md")):
+        add(H, "quote", "form", 1)
+        both("quote", "sign", 1)
+    add(S, "quote", "flag", len(per_act["quote"]))
+    add(H, "approve", "check", sum(1 for r in table_rows(read("projects", PROJECT, "partner-plan.md"), "Line")
+                                   for c in ("Max width (in)", "Max depth (in)", "Finish", "Fabric") if r.get(c, "any").lower() != "any"))
+    add(S, "approve", "flag", len(per_act["approve"]))
+    crs = glob.glob(P("out", "change-request-*.json"))
+    add(H, "change", "check", 3 * len(crs))
+    add(H, "change", "form", len(crs))
+    both("change", "sign", len(crs))
+    add(S, "change", "flag", len(per_act["change"]))
+    add(H, "deliver", "lookup", len(tracking))
+    add(H, "deliver", "check", 2 * len(tracking))
+    both("deliver", "task", len(tasks))
+    add(H, "deliver", "write", len(upd_drafts))
+    add(S, "deliver", "review", len(upd_drafts))
+    add(S, "deliver", "flag", len(per_act["deliver"]))
+    add(H, "credit", "check", len(tracking) + len((credit or {}).get("suppliers", {})))
+    add(H, "credit", "write", len(credit_drafts))
+    add(S, "credit", "review", len(credit_drafts))
+    add(H, "match", "lookup", 2 * len(mt["invoices"]))
+    add(H, "match", "check", 3 * sum(len(table_rows(read("projects", PROJECT, "invoices", i + ".md"), "SKU")) for i in mt["invoices"]) + len(mt["invoices"]))
+    both("match", "sign", len(mt["invoices"]))
+    add(S, "match", "flag", len(per_act["match"]))
+    if areq:
+        add(H, "request", "lookup", len(areq["lines_checked"]) * len({v["supplier"] for v in catalog.values()}))
+        add(H, "request", "check", 2)
+        add(H, "request", "form", 1)
+        both("request", "sign", 1)
+        add(S, "request", "flag", len(areq["flags"]))
+    if csum:
+        claim = csum.get("claim", {})
+        totals_ = [x for x in ("original", "approved_changes", "current", "invoiced", "approved_for_payment", "paid", "held", "remaining") if x in csum]
+        add(H, "closeout", "check", len(totals_) + sum(1 for r in table_rows(po_text, "SKU") if r["Supplier"] == claim.get("supplier")))
+        add(H, "closeout", "form", sum(1 for f in ("contract-summary.md", "completion-certificate.md") if os.path.exists(P("controls", f))))
+        add(H, "closeout", "write", len(reply_drafts))
+        add(S, "closeout", "review", len(reply_drafts))
+        both("closeout", "sign", len(re.findall(r"^Signature: _{3,}", read("projects", PROJECT, "controls", "completion-certificate.md"), re.M)))
+        add(S, "closeout", "flag", 1 if claim.get("result") == "CLAIM_CONTRADICTED" else 0)
+    return H, S
+
+
+def rnd(x):
+    return int(x + 0.5)  # whole minutes, rounded half up (the page's script does the same)
+
+
+def byhand():
+    H, S = bh_counts()
+    tot = {side: {t: sum(d[st].get(t, 0) for st in d) for t in BH_TYPES} for side, d in (("h", H), ("s", S))}
+    th, ts = sum(tot["h"].values()), sum(tot["s"].values())
+    same = sum(min(H[st].get(t, 0), S[st].get(t, 0)) for st in H for t in BH_TYPES)
+    mins = {side: {t: rnd(tot[side][t] * BH_MIN[t]) for t in BH_TYPES} for side in ("h", "s")}
+    mh, ms = sum(mins["h"].values()), sum(mins["s"].values())
+    scale = max(th, ts)
+    w = lambda n: f"{n / scale * 100:.2f}%"
+    seg = lambda cls, n, title: f'<span class="bh-seg {cls}" style="width:{w(n)}" title="{E(title)}"></span>'
+    bars = ('<div class="bh-head" data-audit>'
+            f'<div class="bh-row"><div class="bh-lab">By hand</div><div class="bh-bar" role="img" aria-label="By hand: {th} touches">'
+            + seg("same", same, "Same both ways") + seg("gone", th - same, "By hand only")
+            + f'</div><div class="bh-num">{k("bh.total.h", th)} touches</div></div>'
+            f'<div class="bh-row"><div class="bh-lab">With the system</div><div class="bh-bar" role="img" aria-label="With the system: {ts} touches">'
+            + seg("same", same, "Same both ways") + seg("new", ts - same, "With the system only")
+            + f'</div><div class="bh-num">{k("bh.total.s", ts)} touches</div></div>'
+            '<div class="legend bh-legend">'
+            f'<span><i class="sw same"></i>Same both ways: sign-offs, supplier tasks, quote requests, and fixing the mistyped certificate field ({k("bh.same", same)})</span>'
+            f'<span><i class="sw gone"></i>By hand only: checking, looking up, retyping, assembling, writing ({k("bh.gone", th - same)})</span>'
+            f'<span><i class="sw new"></i>With the system only: reading the AI\'s drafts and flags ({k("bh.new", ts - same)})</span></div>'
+            f'<p class="bh-est">Illustrative estimate at the minutes in the table below: about {k("bh.hours.h", rnd(mh / 60))} hours of hands-on '
+            f'work by hand ({k("bh.min.h", mh)} minutes) and about {k("bh.hours.s", rnd(ms / 60))} with the system ({k("bh.min.s", ms)} minutes). '
+            'Those minutes are starting assumptions, not measurements. Waiting time isn\'t counted on either side.</p></div>')
+    trs = []
+    for t in BH["types"]:
+        i = t["id"]
+        trs.append(f'<tr data-bh-type="{i}"><td>{E(t["label"])}</td><td class="num">{k(f"bh.t.{i}.h", tot["h"][i])}</td>'
+                   f'<td class="num">{k(f"bh.t.{i}.s", tot["s"][i])}</td>'
+                   f'<td class="num"><input type="number" min="0" step="0.25" data-min="{i}" value="{t["minutes"]}" aria-label="Minutes for each: {E(t["label"].lower())}"></td>'
+                   f'<td class="num">{k(f"bh.m.{i}.h", mins["h"][i])}</td><td class="num">{k(f"bh.m.{i}.s", mins["s"][i])}</td>'
+                   f'<td class="basis" data-basis="{i}">{E(t["basis"])}</td></tr>')
+    trs.append(f'<tr class="bh-total"><td><b>All touches</b></td><td class="num"><b>{k("bh.total.h", th)}</b></td><td class="num"><b>{k("bh.total.s", ts)}</b></td>'
+               f'<td></td><td class="num"><b>{k("bh.min.h", mh)}</b></td><td class="num"><b>{k("bh.min.s", ms)}</b></td><td></td></tr>')
+    kinds = ('<h2>Every touch, by kind</h2><p class="lead">The counts come from the records and don\'t change. The minutes are one starting '
+             'assumption per kind of touch, the same on both sides, so the gap comes only from the counts. Type your own team\'s minutes '
+             'and the totals update.</p><table data-audit><thead><tr><th>Kind of touch</th><th class="num">By hand</th><th class="num">With the system</th>'
+             '<th class="num">Minutes each</th><th class="num">Minutes by hand</th><th class="num">Minutes with the system</th>'
+             '<th>Where the minutes come from</th></tr></thead><tbody>' + "".join(trs) + "</tbody></table>")
+    lst = lambda side, st: "<br>".join(f'{k(f"bh.s.{st}.{t}.{side}", n)} {BH_WORDS[t][0] if n == 1 else BH_WORDS[t][1]}'
+                                       for t in BH_TYPES for n in [(H if side == "h" else S)[st].get(t, 0)] if n) or '<span class="muted">nothing</span>'
+    srows = []
+    for st, half, skill, name, term, what in BH_STEPS:
+        sk = f" · <code>{skill}</code>" if skill else " · a person"
+        srows.append(f'<tr data-bh-step="{st}"><td><b>{E(name)}</b><div class="muted small">{half} · {E(term)}{sk}</div></td>'
+                     f'<td class="small">{E(what)}</td><td class="small">{lst("h", st)}</td><td class="small">{lst("s", st)}</td>'
+                     f'<td class="num">{k(f"bh.s.{st}.h", sum(H[st].values()))}</td><td class="num">{k(f"bh.s.{st}.s", sum(S[st].values()))}</td></tr>')
+    steps_t = ('<h2>Step by step</h2><p class="lead">Each step of the work on this dashboard, in the order a real office does it, with what the step involves. '
+               'The exact counting rule for each step is written in <code>tests/check_phase3f.py</code>. '
+               '"With the system" lists what a person still does: the AI drafts and checks; people send, sign, and decide.</p>'
+               '<table data-audit><thead><tr><th>Step</th><th>What the work is</th><th>By hand, a person makes</th><th>With the system, a person makes</th>'
+               '<th class="num">Touches by hand</th><th class="num">With the system</th></tr></thead><tbody>' + "".join(srows) + "</tbody></table>")
+    notes = ('<h2>What isn\'t counted, on either side</h2><ul class="plain">'
+             '<li>Waiting: days spent waiting on a contractor, a supplier, or a signer.</li>'
+             '<li>Getting the records into the folder: scans, exports, and attachments.</li>'
+             '<li>Second and third reminders when someone doesn\'t reply.</li>'
+             '<li>Rework when a problem slips past a check.</li>'
+             '<li>Starting each AI step, which only the system side needs.</li>'
+             '<li>Status questions and meetings about where things stand.</li></ul>'
+             '<p class="muted">How the counts are checked: <code>tests/check_phase3f.py</code> recounts every one from the raw records its own way '
+             '(the locked answer keys, the documents, the plan, the quotes, the tracking, the invoices), checks that each minute is labeled as an '
+             'assumption, and checks that this page\'s own math matches. Its file states the counting rule for each step. The minutes live in '
+             '<code>dashboard/by-hand.json</code>.</p>')
+    lead = ('<h2>By hand vs. with the system</h2><p class="lead">This view is illustrative: it takes the same work as the rest of this dashboard '
+            f'({k("v.total", len(slugs))} contractors and furnishing order {ident("PQ-1042")}), and counts it two ways, done by hand and done with the '
+            'system. Each count comes from the sample records by a written rule for each step. The system takes over the checking, looking up, '
+            'retyping, and assembling; people still send every email, sign every approval, and decide every flagged problem.</p>')
+    return lead + bars + kinds + steps_t + notes
 
 
 def audit():
@@ -998,6 +1239,14 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 .board{display:grid;grid-template-columns:1fr 1fr;gap:18px}.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .rc{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:12.5px;transition:background .3s}.rc.flash{background:#fff4d6}
 .rc .badges{font-size:11px;color:var(--ink2)}table.log td{font-size:12px}
+.bh-head{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}
+.bh-row{display:grid;grid-template-columns:130px 1fr 110px;gap:12px;align-items:center;margin:8px 0}.bh-lab{font-weight:600}
+.bh-bar{display:flex;gap:2px;height:22px}.bh-seg{display:block;height:100%}.bh-seg:first-child{border-radius:4px 0 0 4px}
+.bh-seg:last-child{border-radius:0 4px 4px 0}.bh-seg.same,.sw.same{background:#1baf7a}.bh-seg.gone,.sw.gone{background:#eb6834}
+.bh-seg.new,.sw.new{background:#2a78d6}.bh-num{font-size:15px;font-weight:600;text-align:right;white-space:nowrap}
+.bh-legend{flex-wrap:wrap;gap:6px 18px;margin-top:4px}.bh-est{margin:10px 0 0;color:var(--ink2);max-width:980px}
+input[data-min]{width:64px;font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:4px;text-align:right;background:var(--surface)}
+td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
 """
 
@@ -1042,13 +1291,27 @@ JS = """
   window.addEventListener('hashchange',fromHash);fromHash();
   document.body.setAttribute('data-rendered',String(sections.length));
 })();
+(function(){
+  var sec=document.querySelector('section[data-tab="byhand"]');if(!sec)return;
+  function num(k){var e=sec.querySelector('[data-k="'+k+'"]');return e?parseInt(e.textContent.replace(/[^0-9]/g,''),10):0;}
+  function set(k,v){[].forEach.call(sec.querySelectorAll('[data-k="'+k+'"]'),function(e){e.textContent=v.toLocaleString('en-US');});}
+  function rnd(x){return Math.floor(x+0.5);}
+  var inputs=[].slice.call(sec.querySelectorAll('input[data-min]')),counts={};
+  inputs.forEach(function(i){var t=i.getAttribute('data-min');counts[t]={h:num('bh.t.'+t+'.h'),s:num('bh.t.'+t+'.s')};});
+  function calc(){var tot={h:0,s:0};
+    inputs.forEach(function(i){var t=i.getAttribute('data-min'),m=parseFloat(i.value);if(!(m>=0))m=0;
+      ['h','s'].forEach(function(sd){var v=rnd(counts[t][sd]*m);set('bh.m.'+t+'.'+sd,v);tot[sd]+=v;});});
+    ['h','s'].forEach(function(sd){set('bh.min.'+sd,tot[sd]);set('bh.hours.'+sd,rnd(tot[sd]/60));});
+    sec.setAttribute('data-bh-js','1');}
+  inputs.forEach(function(i){i.addEventListener('input',calc);});calc();
+})();
 """
 
 
 def page():
     stamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     head_tiles = tiles()
-    secs = {"overview": overview(), "onboarding": onboarding(), "buying": buying(), "checks": checks(), "audit": audit(), "map": diagram()}
+    secs = {"overview": overview(), "byhand": byhand(), "onboarding": onboarding(), "buying": buying(), "checks": checks(), "audit": audit(), "map": diagram()}
     nav = "".join(f'<button type="button" data-for="{t}" data-tab-label="{lab}" aria-selected="false">{lab}</button>' for t, lab in TABS)
     body = "".join(f'<section data-tab="{t}" id="tab-{t}"{" class=on" if t == "overview" else ""}>{secs[t]}</section>' for t, _ in TABS)
     body = body.replace('<div class="replay">', '<div class="replay" id="replay" data-rstep="0">')

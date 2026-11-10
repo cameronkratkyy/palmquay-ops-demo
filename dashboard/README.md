@@ -10,6 +10,7 @@ One offline page that shows the whole demo on one screen: what's waiting on peop
 | Tab | What it shows | Industry term |
 |---|---|---|
 | Overview | The tiles, every decision waiting on a person (with options and the AI's suggestion), and every problem caught, by cause | Control tower, exception queue, failure analysis |
+| By hand vs. system | The same work counted two ways: every touch a coordinator makes by hand (emails, checks, lookups, retyped fields, packets, supplier tasks, sign-offs) next to what a person still makes with the system, by step and by kind, with minutes a viewer can change | Process mapping, before-and-after analysis |
 | Onboarding | Each vendor's status, blocker, screen, approvers, and days waiting; insurance and licenses that ended or end soon; conflict-of-interest and exclusion screening; the record behind each vendor | Pipeline tracking, compliance monitoring, vendor due diligence |
 | Buying | The furnishing project's budget, the seven buying steps and what each caught, deliveries, invoices, what people already decided, and the controls from a real procurement packet (approval request, running totals, close-out) | Procure-to-pay (P2P), FF&E procurement, contract close-out |
 | Checks | The phase checks for Phases 1, 2, 3a, 3c, and 3d, run when the page was built (3c and 3d without their own older-phase steps, so the page and the Phase 3b check never call each other); the checker's reviews; guardrail counts | Acceptance testing, maker-checker review |
@@ -34,6 +35,12 @@ A decision is listed when its record shows a person hasn't acted yet:
 14. Each shipping-credit draft in `projects/unit-4b/exceptions/` whose first line says "not sent": the Facilities Manager sends it.
 
 "Since" is the date on the record that created the decision: a draft's or packet's date; for the screening decisions, the disclosure's signing date or the exclusion list's "as of" date; for the justifications and the certification, the date the order was approved; for a reply to a supplier, the date of the supplier's notice. The AI's suggestion is only a suggestion; the named person decides.
+
+## Rule: By hand vs. system
+Every count on this tab comes from the records by the rule written for its step (`tests/check_phase3f.py` states each rule and recounts it from the raw records). "With the system" counts what a person still does: reviewing and sending the AI's drafts, reading its flags, supplier tasks, sign-offs, and anything the system doesn't do yet (quote requests). The minutes are assumptions, one per kind of touch and the same on both sides, kept in `dashboard/by-hand.json` and labeled "not measured"; the page's own script recomputes the minute totals when a viewer changes them. Waiting time, getting records into the folder, extra reminders, and rework aren't counted on either side.
+
+## Rule: the check count
+`tests/suite.json` lists every check script and how many checks it runs. The Checks tile shows that total; the build re-runs the Phase 1, 2, 3a, 3c, and 3d checks and shows their result; the rest test this page itself or the PDFs, so they run after the build (and every one runs on each push).
 
 ## Rule: the expiry list
 Insurance certificates and licenses that ended before the demo date, or end within 60 days after it. Dates come from the documents themselves, not from the intake record.
