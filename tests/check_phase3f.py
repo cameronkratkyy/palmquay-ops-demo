@@ -473,12 +473,20 @@ def f5(F, page_html):
     readme = [int(x) for x in re.findall(r"\b(\d+) pass/fail checks\b", read("README.md"))]
     docs = {f: re.findall(r"\b(\d+) of (\d+) checks\b", re.sub(r"<[^>]+>", " ", read(*f.split("/")))) for f in ("docs/explainer.md", "docs/diagram.html")}
     doc_off = {f: v for f, v in docs.items() if not v or any(int(a) != total or int(b) != total for a, b in v)}
+    # 11/10 (backlog #91, stricter): the explainer and diagram also say the dashboard's own decisions-waiting and audit-row counts
+    w_page = sorted({num(v) for v in tags(page_html, "w.total").get("w.total", [])})
+    a_page = sorted({num(v) for v in tags(page_html, "a.rows").get("a.rows", [])})
+    said = {f: (sorted({int(x) for x in re.findall(r"\b(\d+) decisions waiting on people\b", t)}),
+                sorted({int(x) for x in re.findall(r"\b(\d+) audit log rows\b", t)}))
+            for f, t in ((f, re.sub(r"<[^>]+>", " ", read(*f.split("/")))) for f in ("docs/explainer.md", "docs/diagram.html"))}
+    said_off = {f: v for f, v in said.items() if len(w_page) != 1 or len(a_page) != 1 or v[0] != w_page or v[1] != a_page}
     ok = (suite and on_disk == sorted(suite) == in_ci and not off and "c.suite" in page and not page_off
-          and readme and all(x == total for x in readme) and not doc_off)
+          and readme and all(x == total for x in readme) and not doc_off and not said_off)
     rec(ok, "F5 one check count everywhere: the list, the scripts, CI, the dashboard, README, explainer, diagram",
         f"tests/suite.json lists {len(suite)} scripts, {total} checks; on disk {len(on_disk)}; run by CI {len(in_ci)}; differ from what each script "
         f"really runs {off}; dashboard c.suite tags {sorted(page)} differ {page_off}; README says {readme}; explainer and diagram say "
-        f"{ {f: v for f, v in docs.items()} }, off {sorted(doc_off)}")
+        f"{ {f: v for f, v in docs.items()} }, off {sorted(doc_off)}; decisions waiting / audit log rows: dashboard {w_page} / {a_page}, "
+        f"explainer and diagram {said}, off {sorted(said_off)}")
 
 
 def f6():

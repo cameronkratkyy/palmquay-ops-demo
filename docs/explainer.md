@@ -1,6 +1,6 @@
 # How the Palmquay demo works: one page to talk from
 
-*Palmquay Properties is fictional and every vendor, person, and price is fake. The structure copies the author's private AI system; the last three steps copy a real public-agency procurement packet (structure only). Each step is told twice: what it does, then how to say it.*
+*Palmquay Properties is fictional, and so is every vendor, person, and price. The structure copies the author's private AI system; the last three steps copy a real public-agency procurement packet (structure only). Each step is told twice: what it does, then how to say it.*
 
 > **30 seconds:** "I designed and directed an AI operations system for a fictional property company. It handles two jobs: onboarding contractors and buying what a project needs. The AI reads the paperwork, checks it against written rules, drafts the follow-ups, and builds the approval packets. People approve, send, sign, and pay. A second AI checks the work, every action lands in an audit log, and tests with locked answers prove it caught every problem we planted."
 
@@ -26,12 +26,12 @@
 
 ## Why you can trust it: five controls
 1. **Written rules.** One rules file the AI reads every time, plus one file for every number; a check confirms the two agree. *Operating policy, single source of truth.*
-2. **People approve.** The AI never sends, signs, orders, or pays: 0 times in 31 audit log rows. *Human in the loop.*
+2. **People approve.** The AI never sends, signs, orders, or pays: 0 times in 34 audit log rows. *Human in the loop.*
 3. **A second AI, the checker.** Set up to only read, it reviews the work, with planted mistakes mixed in to prove it's really reading. *Maker-checker review, least privilege.*
 4. **Audit log.** One row per action, hash-chained, so editing a past row shows. *Audit trail, tamper evidence.*
 5. **Tests with a locked answer key.** The right answers were written and locked before the first run. 85 of 85 checks pass, and self-tests plant breaks in a throwaway copy to prove the checks catch them. *Acceptance tests, evals, mutation testing.*
 
-**Numbers you can say:** 8 vendors, 6 planted problems, all caught · 7 buying steps, 13 planted problems, all caught · 3 steps from a real packet, 6 more problems, all caught · 20 decisions waiting on people · a test recounts every number in the dashboard's tiles and tables.
+**Numbers you can say:** 8 vendors, 6 planted problems, all caught · 7 buying steps, 13 planted problems, all caught · 3 steps from a real packet, 6 more problems, all caught · 21 decisions waiting on people · a test recounts every number in the dashboard's tiles and tables.
 
 ## If they ask
 | They ask | You say |
@@ -39,4 +39,4 @@
 | "Did you code it?" | "I designed it and directed the build: the process, the rules, and the tests. Claude Code wrote the code, and I can walk you through every piece." |
 | "How do you know it's right?" | "The answers were locked before the first run, a script recounts every result its own way, and planted breaks prove the checks catch errors." |
 | "Can the checker really only read?" | "It's defined with read and search tools only. In the earlier reviews that limit was an instruction, not enforced; the latest review ran as an agent with no write tools at all." |
-| "Could it work here?" | "It's a demo on fake data and hasn't run with real users. I'd map your process with the people who do it, agree on pass and fail, pilot one workflow, and name an owner for exceptions." |
+| "Could it work here?" | "It's a working demo on sample records and hasn't run with real users. I'd map your process with the people who do it, agree on pass and fail, pilot one workflow, and name an owner for exceptions." |

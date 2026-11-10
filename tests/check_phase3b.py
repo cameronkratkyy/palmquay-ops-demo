@@ -11,7 +11,7 @@ Options: --root DIR (check a copy) · --copy (the older checks are told they run
 How the dashboard proves its numbers (the contract the builder must meet):
 - every number in a tile or table sits in <span data-k="key">; the key must be one this check recounts, with the same value;
 - a quote from a record sits in an element with data-src="path" and must appear word for word in that file;
-- a whole record shown as evidence sits in <pre data-file="path"> and must equal the file;
+- a whole record shown as evidence sits in <pre data-file="path"> and must equal the file (its label line shown in sample wording, 11/10);
 - identifiers with digits (SKUs, invoice, quote, order, task IDs, unit names) sit in <span class="id">;
 - anything else with a digit inside a [data-audit] area is untagged, and fails.
 """
@@ -577,6 +577,17 @@ def dump(page, frag):
 
 
 # ------------------------------------------------------------- the checks -------------------------------------------------------------
+# 11/10 (backlog #91): the page shows each record's label line in sample wording; only these two label starts are mapped
+# before a preview is compared with its file (written out here, not imported from the build, so the check stays independent)
+LABEL_MAP = (("*Fake data for a demo.", "*Sample records for a demo."), ("*Fake document made for a demo.", "*Sample document made for a demo."))
+
+
+def shown_as(s):
+    for a, b in LABEL_MAP:
+        s = s.replace(a, b)
+    return s
+
+
 def page_facts(html_text):
     root = parse(html_text)
     tags, ids, srcs, files, audit = [], [], [], [], []
@@ -623,7 +634,7 @@ def b1(E, info, page):
                 bad_files.append(path)
             continue
         f = p(*path.split("/"))
-        if not os.path.exists(f) or open(f, encoding="utf-8").read().replace("\r", "").strip() != t.replace("\r", "").strip():
+        if not os.path.exists(f) or shown_as(open(f, encoding="utf-8").read()).replace("\r", "").strip() != t.replace("\r", "").strip():
             bad_files.append(path)
     folders = len(info["slugs"])
     rows_v = {n.attrs["data-v"]: n.attrs.get("data-status") for n in walk(root) if "data-v" in n.attrs}

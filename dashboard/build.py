@@ -142,8 +142,17 @@ def ident(s, plain=False):
     return f'<span class="id{" plain" if plain else ""}">{E(s)}</span>'
 
 
+# 11/10 (backlog #91): each record file keeps its hash-locked label line ("*Fake data for a demo..."); the page shows that one
+# line in sample wording (the owner's rule: "sample records," never "fake"). tests/check_phase3b.py B1 maps the same two label
+# starts, and only those, before comparing a preview with its file, so every other character must still match.
+SAMPLE_LABEL = (("*Fake data for a demo.", "*Sample records for a demo."), ("*Fake document made for a demo.", "*Sample document made for a demo."))
+
+
 def pre(rel):
-    return f'<pre data-file="{rel}">{E(read(*rel.split("/")).strip())}</pre>'
+    body = read(*rel.split("/")).strip()
+    for a, b in SAMPLE_LABEL:
+        body = body.replace(a, b)
+    return f'<pre data-file="{rel}">{E(body)}</pre>'
 
 
 def chip(status, label=None):
