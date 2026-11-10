@@ -404,6 +404,21 @@ def recount(runs):
     E["w.total"] = len(W)
     E["w.onb"] = sum(1 for k in W if k.split(":")[0] in ("send_followup", "sign_packet", "review_disclosure", "review_exclusion"))
     E["w.buy"] = E["w.total"] - E["w.onb"]
+    # 11/10 (D175): the Buying tab's stage counts, counts bar, money line, and approval limits, recounted here from the records
+    # (the stage of each kind of waiting decision is written out here, not imported from the build)
+    buy_stage = {"answer_scope": "request", "approve_change": "approve", "justify_line": "approve", "certify_request": "approve",
+                 "send_update": "receive", "task": "receive", "send_credit": "receive", "send_reply": "receive",
+                 "decide_invoice": "pay", "approve_payment": "pay"}
+    for st_ in ("request", "approve", "order", "receive", "pay"):
+        E["bq." + st_] = sum(1 for k_ in W if buy_stage.get(k_.split(":")[0]) == st_)
+    E["bq.ready_pay"] = sum(1 for k_ in W if k_.startswith("approve_payment:"))
+    E["bq.billed"] = sum(money(fields(read("projects", proj, "invoices", k_ + ".md"))["Total due"]) for k_ in mt["invoices"])
+    E["bq.invoices"] = len(mt["invoices"])
+    E["bq.unpaid"] = sum(1 for k_ in mt["invoices"] if fields(read("projects", proj, "invoices", k_ + ".md"))["Payment status"].strip().lower() == "unpaid")
+    pt_ = rules.get("controls", {})["procurement_types"]
+    E.update({"pol.tier1": rules["approval_tiers"][0]["max_amount"], "pol.tier2": rules["approval_tiers"][1]["max_amount"],
+              "pol.small": pt_[0]["max_amount"], "pol.standard": pt_[1]["max_amount"], "pol.min_suppliers": pt_[1]["min_suppliers"],
+              "pol.line_min": pt_[1]["line_min"]})
     # 11/9 department hub: each owner's count of waiting decisions, recounted from the same records (every role in people.md + the requester, 0 if none)
     roles_all = set(W.values()) | {role(req["Requested by"])} | {
         re.sub(r"\s*\(.*?\)", "", r_).strip() for r_ in re.findall(r"^\|\s*([A-Z][^|]+?)\s*\|\s*[A-Z][a-z]+ [A-Z][a-z]+\s*\|", read("company", "people.md"), re.M)}

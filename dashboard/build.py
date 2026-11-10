@@ -742,6 +742,34 @@ def screening():
             f'<td class="num">{k("sc.suppliers", len(sup))} / {k("sc.sup_excluded", n_ex)}</td></tr></tbody></table>')
 
 
+# 11/10 (D175, the owner's ask: "companies have basic tools they use for spending... it should be incorporated into the buying part"):
+# the five stages a property management company buys in, the record each stage makes, and where that record usually lives.
+# Tool names are examples only; the demo reads exported sample records and connects to none of them.
+BUY_STAGE = {"answer_scope": "request", "approve_change": "approve", "justify_line": "approve", "certify_request": "approve",
+             "send_update": "receive", "task": "receive", "send_credit": "receive", "send_reply": "receive",
+             "decide_invoice": "pay", "approve_payment": "pay"}
+STAGE_CARDS = [  # (key, name, the record, where it usually lives (example tools), the AI's part, who decides)
+    ("request", "Request", "The request and its scope: what the unit needs, the measurements, and the install date.",
+     "A work order or project in the property management software (AppFolio, for example), or an email from the property manager.",
+     "Reads the plan and flags missing measurements and conflicts.", "The property manager who asked"),
+    ("approve", "Approve", "Supplier quotes, the product check, and the approval packet.",
+     "Quotes from supplier business accounts (Wayfair Professional for furniture, Home Depot Pro for supplies); the approval in the software or by email.",
+     "Compares delivered cost and lead times, checks each product against the plan, and drafts the packet.", "Facilities Manager"),
+    ("order", "Order", "The purchase order.",
+     "A purchase order in the property management software, or an order placed in the supplier's business account.",
+     "Nothing. A person places the order.", "Facilities Manager"),
+    ("receive", "Receive", "The delivery check: what arrived, what is late, and what went to the wrong unit.",
+     "Supplier tracking pages and the delivery receipt.",
+     "Matches tracking to the order, opens tasks, and drafts the update and any shipping-credit request.", "Facilities Manager"),
+    ("pay", "Bill & pay", "The vendor bill, checked against the order and what arrived, then the payment.",
+     "Bills and bill pay in the property management software or a bill-pay service; small buys on a company card. "
+     "When the property belongs to a client owner, the cost shows up on that owner's monthly statement.",
+     "Matches each invoice to the order and the receipt and holds any difference. It never marks anything paid.", "Finance"),
+]
+STEP_STAGE = {"scope": "Request", "source": "Approve", "quote": "Approve", "approve": "Approve", "change": "Any stage: change control",
+              "deliver": "Receive", "match": "Bill & pay"}
+
+
 def buying():
     budget, committed = dollars(req["Budget"]), dollars(po["Total"])
     scale = max(budget, cr["new_total"]) * 1.04
@@ -784,15 +812,88 @@ def buying():
                "change": f"{E(who('Facilities Manager'))} approves or rejects (waiting)", "deliver": f"{E(who('Facilities Manager'))} sends the update (waiting)",
                "match": f"{E(who('Finance'))} approves payment (waiting)"}
     done = {r["action"]: r for r in proc_rows}
-    ar = []
+    ar, last = [], None
+    stage_row = lambda s_: f'<tr class="stagerow"><th colspan="6">{E(s_)}</th></tr>'
     for i, (act, skill, name, short) in enumerate(ACTS, 1):
+        if short == "change":  # the order itself is a person's step, so it gets a row of its own before change control
+            ar.append(stage_row("Order") + f'<tr><td colspan="6">Purchase order {ident("PQ-1042")} was approved by '
+                      f'{E(po["Approved by"].replace(" (fictional)", ""))}; no AI step runs here. The substitute sofa waits on change request '
+                      f'{ident("CR-001")}.</td></tr>')
+        if STEP_STAGE[short] != last:
+            ar.append(stage_row(STEP_STAGE[short]))
+            last = STEP_STAGE[short]
         codes = " ".join(code(c) for c, _ in per_act[short])
         state = chip("DONE", "ran") if act in done else chip("WAITING", "not run")
         ar.append(f'<tr><td><code>{skill}</code><div class="muted">{name}</div></td><td>{state}</td><td>{codes}</td>'
                   f'<td class="num">{k("pa." + short, len(per_act[short]))}</td><td>{detail[short]}</td><td>{decides[short]}</td></tr>')
-    acts = ('<h2>The seven buying steps</h2><p class="lead">Each ran once, in order, and caught the problem planted for it. Quotes are word for '
+    acts = ('<h2>The seven buying steps, by stage</h2><p class="lead">The same seven steps, grouped under the stage they belong to. Each ran once, '
+            'in order, and caught the problem planted for it. Change control sits on its own because a change can come up at any stage. Quotes are word for '
             'word from the step\'s output file.</p><table data-audit><thead><tr><th>Step</th><th>Ran</th><th>Caught</th><th class="num">Flags</th>'
             '<th>Detail</th><th>Who decides</th></tr></thead><tbody>' + "".join(ar) + "</tbody></table>")
+
+    # ---- D175: the stages, the counts bar, the queue, the money line, and the approval limits
+    wb = [w for w in W if w[1].split(":")[0] in BUY_STAGE]
+    st_n = {s_[0]: sum(1 for w in wb if BUY_STAGE[w[1].split(":")[0]] == s_[0]) for s_ in STAGE_CARDS}
+    cards = "".join(
+        f'<div class="stage"><div class="sname"><span class="snum">{i}</span> {E(nm)}</div>'
+        f'<div class="wait">{k("bq." + key, st_n[key])} waiting on a person</div>'
+        f'<div class="slab">Record</div><div>{E(rec)}</div><div class="slab">Where it usually lives (examples)</div><div>{E(tools)}</div>'
+        f'<div class="slab">The AI</div><div>{E(ai)}</div><div class="slab">Decides</div><div>{E(who(dec)) if dec != "The property manager who asked" else E(requester_name + ", " + requester_role)}</div></div>'
+        for i, (key, nm, rec, tools, ai, dec) in enumerate(STAGE_CARDS, 1))
+    strip = ('<h2>How Palmquay buys</h2><p class="lead">Five stages, the record each one makes, and where that record usually lives at a property '
+             'management company. The tool names are examples, and the suppliers in this sample project are fictional. This demo reads exported '
+             'sample records and does not connect to any of them, and people place orders, confirm deliveries, and release money.</p>'
+             f'<div class="stages">{cards}</div>')
+    ready_pay = sum(1 for w in wb if w[1].startswith("approve_payment:"))
+    bar = ('<div class="qbar" data-audit>'
+           f'<div><span class="lab">Answers needed</span> {k("bq.request", st_n["request"])}</div>'
+           f'<div><span class="lab">Waiting at the approval stage</span> {k("bq.approve", st_n["approve"])}</div>'
+           f'<div><span class="lab">Late or wrong deliveries</span> {k("p.exc", len(dlv["exceptions"]))}</div>'
+           f'<div><span class="lab">Invoices on hold</span> {k("p.inv_hold", len(held))}</div>'
+           f'<div><span class="lab">Ready to pay</span> {k("bq.ready_pay", ready_pay)}</div></div>')
+    order_ = {s_[0]: i_ for i_, s_ in enumerate(STAGE_CARDS)}
+    names_ = {s_[0]: s_[1] for s_ in STAGE_CARDS}
+    qr = []
+    for w in sorted(wb, key=lambda w: (order_[BUY_STAGE[w[1].split(":")[0]]], w[0], w[1])):
+        since, key_, role_, who_, dec_html, opts, sugg, rec_ = w
+        qr.append(f'<tr><td>{E(names_[BUY_STAGE[key_.split(":")[0]]])}</td><td>{dec_html}</td><td>{E(who_)}</td><td class="nw">{since}</td>'
+                  f'<td><code data-file="{rec_}">{E(rec_)}</code></td></tr>')
+    queue = ('<h2>Open items, by stage</h2><p class="lead">Everything in this project that is waiting on a person, in stage order: the same items '
+             'as the decisions list on the Overview tab.</p><table data-audit><thead><tr><th>Stage</th><th>What is waiting</th><th>Who decides</th>'
+             '<th>Since</th><th>Record</th></tr></thead><tbody>' + "".join(qr) + "</tbody></table>")
+    fund_rel = "projects/unit-4b/funding.md"
+    fund = line_fields(read(*fund_rel.split("/")))
+    billed_all = sum(dollars(invoices[i_]["Total due"]) for i_ in mt["invoices"])
+    unpaid_n = sum(1 for i_ in mt["invoices"] if invoices[i_]["Payment status"].strip().lower() == "unpaid")
+    arr = '<span class="arr" aria-hidden="true">&#8594;</span>'
+    money_line = ('<h2>Where the money is</h2><p class="lead">From the approved budget to the bill. Finance releases every payment; '
+                  'the AI never does.</p><div class="money" data-audit>'
+                  f'<div><span class="lab">Approved budget</span>{k("p.budget", budget, True)}</div>{arr}'
+                  f'<div><span class="lab">Committed on order {ident("PQ-1042")}</span>{k("p.committed", committed, True)}</div>{arr}'
+                  f'<div><span class="lab">Billed so far</span>{k("bq.billed", billed_all, True)}</div>{arr}'
+                  f'<div><span class="lab">Held for Finance</span>{k("p.inv_diff", hv["difference"], True)}</div>{arr}'
+                  f'<div><span class="lab">Paid</span>{"none yet" if unpaid_n == len(mt["invoices"]) else "partly"}; '
+                  f'{k("bq.unpaid", unpaid_n)} of {k("bq.invoices", len(mt["invoices"]))} invoices unpaid</div>'
+                  f'{arr}<div><span class="lab">Charged to</span>budget line {ident(fund["Budget line"])}</div></div>')
+    tiers, ptypes = rules["approval_tiers"], ctl_rules["procurement_types"]
+    small, std = ptypes[0], ptypes[1]
+    this_type = next(t_ for t_ in ptypes if t_["max_amount"] is None or committed <= t_["max_amount"])
+    this_tier = next(t_ for t_ in tiers if t_["max_amount"] is None or committed <= t_["max_amount"])
+    limits = ('<h2>Approval limits</h2><p class="lead">Palmquay\'s purchasing policy (fictional), read from '
+              '<code data-file="company/rules.json">company/rules.json</code>. Every number below comes from that file.</p>'
+              '<table data-audit><tbody>'
+              f'<tr><th>Who approves an order</th><td>Up to {k("pol.tier1", tiers[0]["max_amount"], True)}: the Facilities Manager. '
+              f'Up to {k("pol.tier2", tiers[1]["max_amount"], True)}: the Procurement Lead too. Above that: Legal and Finance too.</td></tr>'
+              f'<tr><th>How many prices</th><td>Up to {k("pol.small", small["max_amount"], True)}: one written quote or catalog price. '
+              f'Up to {k("pol.standard", std["max_amount"], True)}: prices from at least {k("pol.min_suppliers", std["min_suppliers"])} '
+              f'approved suppliers for every line over {k("pol.line_min", std["line_min"], True)}. Above that: a formal bid.</td></tr>'
+              f'<tr><th>This order</th><td>Order {ident("PQ-1042")}, {k("p.committed", committed, True)}: a {E(this_type["name"].lower())}, '
+              f'approved by {E(who(this_tier["approvers"][0]))}.</td></tr>'
+              f'<tr><th>Money set aside</th><td>{k("p.budget", budget, True)} approved on budget line {ident(fund["Budget line"])}; '
+              f'{E(fund["Budget owner"])} owns the budget line.</td></tr>'
+              '<tr><th>Not in these sample records</th><td>A client owner\'s repair limit, which each management agreement sets, and a company '
+              'card\'s limit, which the card program sets. A real setup would add both here.</td></tr>'
+              '</tbody></table>')
     dr = []
     for r in tracking:
         exc = dlv["exceptions"].get(r["SKU"])
@@ -842,7 +943,8 @@ def buying():
              "projects/unit-4b/out/purchase-request-draft.md", "projects/unit-4b/out/approval.md", po_rel, notice_rel, cr_md,
              "projects/unit-4b/out/tasks.md"] + upd_drafts + credit_drafts + ["projects/unit-4b/out/match.md"]
     ev = "".join(details(f"<code>{f}</code>", pre(f)) for f in files)
-    return head + acts + deliveries + inv_t + decided + controls_section() + "<h2>The records</h2>" + ev
+    return (head + strip + bar + queue + money_line + acts + limits + deliveries + inv_t + decided + controls_section()
+            + "<h2>The records</h2>" + ev)
 
 
 def controls_section():
@@ -1235,7 +1337,7 @@ code,.code{background:var(--soft);padding:1px 4px;border-radius:4px}.id.plain{fo
 .st-BLOCKED i,.st-FAIL i{background:var(--crit)}.st-PERSON i{background:var(--serious)}.st-SUBMITTED i{background:#8f8e88}
 details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:6px 0;padding:6px 10px}summary{cursor:pointer;padding:2px 0}
 pre{white-space:pre-wrap;font:12px/1.45 Consolas,"Cascadia Mono",monospace;background:#fbfbf9;border:1px solid var(--line);padding:10px;border-radius:6px;max-height:460px;overflow:auto}
-.budget{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}.bnums{display:flex;gap:28px;flex-wrap:wrap;font-size:15px;font-weight:600}
+.stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:4px 0 10px}.stage{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:10px 11px;font-size:12.5px}.sname{font-weight:600;font-size:14px}.snum{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;margin-right:4px}.slab{font-size:11px;color:var(--ink2);margin-top:7px}.qbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 10px}.qbar>div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:18px;font-weight:600}.qbar .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-weight:600}.money .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money .arr{color:var(--ink2)}td.nw{white-space:nowrap}tr.stagerow th{background:var(--soft);font-size:12px;letter-spacing:.02em}@media (max-width:760px){.stages,.qbar{grid-template-columns:1fr}}.budget{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}.bnums{display:flex;gap:28px;flex-wrap:wrap;font-size:15px;font-weight:600}
 .bnums .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.meter{position:relative;height:16px;background:var(--soft);border-radius:4px;margin:12px 0 6px}
 .seg{position:absolute;top:0;bottom:0}.seg.committed{left:0;background:var(--accent);border-radius:4px 0 0 4px}
 .seg.pending{background:repeating-linear-gradient(45deg,#d9a03a 0 4px,#f5d58f 4px 8px);border-radius:0 4px 4px 0;border-left:2px solid var(--surface)}
