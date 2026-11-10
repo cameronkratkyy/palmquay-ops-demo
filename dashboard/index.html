@@ -33,8 +33,16 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 .board{display:grid;grid-template-columns:1fr 1fr;gap:18px}.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .rc{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:12.5px;transition:background .3s}.rc.flash{background:#fff4d6}
 .rc .badges{font-size:11px;color:var(--ink2)}table.log td{font-size:12px}
+.bh-head{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}
+.bh-row{display:grid;grid-template-columns:130px 1fr 110px;gap:12px;align-items:center;margin:8px 0}.bh-lab{font-weight:600}
+.bh-bar{display:flex;gap:2px;height:22px}.bh-seg{display:block;height:100%}.bh-seg:first-child{border-radius:4px 0 0 4px}
+.bh-seg:last-child{border-radius:0 4px 4px 0}.bh-seg.same,.sw.same{background:#1baf7a}.bh-seg.gone,.sw.gone{background:#eb6834}
+.bh-seg.new,.sw.new{background:#2a78d6}.bh-num{font-size:15px;font-weight:600;text-align:right;white-space:nowrap}
+.bh-legend{flex-wrap:wrap;gap:6px 18px;margin-top:4px}.bh-est{margin:10px 0 0;color:var(--ink2);max-width:980px}
+input[data-min]{width:64px;font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:4px;text-align:right;background:var(--surface)}
+td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
-</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-09 10:47 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
+</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-09 22:36 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
 </div>
 <div class="tiles" data-audit><div class="tile"><div class="lab">Vendors</div>
 <div class="big"><span class="n" data-k="v.total">8</span></div>
@@ -52,9 +60,9 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <div class="big"><span class="n" data-k="i.total">25</span></div>
 <div class="small"><span class="n" data-k="i.onb">6</span> onboarding · <span class="n" data-k="i.buy">13</span> buying · <span class="n" data-k="i.ctl">6</span> controls</div>
 </div>
-<div class="tile"><div class="lab">Checks, run at build</div>
-<div class="big"><span class="n" data-k="c.pass">53</span> of <span class="n" data-k="c.total">53</span></div>
-<div class="small"><span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span> run at build; <span class="id plain">Phase 3b</span>'s check runs separately</div>
+<div class="tile"><div class="lab">Checks in the suite</div>
+<div class="big"><span class="n" data-k="c.suite">85</span></div>
+<div class="small"><span class="n" data-k="c.pass">53</span> of <span class="n" data-k="c.total">53</span> re-run at build <span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span> · all run on each push</div>
 </div>
 <div class="tile"><div class="lab">Audit log rows</div>
 <div class="big"><span class="n" data-k="a.rows">34</span></div>
@@ -65,7 +73,7 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <div class="small"><span class="n" data-k="g.drafts">9</span> drafts unsent · <span class="n" data-k="g.blank">9</span> sign-offs blank</div>
 </div>
 </div>
-<nav><button type="button" data-for="overview" data-tab-label="Overview" aria-selected="false">Overview</button><button type="button" data-for="onboarding" data-tab-label="Onboarding" aria-selected="false">Onboarding</button><button type="button" data-for="buying" data-tab-label="Buying" aria-selected="false">Buying</button><button type="button" data-for="checks" data-tab-label="Checks" aria-selected="false">Checks</button><button type="button" data-for="audit" data-tab-label="Audit log" aria-selected="false">Audit log</button><button type="button" data-for="map" data-tab-label="Map" aria-selected="false">Map</button></nav></header><main><section data-tab="overview" id="tab-overview" class=on><h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, Florida. Manages 14 commercial and apartment buildings in Sarasota and Manatee counties. Each department has one owner and the AI helpers whose work lands on them: the AI drafts and checks, and the person decides.</p><div class="org" data-org data-hub><div class="people"><div class="person" data-person="Lena Ortiz" style="--pc:#1d6fa5"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Lena Ortiz</div>
+<nav><button type="button" data-for="overview" data-tab-label="Overview" aria-selected="false">Overview</button><button type="button" data-for="byhand" data-tab-label="By hand vs. system" aria-selected="false">By hand vs. system</button><button type="button" data-for="onboarding" data-tab-label="Onboarding" aria-selected="false">Onboarding</button><button type="button" data-for="buying" data-tab-label="Buying" aria-selected="false">Buying</button><button type="button" data-for="checks" data-tab-label="Checks" aria-selected="false">Checks</button><button type="button" data-for="audit" data-tab-label="Audit log" aria-selected="false">Audit log</button><button type="button" data-for="map" data-tab-label="Map" aria-selected="false">Map</button></nav></header><main><section data-tab="overview" id="tab-overview" class=on><h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, Florida. Manages 14 commercial and apartment buildings in Sarasota and Manatee counties. Each department has one owner and the AI helpers whose work lands on them: the AI drafts and checks, and the person decides.</p><div class="org" data-org data-hub><div class="people"><div class="person" data-person="Lena Ortiz" style="--pc:#1d6fa5"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Lena Ortiz</div>
 <div class="title">Property Manager</div>
 <div class="dept">Property management</div>
 <div class="does">Asked for Unit 4B to be furnished ($5,200 budget)</div>
@@ -434,7 +442,254 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 <td>Gulfweave Furnishings</td>
 <td class="num"><span class="n" data-k="ic.CLAIM_CONTRADICTED">1</span></td>
 </tr>
-</tbody></table></section><section data-tab="onboarding" id="tab-onboarding"><h2>Vendors</h2><p class="lead">Status as of the demo date 2026-11-05, from each vendor's intake record. Days waiting count from the day the vendor submitted. A person approves every vendor; the AI builds the packet.</p><table data-audit><thead><tr><th>Vendor</th>
+</tbody></table></section><section data-tab="byhand" id="tab-byhand"><h2>By hand vs. with the system</h2><p class="lead">This view is illustrative: it takes the same work as the rest of this dashboard (<span class="n" data-k="v.total">8</span> contractors and furnishing order <span class="id">PQ-1042</span>), and counts it two ways, done by hand and done with the system. Each count comes from the sample records by a written rule for each step. The system takes over the checking, looking up, retyping, and assembling; people still send every email, sign every approval, and decide every flagged problem.</p><div class="bh-head" data-audit><div class="bh-row"><div class="bh-lab">By hand</div>
+<div class="bh-bar" role="img" aria-label="By hand: 458 touches"><span class="bh-seg same" style="width:4.80%" title="Same both ways"></span><span class="bh-seg gone" style="width:95.20%" title="By hand only"></span></div>
+<div class="bh-num"><span class="n" data-k="bh.total.h">458</span> touches</div>
+</div>
+<div class="bh-row"><div class="bh-lab">With the system</div>
+<div class="bh-bar" role="img" aria-label="With the system: 57 touches"><span class="bh-seg same" style="width:4.80%" title="Same both ways"></span><span class="bh-seg new" style="width:7.64%" title="With the system only"></span></div>
+<div class="bh-num"><span class="n" data-k="bh.total.s">57</span> touches</div>
+</div>
+<div class="legend bh-legend"><span><i class="sw same"></i>Same both ways: sign-offs, supplier tasks, quote requests, and fixing the mistyped certificate field (<span class="n" data-k="bh.same">22</span>)</span><span><i class="sw gone"></i>By hand only: checking, looking up, retyping, assembling, writing (<span class="n" data-k="bh.gone">436</span>)</span><span><i class="sw new"></i>With the system only: reading the AI's drafts and flags (<span class="n" data-k="bh.new">35</span>)</span></div>
+<p class="bh-est">Illustrative estimate at the minutes in the table below: about <span class="n" data-k="bh.hours.h">8</span> hours of hands-on work by hand (<span class="n" data-k="bh.min.h">468</span> minutes) and about <span class="n" data-k="bh.hours.s">3</span> with the system (<span class="n" data-k="bh.min.s">162</span> minutes). Those minutes are starting assumptions, not measurements. Waiting time isn't counted on either side.</p></div>
+<h2>Every touch, by kind</h2><p class="lead">The counts come from the records and don't change. The minutes are one starting assumption per kind of touch, the same on both sides, so the gap comes only from the counts. Type your own team's minutes and the totals update.</p><table data-audit><thead><tr><th>Kind of touch</th>
+<th class="num">By hand</th>
+<th class="num">With the system</th>
+<th class="num">Minutes each</th>
+<th class="num">Minutes by hand</th>
+<th class="num">Minutes with the system</th>
+<th>Where the minutes come from</th>
+</tr>
+</thead><tbody><tr data-bh-type="write"><td>Emails written from scratch</td>
+<td class="num"><span class="n" data-k="bh.t.write.h">12</span></td>
+<td class="num"><span class="n" data-k="bh.t.write.s">3</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="write" value="8" aria-label="Minutes for each: emails written from scratch"></td>
+<td class="num"><span class="n" data-k="bh.m.write.h">96</span></td>
+<td class="num"><span class="n" data-k="bh.m.write.s">24</span></td>
+<td class="basis" data-basis="write">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="review"><td>AI drafts a person reviews and sends</td>
+<td class="num"><span class="n" data-k="bh.t.review.h">0</span></td>
+<td class="num"><span class="n" data-k="bh.t.review.s">9</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="review" value="2" aria-label="Minutes for each: ai drafts a person reviews and sends"></td>
+<td class="num"><span class="n" data-k="bh.m.review.h">0</span></td>
+<td class="num"><span class="n" data-k="bh.m.review.s">18</span></td>
+<td class="basis" data-basis="review">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="check"><td>Checks by eye or calculator</td>
+<td class="num"><span class="n" data-k="bh.t.check.h">323</span></td>
+<td class="num"><span class="n" data-k="bh.t.check.s">0</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="check" value="0.5" aria-label="Minutes for each: checks by eye or calculator"></td>
+<td class="num"><span class="n" data-k="bh.m.check.h">162</span></td>
+<td class="num"><span class="n" data-k="bh.m.check.s">0</span></td>
+<td class="basis" data-basis="check">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="lookup"><td>Lookups in another list, catalog, or record</td>
+<td class="num"><span class="n" data-k="bh.t.lookup.h">50</span></td>
+<td class="num"><span class="n" data-k="bh.t.lookup.s">0</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="lookup" value="1" aria-label="Minutes for each: lookups in another list, catalog, or record"></td>
+<td class="num"><span class="n" data-k="bh.m.lookup.h">50</span></td>
+<td class="num"><span class="n" data-k="bh.m.lookup.s">0</span></td>
+<td class="basis" data-basis="lookup">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="typed"><td>Fields typed again from another record</td>
+<td class="num"><span class="n" data-k="bh.t.typed.h">47</span></td>
+<td class="num"><span class="n" data-k="bh.t.typed.s">1</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="typed" value="0.25" aria-label="Minutes for each: fields typed again from another record"></td>
+<td class="num"><span class="n" data-k="bh.m.typed.h">12</span></td>
+<td class="num"><span class="n" data-k="bh.m.typed.s">0</span></td>
+<td class="basis" data-basis="typed">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="form"><td>Packets and forms put together</td>
+<td class="num"><span class="n" data-k="bh.t.form.h">8</span></td>
+<td class="num"><span class="n" data-k="bh.t.form.s">0</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="form" value="10" aria-label="Minutes for each: packets and forms put together"></td>
+<td class="num"><span class="n" data-k="bh.m.form.h">80</span></td>
+<td class="num"><span class="n" data-k="bh.m.form.s">0</span></td>
+<td class="basis" data-basis="form">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="flag"><td>AI flags a person reads</td>
+<td class="num"><span class="n" data-k="bh.t.flag.h">0</span></td>
+<td class="num"><span class="n" data-k="bh.t.flag.s">26</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="flag" value="2" aria-label="Minutes for each: ai flags a person reads"></td>
+<td class="num"><span class="n" data-k="bh.m.flag.h">0</span></td>
+<td class="num"><span class="n" data-k="bh.m.flag.s">52</span></td>
+<td class="basis" data-basis="flag">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="task"><td>Supplier tasks (a call or an email)</td>
+<td class="num"><span class="n" data-k="bh.t.task.h">2</span></td>
+<td class="num"><span class="n" data-k="bh.t.task.s">2</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="task" value="10" aria-label="Minutes for each: supplier tasks (a call or an email)"></td>
+<td class="num"><span class="n" data-k="bh.m.task.h">20</span></td>
+<td class="num"><span class="n" data-k="bh.m.task.s">20</span></td>
+<td class="basis" data-basis="task">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr data-bh-type="sign"><td>Sign-offs and approvals</td>
+<td class="num"><span class="n" data-k="bh.t.sign.h">16</span></td>
+<td class="num"><span class="n" data-k="bh.t.sign.s">16</span></td>
+<td class="num"><input type="number" min="0" step="0.25" data-min="sign" value="3" aria-label="Minutes for each: sign-offs and approvals"></td>
+<td class="num"><span class="n" data-k="bh.m.sign.h">48</span></td>
+<td class="num"><span class="n" data-k="bh.m.sign.s">48</span></td>
+<td class="basis" data-basis="sign">Starting assumption, not measured: the author&#x27;s number to set</td>
+</tr>
+<tr class="bh-total"><td><b>All touches</b></td>
+<td class="num"><b><span class="n" data-k="bh.total.h">458</span></b></td>
+<td class="num"><b><span class="n" data-k="bh.total.s">57</span></b></td>
+<td></td>
+<td class="num"><b><span class="n" data-k="bh.min.h">468</span></b></td>
+<td class="num"><b><span class="n" data-k="bh.min.s">162</span></b></td>
+<td></td>
+</tr>
+</tbody></table><h2>Step by step</h2><p class="lead">Each step of the work on this dashboard, in the order a real office does it, with what the step involves. The exact counting rule for each step is written in <code>tests/check_phase3f.py</code>. "With the system" lists what a person still does: the AI drafts and checks; people send, sign, and decide.</p><table data-audit><thead><tr><th>Step</th>
+<th>What the work is</th>
+<th>By hand, a person makes</th>
+<th>With the system, a person makes</th>
+<th class="num">Touches by hand</th>
+<th class="num">With the system</th>
+</tr>
+</thead><tbody><tr data-bh-step="intake"><td><b>Check each contractor&#x27;s paperwork against the policy</b><div class="muted small">Onboarding · Vendor compliance review · <code>/intake</code></div>
+</td>
+<td class="small">Required documents, insurance amounts and end dates, license dates, and the legal name on every page.</td>
+<td class="small"><span class="n" data-k="bh.s.intake.check.h">94</span> checks by eye</td>
+<td class="small"><span class="n" data-k="bh.s.intake.flag.s">6</span> flags read</td>
+<td class="num"><span class="n" data-k="bh.s.intake.h">94</span></td>
+<td class="num"><span class="n" data-k="bh.s.intake.s">6</span></td>
+</tr>
+<tr data-bh-step="certs"><td><b>Check each typed insurance record against its PDF</b><div class="muted small">Onboarding · Document verification · <code>/certs</code></div>
+</td>
+<td class="small">Every field on each certificate, compared with what someone keyed into the record. A person fixes what differs, either way.</td>
+<td class="small"><span class="n" data-k="bh.s.certs.check.h">96</span> checks by eye<br><span class="n" data-k="bh.s.certs.typed.h">1</span> field typed again</td>
+<td class="small"><span class="n" data-k="bh.s.certs.typed.s">1</span> field typed again<br><span class="n" data-k="bh.s.certs.flag.s">1</span> flag read</td>
+<td class="num"><span class="n" data-k="bh.s.certs.h">97</span></td>
+<td class="num"><span class="n" data-k="bh.s.certs.s">2</span></td>
+</tr>
+<tr data-bh-step="screen"><td><b>Screen for conflicts of interest and exclusions</b><div class="muted small">Onboarding · Vendor due diligence, debarment screening · <code>/screen</code></div>
+</td>
+<td class="small">Read each conflict-of-interest disclosure, then search the exclusion list (companies and people that can&#x27;t be hired or paid) once for each name in the papers and each approved supplier.</td>
+<td class="small"><span class="n" data-k="bh.s.screen.check.h">24</span> checks by eye<br><span class="n" data-k="bh.s.screen.lookup.h">21</span> lookups</td>
+<td class="small"><span class="n" data-k="bh.s.screen.flag.s">2</span> flags read</td>
+<td class="num"><span class="n" data-k="bh.s.screen.h">45</span></td>
+<td class="num"><span class="n" data-k="bh.s.screen.s">2</span></td>
+</tr>
+<tr data-bh-step="chase"><td><b>Follow up with blocked or held contractors</b><div class="muted small">Onboarding · Exception follow-up · <code>/chase</code></div>
+</td>
+<td class="small">One email each: what&#x27;s missing, why it&#x27;s required, and the deadline.</td>
+<td class="small"><span class="n" data-k="bh.s.chase.write.h">6</span> emails written</td>
+<td class="small"><span class="n" data-k="bh.s.chase.review.s">6</span> drafts reviewed and sent</td>
+<td class="num"><span class="n" data-k="bh.s.chase.h">6</span></td>
+<td class="num"><span class="n" data-k="bh.s.chase.s">6</span></td>
+</tr>
+<tr data-bh-step="route"><td><b>Build approval packets and route them</b><div class="muted small">Onboarding · Approval routing · <code>/route</code></div>
+</td>
+<td class="small">Copy the job and the approvers into a packet; each approver signs in order.</td>
+<td class="small"><span class="n" data-k="bh.s.route.typed.h">29</span> fields typed again<br><span class="n" data-k="bh.s.route.form.h">2</span> packets or forms<br><span class="n" data-k="bh.s.route.sign.h">5</span> sign-offs</td>
+<td class="small"><span class="n" data-k="bh.s.route.sign.s">5</span> sign-offs</td>
+<td class="num"><span class="n" data-k="bh.s.route.h">36</span></td>
+<td class="num"><span class="n" data-k="bh.s.route.s">5</span></td>
+</tr>
+<tr data-bh-step="revise"><td><b>Restart sign-off after a requested change</b><div class="muted small">Onboarding · Contract revision, re-approval · <code>/revise</code></div>
+</td>
+<td class="small">See who already signed, build a new version with the change marked, and route it from the first approver again.</td>
+<td class="small"><span class="n" data-k="bh.s.revise.check.h">4</span> checks by eye<br><span class="n" data-k="bh.s.revise.typed.h">17</span> fields typed again<br><span class="n" data-k="bh.s.revise.form.h">1</span> packet or form<br><span class="n" data-k="bh.s.revise.sign.h">4</span> sign-offs</td>
+<td class="small"><span class="n" data-k="bh.s.revise.sign.s">4</span> sign-offs</td>
+<td class="num"><span class="n" data-k="bh.s.revise.h">26</span></td>
+<td class="num"><span class="n" data-k="bh.s.revise.s">4</span></td>
+</tr>
+<tr data-bh-step="scope"><td><b>Check the request&#x27;s measurements</b><div class="muted small">Buying · Requirements gathering · <code>/scope</code></div>
+</td>
+<td class="small">Every wall length present, and whether the requested bed fits the room.</td>
+<td class="small"><span class="n" data-k="bh.s.scope.check.h">5</span> checks by eye</td>
+<td class="small"><span class="n" data-k="bh.s.scope.flag.s">2</span> flags read</td>
+<td class="num"><span class="n" data-k="bh.s.scope.h">5</span></td>
+<td class="num"><span class="n" data-k="bh.s.scope.s">2</span></td>
+</tr>
+<tr data-bh-step="ask"><td><b>Ask suppliers for quotes</b><div class="muted small">Buying · Request for quote · a person</div>
+</td>
+<td class="small">One request per quote on file. The system doesn&#x27;t draft these yet, so a person writes them either way.</td>
+<td class="small"><span class="n" data-k="bh.s.ask.write.h">3</span> emails written</td>
+<td class="small"><span class="n" data-k="bh.s.ask.write.s">3</span> emails written</td>
+<td class="num"><span class="n" data-k="bh.s.ask.h">3</span></td>
+<td class="num"><span class="n" data-k="bh.s.ask.s">3</span></td>
+</tr>
+<tr data-bh-step="source"><td><b>Check lead times against the install date</b><div class="muted small">Buying · Lead-time check · <code>/source</code></div>
+</td>
+<td class="small">Look up each item&#x27;s lead time and work out when it would arrive.</td>
+<td class="small"><span class="n" data-k="bh.s.source.check.h">8</span> checks by eye<br><span class="n" data-k="bh.s.source.lookup.h">8</span> lookups</td>
+<td class="small"><span class="n" data-k="bh.s.source.flag.s">1</span> flag read</td>
+<td class="num"><span class="n" data-k="bh.s.source.h">16</span></td>
+<td class="num"><span class="n" data-k="bh.s.source.s">1</span></td>
+</tr>
+<tr data-bh-step="quote"><td><b>Compare quotes and draft the purchase request</b><div class="muted small">Buying · Quote comparison, purchase requisition · <code>/quote</code></div>
+</td>
+<td class="small">Recompute every line and subtotal, read the notes for extra charges, and check each quote&#x27;s valid-until date; then draft the purchase request, which the Facilities Manager approves.</td>
+<td class="small"><span class="n" data-k="bh.s.quote.check.h">17</span> checks by eye<br><span class="n" data-k="bh.s.quote.form.h">1</span> packet or form<br><span class="n" data-k="bh.s.quote.sign.h">1</span> sign-off</td>
+<td class="small"><span class="n" data-k="bh.s.quote.flag.s">2</span> flags read<br><span class="n" data-k="bh.s.quote.sign.s">1</span> sign-off</td>
+<td class="num"><span class="n" data-k="bh.s.quote.h">19</span></td>
+<td class="num"><span class="n" data-k="bh.s.quote.s">3</span></td>
+</tr>
+<tr data-bh-step="approve"><td><b>Check each product against the design plan</b><div class="muted small">Buying · Specification review · <code>/approve</code></div>
+</td>
+<td class="small">Width and depth on every line, plus finish and fabric where the plan names one.</td>
+<td class="small"><span class="n" data-k="bh.s.approve.check.h">23</span> checks by eye</td>
+<td class="small"><span class="n" data-k="bh.s.approve.flag.s">3</span> flags read</td>
+<td class="num"><span class="n" data-k="bh.s.approve.h">23</span></td>
+<td class="num"><span class="n" data-k="bh.s.approve.s">3</span></td>
+</tr>
+<tr data-bh-step="request"><td><b>Fill in the approval request</b><div class="muted small">Controls · Purchase requisition with funding · <code>/request</code></div>
+</td>
+<td class="small">In-spec prices from every approved catalog for each line big enough to need competing prices, the procurement type, the funds, and the certification.</td>
+<td class="small"><span class="n" data-k="bh.s.request.check.h">2</span> checks by eye<br><span class="n" data-k="bh.s.request.lookup.h">9</span> lookups<br><span class="n" data-k="bh.s.request.form.h">1</span> packet or form<br><span class="n" data-k="bh.s.request.sign.h">1</span> sign-off</td>
+<td class="small"><span class="n" data-k="bh.s.request.flag.s">3</span> flags read<br><span class="n" data-k="bh.s.request.sign.s">1</span> sign-off</td>
+<td class="num"><span class="n" data-k="bh.s.request.h">13</span></td>
+<td class="num"><span class="n" data-k="bh.s.request.s">4</span></td>
+</tr>
+<tr data-bh-step="change"><td><b>Price the backorder substitute</b><div class="muted small">Buying · Change order · <code>/change</code></div>
+</td>
+<td class="small">The new total, the gap to the budget, and the new delivery date; then a change request and its approval.</td>
+<td class="small"><span class="n" data-k="bh.s.change.check.h">3</span> checks by eye<br><span class="n" data-k="bh.s.change.form.h">1</span> packet or form<br><span class="n" data-k="bh.s.change.sign.h">1</span> sign-off</td>
+<td class="small"><span class="n" data-k="bh.s.change.flag.s">1</span> flag read<br><span class="n" data-k="bh.s.change.sign.s">1</span> sign-off</td>
+<td class="num"><span class="n" data-k="bh.s.change.h">5</span></td>
+<td class="num"><span class="n" data-k="bh.s.change.s">2</span></td>
+</tr>
+<tr data-bh-step="deliver"><td><b>Check deliveries against the order</b><div class="muted small">Buying · Expediting, exception management · <code>/deliver</code></div>
+</td>
+<td class="small">Each item&#x27;s tracking: its arrival against the install date and its address against the order. A task per problem, and an update to the requester.</td>
+<td class="small"><span class="n" data-k="bh.s.deliver.write.h">1</span> email written<br><span class="n" data-k="bh.s.deliver.check.h">16</span> checks by eye<br><span class="n" data-k="bh.s.deliver.lookup.h">8</span> lookups<br><span class="n" data-k="bh.s.deliver.task.h">2</span> supplier tasks</td>
+<td class="small"><span class="n" data-k="bh.s.deliver.review.s">1</span> draft reviewed and sent<br><span class="n" data-k="bh.s.deliver.flag.s">2</span> flags read<br><span class="n" data-k="bh.s.deliver.task.s">2</span> supplier tasks</td>
+<td class="num"><span class="n" data-k="bh.s.deliver.h">27</span></td>
+<td class="num"><span class="n" data-k="bh.s.deliver.s">5</span></td>
+</tr>
+<tr data-bh-step="credit"><td><b>Ask for a shipping credit on a late item</b><div class="muted small">Buying · Vendor concession · <code>/credit</code></div>
+</td>
+<td class="small">Each item&#x27;s arrival against the date the order promised, the credit math, and a polite request.</td>
+<td class="small"><span class="n" data-k="bh.s.credit.write.h">1</span> email written<br><span class="n" data-k="bh.s.credit.check.h">9</span> checks by eye</td>
+<td class="small"><span class="n" data-k="bh.s.credit.review.s">1</span> draft reviewed and sent</td>
+<td class="num"><span class="n" data-k="bh.s.credit.h">10</span></td>
+<td class="num"><span class="n" data-k="bh.s.credit.s">1</span></td>
+</tr>
+<tr data-bh-step="match"><td><b>Match invoices to the order and the receipt</b><div class="muted small">Buying · Three-way match · <code>/match</code></div>
+</td>
+<td class="small">Price and quantity against the order, quantity against what arrived, and the freight. Finance decides each invoice.</td>
+<td class="small"><span class="n" data-k="bh.s.match.check.h">11</span> checks by eye<br><span class="n" data-k="bh.s.match.lookup.h">4</span> lookups<br><span class="n" data-k="bh.s.match.sign.h">2</span> sign-offs</td>
+<td class="small"><span class="n" data-k="bh.s.match.flag.s">2</span> flags read<br><span class="n" data-k="bh.s.match.sign.s">2</span> sign-offs</td>
+<td class="num"><span class="n" data-k="bh.s.match.h">17</span></td>
+<td class="num"><span class="n" data-k="bh.s.match.s">4</span></td>
+</tr>
+<tr data-bh-step="closeout"><td><b>Close out the order</b><div class="muted small">Controls · Contract close-out · <code>/closeout</code></div>
+</td>
+<td class="small">The running totals, and a supplier&#x27;s notice that everything was delivered, checked against the receipt line by line; a reply when it&#x27;s wrong; the completion certificate&#x27;s signatures.</td>
+<td class="small"><span class="n" data-k="bh.s.closeout.write.h">1</span> email written<br><span class="n" data-k="bh.s.closeout.check.h">11</span> checks by eye<br><span class="n" data-k="bh.s.closeout.form.h">2</span> packets or forms<br><span class="n" data-k="bh.s.closeout.sign.h">2</span> sign-offs</td>
+<td class="small"><span class="n" data-k="bh.s.closeout.review.s">1</span> draft reviewed and sent<br><span class="n" data-k="bh.s.closeout.flag.s">1</span> flag read<br><span class="n" data-k="bh.s.closeout.sign.s">2</span> sign-offs</td>
+<td class="num"><span class="n" data-k="bh.s.closeout.h">16</span></td>
+<td class="num"><span class="n" data-k="bh.s.closeout.s">4</span></td>
+</tr>
+</tbody></table><h2>What isn't counted, on either side</h2><ul class="plain"><li>Waiting: days spent waiting on a contractor, a supplier, or a signer.</li>
+<li>Getting the records into the folder: scans, exports, and attachments.</li>
+<li>Second and third reminders when someone doesn't reply.</li>
+<li>Rework when a problem slips past a check.</li>
+<li>Starting each AI step, which only the system side needs.</li>
+<li>Status questions and meetings about where things stand.</li>
+</ul><p class="muted">How the counts are checked: <code>tests/check_phase3f.py</code> recounts every one from the raw records its own way (the locked answer keys, the documents, the plan, the quotes, the tracking, the invoices), checks that each minute is labeled as an assumption, and checks that this page's own math matches. Its file states the counting rule for each step. The minutes live in <code>dashboard/by-hand.json</code>.</p></section><section data-tab="onboarding" id="tab-onboarding"><h2>Vendors</h2><p class="lead">Status as of the demo date 2026-11-05, from each vendor's intake record. Days waiting count from the day the vendor submitted. A person approves every vendor; the AI builds the packet.</p><table data-audit><thead><tr><th>Vendor</th>
 <th class="num">Contract</th>
 <th>Status</th>
 <th>Blocker</th>
@@ -2099,7 +2354,7 @@ Palmquay Properties (fictional)</pre></details><details><summary><code>projects/
 | INV-GW-5521 | MATCH | as ordered |  |  |
 | INV-KC-3307 | HOLD | $872 | $713 | $159 |
 
-Payment is approved by Finance (?). The assistant flags differences and never marks an invoice paid.</pre></details></section><section data-tab="checks" id="tab-checks"><h2>Acceptance checks, run when this page was built</h2><p class="lead">Each check was written before the work it tests, recomputes every result its own way, and prints what it counted. A check that can't fail proves nothing, so each check script also has a self-test that plants breaks in a throwaway copy.</p><table data-audit><thead><tr><th>Phase</th>
+Payment is approved by Finance (?). The assistant flags differences and never marks an invoice paid.</pre></details></section><section data-tab="checks" id="tab-checks"><h2>Acceptance checks</h2><p class="lead">Each check was written before the work it tests, recomputes every result its own way, and prints what it counted. A check that can't fail proves nothing, so each check script also has a self-test that plants breaks in a throwaway copy. The suite has <span class="n" data-k="c.suite">85</span> checks, and every one runs on each push. The first rows were re-run when this page was built; the rest test this page itself or the PDFs, so they run after it.</p><table data-audit><thead><tr><th>Phase</th>
 <th>What it checks</th>
 <th>Result</th>
 </tr>
@@ -2123,21 +2378,37 @@ Payment is approved by Finance (?). The assistant flags differences and never ma
 <td>Real-world exceptions (a change during sign-off, a shipping credit) against their locked answer key (its check of the older phases runs separately)</td>
 <td><span class="n" data-k="c.p3d.pass">12</span> of <span class="n" data-k="c.p3d.total">12</span> <span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span></td>
 </tr>
+<tr><td><span class="id plain">Phase 3b</span></td>
+<td>This page, the diagram, the video script, and the explainer. It rebuilds this page to test it, so it runs after the build</td>
+<td><span class="n" data-k="c.suite.phase3b">9</span> checks, run after the build and on every push</td>
+</tr>
+<tr><td><span class="id plain">Phase 3e</span></td>
+<td>The AI&#x27;s reading of the certificate PDFs, checked against a standard PDF tool</td>
+<td><span class="n" data-k="c.suite.phase3e">9</span> checks, run after the build and on every push</td>
+</tr>
+<tr><td>Org chart</td>
+<td>The department hub on the Overview and the sample-records wording on this page</td>
+<td><span class="n" data-k="c.suite.orgchart">8</span> checks, run after the build and on every push</td>
+</tr>
+<tr><td><span class="id plain">Phase 3f</span></td>
+<td>The By hand vs. system tab: every count recounted from the raw records, every minute labeled as an assumption, and one check count everywhere</td>
+<td><span class="n" data-k="c.suite.phase3f">6</span> checks, run after the build and on every push</td>
+</tr>
 </tbody></table><details><summary>Phase 1: every line it printed (0.1 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
 PASS - C2 CLAUDE.md states every rule and matches rules.json - 34 of 34 found; missing []
 PASS - C3 8 vendors, each with its record and exactly the key&#x27;s documents - 8 folders, 8 records, 8 of 8 document sets match
 PASS - C4 recomputed from the documents = answer key - 8 of 8 match; mismatches {}
 PASS - C4b the key covers every planted problem + a clean small and a clean large job - 6 of 6 problem types; clean small [&#x27;kestrelbay-air-heat&#x27;]; clean large [&#x27;skyquay-lift-fire&#x27;]
 PASS - C5 answer key unchanged since it was locked - lock 973099662faf..., now 973099662faf...
-PASS - C6 no personal words; every ID is visibly fake - 244 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked fake
-PASS - C7 README maps each piece (industry term + resume line) - 54 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (4.7 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
+PASS - C6 no personal words; every ID is visibly fake - 250 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked fake
+PASS - C7 README maps each piece (industry term + resume line) - 57 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;, &#x27;`dashboard/by-hand.json` + the By hand vs. system tab&#x27;, &#x27;`tests/check_phase3f.py`&#x27;, &#x27;`tests/suite.json`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (4.4 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
 PASS - P1b /status prints one correct line per vendor - exit 0; 8 lines; 8 of 8 right (stage, status, blocker, days waiting); problems {} 
 PASS - P2 /chase: 1 good draft per BLOCKED/HOLD vendor, 0 sends - 6 of 6 drafts pass (vendor, item, why, deadline 2026-11-12, how to send, .example contact, no threats, no unsupported facts); 0 drafts for READY vendors []; sends 0 (audit rows marked sent 0, network imports []); problems {}
 PASS - P3 /route: packet for each READY vendor, approvers in order, sign-offs blank - 2 of 2 packets pass; packets for vendors not READY []; approvers {&#x27;kestrelbay-air-heat&#x27;: [&#x27;Facilities Manager&#x27;], &#x27;skyquay-lift-fire&#x27;: [&#x27;Facilities Manager&#x27;, &#x27;Procurement Lead&#x27;, &#x27;Legal&#x27;, &#x27;Finance&#x27;]}; problems {}
 PASS - P4 read-only compliance-checker reviewed everything and caught both plants - agent tools [&#x27;Glob&#x27;, &#x27;Grep&#x27;, &#x27;Read&#x27;]; latest review reviews/2026-11-05-02-all-vendors.md: 18 files, 18 unchanged since review; 16 of 16 real files marked OK by the checker; planted wrong deadline caught True; planted missed name mismatch caught True; problems []
 PASS - P5 audit log: 1 row per action, append-only (hash chain) - 18 rows; 18 actions taken (8 intake + 6 chase drafts + 2 route packets + 2 checker reviews); chain 18 of 18 rows verify; problems []
-PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 244 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
-PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 54 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (4.9 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
+PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 250 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
+PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 57 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (4.5 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
 PASS - Q0b recomputed from the inputs = answer key (the data really has the planted problems) - 7 activities recomputed; differ from key []; PO total recomputed 4898 vs stated 4898; error none
 PASS - Q1 /scope: brief = key; every request field in brief.md; nothing invented - projects/unit-4b/out/brief.json: = key; 16 of 16 request fields in brief.md; invented measurement False
 PASS - Q2 /source: late items and the in-time alternative = key - projects/unit-4b/out/source.json: = key
@@ -2180,7 +2451,14 @@ python -I -X utf8 tests/check_phase3a.py --selftest
 python -I -X utf8 tests/check_phase3c.py
 python -I -X utf8 tests/check_phase3c.py --selftest
 python -I -X utf8 tests/check_phase3d.py
-python -I -X utf8 tests/check_phase3d.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">6</span>.</p><table data-audit><thead><tr><th>When</th>
+python -I -X utf8 tests/check_phase3d.py --selftest
+python -I -X utf8 tests/check_phase3b.py
+python -I -X utf8 tests/check_phase3b.py --selftest
+python -I -X utf8 tests/check_phase3e.py
+python -I -X utf8 tests/check_phase3e.py --selftest
+python -I -X utf8 tests/check_orgchart.py
+python -I -X utf8 tests/check_phase3f.py
+python -I -X utf8 tests/check_phase3f.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">6</span>.</p><table data-audit><thead><tr><th>When</th>
 <th>Subject</th>
 <th>What it reviewed</th>
 <th>Result</th>
@@ -2619,7 +2897,7 @@ python -I -X utf8 tests/check_phase3d.py --selftest</pre></details><h2>The check
     <div class="dg-ctrl"><b>People approve</b>The AI never sends, signs, orders, or pays. It stops and asks.<span class="dg-term">human in the loop, segregation of duties</span></div>
     <div class="dg-ctrl"><b>A second AI, the checker</b>Set up to only read, it reviews the work, with planted mistakes mixed in.<span class="dg-term">maker-checker review, least privilege by design</span></div>
     <div class="dg-ctrl"><b>Audit log</b>Every action is one row. Rows are hash-chained, so an edit shows.<span class="dg-term">audit trail, tamper evidence</span></div>
-    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 53 of 53 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
+    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 85 of 85 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
     <div class="dg-ctrl"><b>One screen</b>A dashboard rebuilt from the records; a test recounts every number in its tiles and tables.<span class="dg-term">observability, reconciliation</span></div>
   </div>
 
@@ -2668,5 +2946,19 @@ python -I -X utf8 tests/check_phase3d.py --selftest</pre></details><h2>The check
     if(r){show('audit');render(Math.min(parseInt(r[1],10),ev.length));}else{show(m?m[1]:'overview');render(0);}}
   window.addEventListener('hashchange',fromHash);fromHash();
   document.body.setAttribute('data-rendered',String(sections.length));
+})();
+(function(){
+  var sec=document.querySelector('section[data-tab="byhand"]');if(!sec)return;
+  function num(k){var e=sec.querySelector('[data-k="'+k+'"]');return e?parseInt(e.textContent.replace(/[^0-9]/g,''),10):0;}
+  function set(k,v){[].forEach.call(sec.querySelectorAll('[data-k="'+k+'"]'),function(e){e.textContent=v.toLocaleString('en-US');});}
+  function rnd(x){return Math.floor(x+0.5);}
+  var inputs=[].slice.call(sec.querySelectorAll('input[data-min]')),counts={};
+  inputs.forEach(function(i){var t=i.getAttribute('data-min');counts[t]={h:num('bh.t.'+t+'.h'),s:num('bh.t.'+t+'.s')};});
+  function calc(){var tot={h:0,s:0};
+    inputs.forEach(function(i){var t=i.getAttribute('data-min'),m=parseFloat(i.value);if(!(m>=0))m=0;
+      ['h','s'].forEach(function(sd){var v=rnd(counts[t][sd]*m);set('bh.m.'+t+'.'+sd,v);tot[sd]+=v;});});
+    ['h','s'].forEach(function(sd){set('bh.min.'+sd,tot[sd]);set('bh.hours.'+sd,rnd(tot[sd]/60));});
+    sec.setAttribute('data-bh-js','1');}
+  inputs.forEach(function(i){i.addEventListener('input',calc);});calc();
 })();
 </script></body></html>

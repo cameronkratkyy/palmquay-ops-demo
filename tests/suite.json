@@ -1,0 +1,14 @@
+{
+ "_note": "Every check script and how many pass/fail checks it runs. One source for the count the dashboard, README, explainer, and diagram show. tests/check_phase3f.py (F5) runs or reads each script and fails if a number here is wrong, if a script is missing here, or if the CI workflow doesn't run it.",
+ "checks": {
+  "check_phase1.py": 8,
+  "check_phase2.py": 8,
+  "check_phase3a.py": 14,
+  "check_phase3b.py": 9,
+  "check_phase3c.py": 11,
+  "check_phase3d.py": 12,
+  "check_phase3e.py": 9,
+  "check_orgchart.py": 8,
+  "check_phase3f.py": 6
+ }
+}
