@@ -1,0 +1,47 @@
+{
+ "owner": "fontaine",
+ "name": "Claire Fontaine",
+ "property": "915 Brinemoor Dr, Venice, FL 34285 (fictional)",
+ "county": "Sarasota",
+ "property_type": "Single-family house",
+ "occupied": false,
+ "date": "2026-11-05",
+ "status": "BLOCKED",
+ "issues": [
+  {
+   "code": "FOREIGN_TAX_REVIEW",
+   "meaning": "Foreign owner, no tax form: the Controller and the owner's tax adviser decide",
+   "condition": "professional",
+   "gates": [
+    "money"
+   ],
+   "fix": "Controller",
+   "evidence": [
+    {
+     "file": "owners/fontaine/owner.md",
+     "field": "Mailing country",
+     "says": "Canada"
+    },
+    {
+     "file": "owners/fontaine/documents/w9.md",
+     "field": "(not in the packet)",
+     "says": ""
+    }
+   ]
+  }
+ ],
+ "gates": {
+  "accepted": "ready",
+  "money": "blocked",
+  "leasing": "ready"
+ },
+ "documents_read": [
+  "owners/fontaine/documents/ach.md",
+  "owners/fontaine/documents/agreement.md",
+  "owners/fontaine/documents/county-record.md",
+  "owners/fontaine/documents/insurance.md",
+  "owners/fontaine/documents/lead-disclosure.md",
+  "owners/fontaine/owner.md"
+ ],
+ "note": "The county record is one the Owner Onboarding Coordinator saved to the folder; the AI compared names and didn't look anything up."
+}

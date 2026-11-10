@@ -1,0 +1,16 @@
+{
+ "owner": "brandt",
+ "tenant": "Danielle Foster",
+ "lease_deposit": 2100,
+ "transferred": 2100,
+ "difference": 0,
+ "result": "MATCH",
+ "received_on": "2026-11-04",
+ "from": "James Brandt and Kelly Brandt, the owners (they held the deposit themselves)",
+ "lease": "owners/brandt/tenant/lease.md",
+ "transfer": "owners/brandt/tenant/deposit-transfer.md",
+ "tenant_letter": "owners/brandt/drafts/2026-11-05-tenant-letter.md",
+ "letter_due": "2026-12-04",
+ "outgoing_draft": null,
+ "rule": "Fla. Stat. 83.49(7): on a change in the rental agent, the deposit and an accurate accounting move to the new agent."
+}

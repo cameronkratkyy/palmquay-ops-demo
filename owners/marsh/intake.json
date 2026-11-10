@@ -1,0 +1,43 @@
+{
+ "owner": "marsh",
+ "name": "Helen Marsh",
+ "property": "Unit 2B, 410 Seagrape Hollow Way, Bradenton, FL 34210 (fictional)",
+ "county": "Manatee",
+ "property_type": "Condo",
+ "occupied": false,
+ "date": "2026-11-05",
+ "status": "HOLD",
+ "issues": [
+  {
+   "code": "ASSOCIATION_APPROVAL",
+   "meaning": "The association approves every lease before move-in",
+   "condition": "outside",
+   "gates": [
+    "leasing"
+   ],
+   "fix": "Property Manager",
+   "evidence": [
+    {
+     "file": "owners/marsh/documents/association.md",
+     "field": "Lease approval by the association",
+     "says": "Required before move-in (the association approves every lease and every tenant)"
+    }
+   ]
+  }
+ ],
+ "gates": {
+  "accepted": "ready",
+  "money": "ready",
+  "leasing": "hold"
+ },
+ "documents_read": [
+  "owners/marsh/documents/ach.md",
+  "owners/marsh/documents/agreement.md",
+  "owners/marsh/documents/association.md",
+  "owners/marsh/documents/county-record.md",
+  "owners/marsh/documents/insurance.md",
+  "owners/marsh/documents/w9.md",
+  "owners/marsh/owner.md"
+ ],
+ "note": "The county record is one the Owner Onboarding Coordinator saved to the folder; the AI compared names and didn't look anything up."
+}

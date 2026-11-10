@@ -7,3 +7,8 @@ eb44aab504ef2f070d4f6489212304e6c80d7666408d82ce88ae333b52a3851f  tests/frozen-3
 a9aedeb40b20e77b3ac44069a3fc01c83a840c1cc54b88b253c9e80b653ff07c  tests/frozen-3d.txt  locked 2026-11-08 17:19: hashes of 154 records Phase 3d may not change
 a30fc9f7e7a03ad5724988427422a710c6132f083e06c39ea922af61c2ee24d5  answer-key-3e.json  locked 2026-11-09 10:41 before any Phase 3e reader or skill existed
 5064dddeae797ff7ff93567c3cba5c949be31f336c637ffd82744530681b36dc  tests/frozen-3e.txt  locked 2026-11-09 10:41: hashes of 164 records Phase 3e may not change
+3e0440327ef28c22dc53dad2aa8e69315f21d8eb998217f20d16b5d7877cbb99  answer-key-3g.json  locked 2026-11-10 10:01 before any Phase 3g helper or skill existed
+531d1da48586148d8b9dc58c4ca6f66cc47468d658f8256a32711adfbe357594  tests/frozen-3g.txt  locked 2026-11-10 10:01: hashes of 272 records Phase 3g may not change
+a832ac34a0f31cfc730100ed335b3c914d94e385c811476c2fce0c3bdd0374ce  tests/frozen-3g.txt  re-locked 2026-11-10 10:22 after the critique (rules v2; answer key unchanged, first run kept in audit/discarded-3g-first-run/): hashes of 306 records Phase 3g may not change
+37b5fd70404e5d18990a83278d06ef22ca0f4eb726b9933c6dd145aed0e56729  tests/frozen-3g.txt  re-locked 2026-11-10 10:27 after the second critique (rules v3; answer key unchanged, second run kept in audit/discarded-3g-second-run/): hashes of 336 records Phase 3g may not change
+be50164262413bbc86920354b4ddd4c45e343733be565f79e9b0be048b797327  tests/frozen-3g.txt  re-locked 2026-11-10 10:32 after the gate review (team file and two skills reworded; answer key unchanged, third run kept in audit/discarded-3g-third-run/): hashes of 366 records Phase 3g may not change

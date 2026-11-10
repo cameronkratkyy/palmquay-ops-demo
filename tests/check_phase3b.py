@@ -36,7 +36,7 @@ ROOT = sys.argv[sys.argv.index("--root") + 1] if "--root" in sys.argv else os.pa
 EXPIRY_WINDOW = 60  # the dashboard lists insurance and licenses that ended, or end within this many days of the demo date
 SKILLS = ["intake", "chase", "route", "status", "scope", "source", "quote", "approve", "change", "deliver", "match",
           "screen", "request", "closeout"]  # Phase 3c added the last three (11/6)
-TABS = ["overview", "byhand", "onboarding", "buying", "checks", "audit", "map"]  # 11/9: "byhand" added (Phase 3f)
+TABS = ["overview", "byhand", "onboarding", "owners", "buying", "checks", "audit", "map"]  # 11/9: "byhand" added (Phase 3f); 11/10: "owners" (Phase 3g)
 ACT_OUT = {"scope_brief": "brief.json", "source_check": "source.json", "quote_compare": "quotes.json",
            "product_approval": "approval.json", "change_request": "change-request-CR-001.json",
            "delivery_exceptions": "deliveries.json", "invoice_match": "match.json"}
@@ -493,6 +493,12 @@ def recount(runs):
                              capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT, timeout=300)
         if r3f.returncode == 0 and r3f.stdout.strip().startswith("{"):
             E.update({k_: v_ for k_, v_ in json.loads(r3f.stdout).items() if k_ not in E})
+    # 11/10 (Phase 3g): the New owners tab is recounted by tests/check_phase3g.py from the raw owner packets, the same way
+    if os.path.exists(p("tests", "check_phase3g.py")):
+        r3g = subprocess.run([sys.executable, "-I", "-X", "utf8", p("tests", "check_phase3g.py"), "--facts", "--root", ROOT],
+                             capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=ROOT, timeout=300)
+        if r3g.returncode == 0 and r3g.stdout.strip().startswith("{"):
+            E.update({k_: v_ for k_, v_ in json.loads(r3g.stdout).items() if k_ not in E})
     extra = {"skills": len(glob.glob(p(".claude", "skills", "*", "SKILL.md"))),
              "people": len([l for l in read("company", "people.md").splitlines() if re.match(r"^\| [A-Z]", l) and "Role" not in l]),
              "suppliers": len([l for l in read("company", "approved-suppliers.md").splitlines() if "| Approved |" in l])}

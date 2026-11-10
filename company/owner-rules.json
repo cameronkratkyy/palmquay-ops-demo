@@ -1,0 +1,210 @@
+{
+ "_note": "Phase 3g: Palmquay's rules for bringing on a new property owner (fictional company, sample records). company/rules.json and CLAUDE.md are hash-locked, so these rules live here. Every number tools/owners.py and tests/check_phase3g.py use comes from this file. Law is quoted where a rule rests on it; the rest is Palmquay's own policy, labeled as policy. v2, 11/10 after a research assistant's critique of the built tab (the first run is kept in audit/discarded-3g-first-run/): gate names and wording changed; no answer changed. v3, 11/10 after the second critique (a Yes with five fixes; the second run is kept in audit/discarded-3g-second-run/): approval is an outcome, not a kind of problem; the tenant letter has two clocks. No answer changed.",
+ "demo_date": "2026-11-05",
+ "company": "Palmquay Properties",
+ "team": "company/owner-team.md",
+ "required_documents": {
+  "every_owner": [
+   "owner.md",
+   "documents/agreement.md",
+   "documents/county-record.md",
+   "documents/ach.md",
+   "documents/insurance.md"
+  ],
+  "tax_form": "documents/w9.md from a US owner. A foreign mailing address with no W-9 goes to the Controller and the owner's tax adviser, who decide the owner's tax status, the right form (for example W-8BEN or W-8ECI), withholding, and reporting; the AI never picks the form or the treatment.",
+  "association": "documents/association.md when the home is in a condo or homeowners' association",
+  "built_before_1978": "documents/lead-disclosure.md (the owner's lead-based paint disclosure) when the county record's year built is before 1978",
+  "occupied": "tenant/lease.md and tenant/deposit-transfer.md when a tenant already lives there"
+ },
+ "lead_year": 1978,
+ "insurance": {
+  "policy_type_must_include": "Landlord",
+  "min_liability": 300000,
+  "additional_insured": "Palmquay Properties",
+  "why": "Palmquay policy, in every management agreement: the owner keeps a landlord policy, not a homeowner policy, with at least $300,000 liability, naming Palmquay Properties as additional insured. Being listed as 'additional interest' only gets Palmquay notices about the policy; it isn't coverage. The insurance agent confirms what the policy covers; the AI only reads the declarations page."
+ },
+ "owner_reserve": 500,
+ "chase_deadline_days": 7,
+ "tenant_letter_days": 30,
+ "deposit_law": {
+  "change_of_agent": "Fla. Stat. 83.49(7): upon a change in the designated rental agent, deposits and advance rents being held for the tenants shall be transferred to the new agent, with an accurate accounting showing the amounts to be credited to each tenant account.",
+  "notice": "Fla. Stat. 83.49(2): written notice of the deposit in the lease or within 30 days after receipt, and within 30 days after a change in how or where it is held, delivered in person, by mail, or by email under Fla. Stat. 83.505, naming the depository and its address, saying whether the tenant earns interest, and including the disclosure in Fla. Stat. 83.49(2)(d). It doesn't apply to a landlord who rents fewer than five individual dwelling units; counsel decides when it applies, and Palmquay sends the notice for every takeover either way.",
+  "account": "Palmquay holds tenant deposits in its tenant-deposit trust account, separate from owner money and from the owner reserve (sample account name: Palmquay Tenant Deposit Trust Account, non-interest-bearing)."
+ },
+ "gates": [
+  {
+   "id": "accepted",
+   "name": "Management accepted",
+   "role": "Broker of Record",
+   "covers": "the agreement, who owns the home and who may sign for it, the insurance",
+   "allows": "Palmquay to act for the owner under the agreement"
+  },
+  {
+   "id": "money",
+   "name": "Accounting approved",
+   "role": "Trust Accountant",
+   "covers": "the owner's tax documents, the bank account for owner payouts, the tenant's deposit",
+   "allows": "receiving and recording rent, holding deposits, paying approved expenses, and releasing owner payouts. A missing bank confirmation holds owner payouts only; money that arrives is still recorded"
+  },
+  {
+   "id": "leasing",
+   "name": "Leasing-ready or takeover complete",
+   "role": "Property Manager",
+   "covers": "the association's rules and approvals, the lead-paint disclosure package, keys, and a tenant already living there (lease and amendments, ledger, paid-through date, deposits, notices)",
+   "allows": "signing a new lease, or finishing the handoff of a tenant already there"
+  },
+  {
+   "id": "entered",
+   "name": "Entered in the software by a person",
+   "role": "Owner Onboarding Coordinator",
+   "covers": "the setup sheet typed into the property management software. A restricted draft record can be made earlier; each function is turned on as its gate clears",
+   "allows": "the property to run in the software"
+  }
+ ],
+ "conditions": {
+  "missing": "Not provided",
+  "incomplete": "Provided, but not what the agreement requires",
+  "disagree": "Two documents disagree",
+  "professional": "Needs a professional's decision",
+  "outside": "Waiting on an outside approval"
+ },
+ "issue_codes": {
+  "MISSING_DOCUMENT": {
+   "meaning": "A required document isn't in the packet",
+   "condition": "missing",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Owner Onboarding Coordinator"
+  },
+  "AGREEMENT_UNSIGNED_OWNER": {
+   "meaning": "An owner on the county record hasn't signed the agreement",
+   "condition": "incomplete",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Owner Onboarding Coordinator",
+   "policy": "Palmquay's policy: every owner of record signs, or a documented authorized representative signs for them"
+  },
+  "OWNER_NOT_ON_COUNTY_RECORD": {
+   "meaning": "The county record shows a different owner than the agreement",
+   "condition": "disagree",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Broker of Record",
+   "policy": "The broker reviews ownership and signing authority (a recorded deed, or closing or title papers); a county record is a cross-check, not proof of title"
+  },
+  "INSURANCE_NOT_LANDLORD": {
+   "meaning": "A homeowner policy: the agent must confirm it covers a rental",
+   "condition": "incomplete",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Property Manager"
+  },
+  "MANAGER_NOT_ADDITIONAL_INSURED": {
+   "meaning": "Palmquay isn't named as additional insured",
+   "condition": "incomplete",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Property Manager"
+  },
+  "INSURANCE_LIMIT_LOW": {
+   "meaning": "Liability coverage below $300,000",
+   "condition": "incomplete",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Property Manager"
+  },
+  "MISSING_W9": {
+   "meaning": "No W-9 from a US owner",
+   "condition": "missing",
+   "gates": [
+    "money"
+   ],
+   "fix": "Owner Onboarding Coordinator"
+  },
+  "FOREIGN_TAX_REVIEW": {
+   "meaning": "Foreign owner, no tax form: the Controller and the owner's tax adviser decide",
+   "condition": "professional",
+   "gates": [
+    "money"
+   ],
+   "fix": "Controller"
+  },
+  "ACH_NAME_MISMATCH": {
+   "meaning": "The bank account isn't in the owner's name",
+   "condition": "disagree",
+   "gates": [
+    "money"
+   ],
+   "fix": "Trust Accountant"
+  },
+  "DEPOSIT_SHORT": {
+   "meaning": "Less deposit came over than the lease says",
+   "condition": "disagree",
+   "gates": [
+    "money",
+    "leasing"
+   ],
+   "fix": "Trust Accountant"
+  },
+  "DEPOSIT_OVER": {
+   "meaning": "More deposit came over than the lease says",
+   "condition": "disagree",
+   "gates": [
+    "money",
+    "leasing"
+   ],
+   "fix": "Trust Accountant"
+  },
+  "TENANT_RECORDS_MISSING": {
+   "meaning": "A tenant lives there, but the lease or the deposit transfer is missing",
+   "condition": "missing",
+   "gates": [
+    "money",
+    "leasing"
+   ],
+   "fix": "Property Manager"
+  },
+  "LEAD_DISCLOSURE_MISSING": {
+   "meaning": "Built before 1978, no lead-paint disclosure",
+   "condition": "missing",
+   "gates": [
+    "leasing"
+   ],
+   "fix": "Property Manager"
+  },
+  "ASSOCIATION_APPROVAL": {
+   "meaning": "The association approves every lease before move-in",
+   "condition": "outside",
+   "gates": [
+    "leasing"
+   ],
+   "fix": "Property Manager"
+  }
+ },
+ "hold_codes": [
+  "ASSOCIATION_APPROVAL"
+ ],
+ "statuses": {
+  "READY": "the AI found nothing blocking any gate; each gate's person reviews and signs",
+  "HOLD": "only an outside approval is pending (ASSOCIATION_APPROVAL): the home can be set up and listed, and each applicant goes to the association before move-in",
+  "BLOCKED": "anything else"
+ },
+ "limits": "The AI reads the packet and the county record the coordinator saved, compares them, and drafts follow-ups, the tenant letter, and a setup sheet. It never signs, sends, moves money, enters anything in any software, looks anything up on its own, picks a tax form, or calls a bank account, title, coverage, or deposit verified. A missing document is 'not found in the packet,' never 'doesn't exist.'",
+ "chase_deadline_note": "The 7-day reply date is Palmquay's policy. It doesn't replace any legal deadline, which keeps its own clock.",
+ "callback": "Before owner payouts start, the Trust Accountant calls the owner at a number Palmquay already had or confirmed separately (not only the one in this packet, which could have been changed along with the bank details) and records how it was confirmed.",
+ "deposit_recording": "A transferred deposit is recorded the day it arrives: what the lease says is owed, the cash actually received, and any difference, which stays open with the Trust Accountant. Only 'deposit reconciled' waits; nothing is left blank.",
+ "not_on_this_tab": "The walk-through, condition photos, repairs, utilities, rent pricing, and marketing are tracked elsewhere. A paperwork sign-off here doesn't mean they happened.",
+ "outcomes": {
+  "resolved": "Resolved: a person reviewed the evidence and the problem is gone",
+  "exception": "Exception approved: a person lets the work go ahead while the problem stays open, with a stated limit",
+  "note": "Only a person records an outcome, with their name, the date, and what it allows. None are recorded in this sample run."
+ },
+ "tenant_letter": "One letter, two clocks. Who receives notices for the landlord (Fla. Stat. 83.50), how to pay rent, and how to ask for repairs go out by the management start date, so the tenant is never left without them. The deposit notice is due within 30 days after the deposit moved. The letter isn't ready to send until counsel's 83.49(2)(d) wording is in.",
+ "takeover_review": "A ready leasing gate for a home with a tenant means the packet review is done. The Property Manager signs only after the outside takeover review: the lease's amendments, the tenant ledger, the paid-through date, arrears, notices, and open repairs."
+}

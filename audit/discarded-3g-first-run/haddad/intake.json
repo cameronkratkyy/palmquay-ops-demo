@@ -1,0 +1,66 @@
+{
+ "owner": "haddad",
+ "name": "Beverly Haddad",
+ "property": "1340 Lanternfish Cir, Venice, FL 34293 (fictional)",
+ "county": "Sarasota",
+ "property_type": "Single-family house",
+ "occupied": true,
+ "date": "2026-11-05",
+ "status": "BLOCKED",
+ "issues": [
+  {
+   "code": "DEPOSIT_SHORT",
+   "meaning": "Less deposit came over than the lease says",
+   "condition": "disagree",
+   "gates": [
+    "money",
+    "leasing"
+   ],
+   "fix": "Trust Accountant",
+   "evidence": [
+    {
+     "file": "owners/haddad/tenant/lease.md",
+     "field": "Security deposit",
+     "says": "$2,400"
+    },
+    {
+     "file": "owners/haddad/tenant/deposit-transfer.md",
+     "field": "Security deposit transferred",
+     "says": "$2,200"
+    }
+   ]
+  },
+  {
+   "code": "INSURANCE_NOT_LANDLORD",
+   "meaning": "A homeowner policy, not a landlord policy",
+   "condition": "incomplete",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Property Manager",
+   "evidence": [
+    {
+     "file": "owners/haddad/documents/insurance.md",
+     "field": "Policy type",
+     "says": "Homeowner policy (HO-3, owner-occupied)"
+    }
+   ]
+  }
+ ],
+ "gates": {
+  "accepted": "blocked",
+  "money": "blocked",
+  "leasing": "blocked"
+ },
+ "documents_read": [
+  "owners/haddad/documents/ach.md",
+  "owners/haddad/documents/agreement.md",
+  "owners/haddad/documents/county-record.md",
+  "owners/haddad/documents/insurance.md",
+  "owners/haddad/documents/w9.md",
+  "owners/haddad/owner.md",
+  "owners/haddad/tenant/deposit-transfer.md",
+  "owners/haddad/tenant/lease.md"
+ ],
+ "note": "The county record is one the Owner Onboarding Coordinator saved to the folder; the AI compared names and didn't look anything up."
+}

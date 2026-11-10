@@ -49,6 +49,9 @@ jobs:
       - name: Org chart and wording
         if: success() || failure()
         run: python -I -X utf8 tests/check_orgchart.py
+      - name: Phase 3g (new property owners)
+        if: success() || failure()
+        run: python -I -X utf8 tests/check_phase3g.py --copy
       - name: Phase 3f (by hand vs. system, one check count everywhere)
         if: success() || failure()
         run: python -I -X utf8 tests/check_phase3f.py --copy

@@ -12,6 +12,7 @@ Rules for "Waiting on people" and the expiry list: dashboard/README.md.
 import csv
 import datetime as dt
 import glob
+import hashlib
 import html
 import io
 import json
@@ -47,7 +48,7 @@ MEANING = {
     "CLAIM_CONTRADICTED": "A supplier said all delivered; the receipt disagrees",
     "MISSING_DISCLOSURE": "No conflict-of-interest disclosure", "PAID_SOLICITATION": "Someone was paid to help win the work",
     "FORMAL_BID_REQUIRED": "Too large for quotes: needs a formal bid", "FUNDS_SHORT": "The budget line doesn't cover it"}
-TABS = [("overview", "Overview"), ("byhand", "By hand vs. system"), ("onboarding", "Onboarding"), ("buying", "Buying"), ("checks", "Checks"),
+TABS = [("overview", "Overview"), ("byhand", "By hand vs. system"), ("onboarding", "Onboarding"), ("owners", "New owners"), ("buying", "Buying"), ("checks", "Checks"),
         ("audit", "Audit log"), ("map", "Map")]
 
 K = {}  # every tagged fact on the page: key -> value
@@ -118,12 +119,12 @@ def log_rows(name):
 E = html.escape
 
 
-def k(key, value, money=False):
-    """A tagged number. The same key may appear more than once, always with the same value."""
+def k(key, value, money=False, year=False):
+    """A tagged number. The same key may appear more than once, always with the same value. A year is shown without a comma."""
     if key in K and K[key] != value:
         raise SystemExit(f"build error: {key} shown as {K[key]} and {value}")
     K[key] = value
-    shown = f"${value:,}" if money else f"{value:,}"
+    shown = f"${value:,}" if money else (str(value) if year else f"{value:,}")
     return f'<span class="n" data-k="{key}">{shown}</span>'
 
 
@@ -995,6 +996,307 @@ def controls_section():
     return req_t + tot + close + "".join(details(f"<code>{f}</code>", pre(f)) for f in files)
 
 
+# ------------------------------------------------------------- Phase 3g: New owners -------------------------------------------------------------
+# 11/10 (the author's ask: owner onboarding, "comprehensive," checked with Perplexity before and after). Reads the owner packets and what
+# tools/owners.py wrote; every number is tagged (o.*) and tests/check_phase3g.py recounts each one from the raw packets with its own code.
+O_RULES = jread("company", "owner-rules.json") if os.path.exists(path("company", "owner-rules.json")) else None
+O_SLUGS = sorted(d for d in os.listdir(path("owners")) if os.path.isdir(path("owners", d))) if os.path.isdir(path("owners")) else []
+O_GATES = ["accepted", "money", "leasing"]
+
+
+def o_load():
+    out = {}
+    for s in O_SLUGS:
+        b = f"owners/{s}"
+        o = {"slug": s, "intake": jread("owners", s, "intake.json"), "owner": table_fields(read("owners", s, "owner.md")),
+             "takeover": jread("owners", s, "takeover.json") if os.path.exists(path("owners", s, "takeover.json")) else None,
+             "drafts": sorted(os.path.relpath(f, ROOT).replace("\\", "/") for f in glob.glob(path("owners", s, "drafts", "*.md"))),
+             "records": sorted(os.path.relpath(f, ROOT).replace("\\", "/") for f in glob.glob(path("owners", s, "**", "*.md"), recursive=True)
+                               if "/drafts/" not in f.replace("\\", "/") and not f.endswith("setup-sheet.md")),
+             "sheet": f"{b}/setup-sheet.md"}
+        out[s] = o
+    return out
+
+
+OW = o_load() if O_RULES and O_SLUGS and all(os.path.exists(path("owners", s, "intake.json")) for s in O_SLUGS) else {}
+o_team = {}
+if O_RULES:
+    for r_ in table_rows(read("company", "owner-team.md"), "Role"):
+        o_team[r_["Role"]] = r_["Name"]
+o_gate = {g["id"]: g for g in O_RULES["gates"]} if O_RULES else {}
+o_slug = lambda r: re.sub(r"[^a-z0-9]+", "-", r.lower()).strip("-")
+
+
+def o_who(role):
+    return f"{o_team.get(role, role)}, {role}"
+
+
+def o_by(role):
+    """'Talia Brooks (Owner Onboarding Coordinator)': a name with its role, for use inside a sentence."""
+    return f"{o_team.get(role, role)} ({role})"
+
+
+def o_home(o):
+    parts = [x.strip() for x in o["owner"]["Property address"].replace(" (fictional)", "").split(",")]
+    street_ = re.sub(r"^\d+\s+", "", parts[-3])
+    return f'{o["owner"]["Property type"]}, {street_}, {parts[-2]} ({o["owner"]["County"]} County)'
+
+
+def o_name(o):
+    return o["intake"]["name"].replace("; ", " and ")
+
+
+def o_code(c):
+    return q("company/owner-rules.json", c, "code")
+
+
+def o_meaning(c):
+    """A code's meaning from the rules file; its digits become tagged facts or quotes (every digit in a table is recounted)."""
+    m = E(O_RULES["issue_codes"][c]["meaning"])
+    m = m.replace("1978", k("o.rule.lead_year", O_RULES["lead_year"], year=True))
+    m = m.replace("$300,000", k("o.rule.min_liability", O_RULES["insurance"]["min_liability"], True))
+    return m.replace("W-9", q("company/owner-rules.json", "W-9"))
+
+
+def o_chip(state, label):
+    return chip({"ready": "OK", "hold": "HOLD", "blocked": "BLOCKED", "READY": "READY", "HOLD": "HOLD", "BLOCKED": "BLOCKED"}[state], label)
+
+
+def o_waiting():
+    """Who on the new-owner team has something waiting: each unsent draft (its sender), each gate ready or on hold (its person),
+    each problem that needs a professional's decision (its decider). Rules in dashboard/README.md."""
+    w = {}
+    add = lambda role, what: w.setdefault(role, []).append(what)
+    for o in OW.values():
+        for d in o["drafts"]:
+            t = read(*d.split("/"))
+            if "| Status | DRAFT, not sent |" not in t:
+                continue
+            role = ("Owner Onboarding Coordinator" if d.endswith("-follow-up.md") else "Trust Accountant" if d.endswith("-outgoing-manager.md")
+                    else "Property Manager")
+            add(role, ("draft", o["slug"], d))
+        for g in O_GATES:
+            if o["intake"]["gates"][g] in ("ready", "hold"):
+                add(o_gate[g]["role"], ("gate", o["slug"], g))
+        for i in o["intake"]["issues"]:
+            if i["condition"] == "professional":
+                add(i["fix"], ("decide", o["slug"], i["code"]))
+    return w
+
+
+def owners_tab():
+    if not OW:
+        return '<h2>New owners</h2><p class="lead">Not run yet.</p>'
+    R_ = O_RULES
+    st = {s: OW[s]["intake"]["status"] for s in OW}
+    issues = [(i, s) for s in OW for i in OW[s]["intake"]["issues"]]
+    deadline = str(dt.date.fromisoformat(R_["demo_date"]) + dt.timedelta(days=R_["chase_deadline_days"]))
+    drafts_fu = [d for o in OW.values() for d in o["drafts"] if d.endswith("-follow-up.md")]
+    drafts_og = [d for o in OW.values() for d in o["drafts"] if d.endswith("-outgoing-manager.md")]
+    drafts_tl = [d for o in OW.values() for d in o["drafts"] if d.endswith("-tenant-letter.md")]
+    occ = {s: o["takeover"] for s, o in OW.items() if o["takeover"]}
+    blank = 0
+    for o in OW.values():
+        for r_ in table_rows(read(*o["sheet"].split("/")), "Gate"):
+            blank += not r_.get("Signed by", "").strip() and not r_.get("Date", "").strip()
+    wait = o_waiting()
+    gn = {g: {x: sum(OW[s]["intake"]["gates"][g] == x for s in OW) for x in ("ready", "hold", "blocked")} for g in O_GATES}
+
+    lead = ('<h2>New owners: bringing on a homeowner\'s rental</h2><p class="lead">Palmquay\'s residential team also manages single-family homes, '
+            'condos, and townhomes for individual owners. When an owner signs on, Palmquay can\'t collect rent or pay the owner until it knows who '
+            'owns the home, who signed, where the owner\'s money goes, how the home is insured, and what any tenant already paid. Florida adds rules '
+            f'for tenants\' deposits, and federal rules add a lead-paint form for older homes. Here {k("o.total", len(OW))} sample owners in Sarasota '
+            f'and Manatee counties come in as of the demo date {R_["demo_date"]}. The AI reads each packet and the county record a coordinator saved, '
+            'says what\'s missing or doesn\'t match, and drafts the emails and a setup sheet. People sign every gate and send every email. '
+            'Research behind this tab: Florida\'s deposit statute (read directly), federal tax and lead-paint guidance, and property management '
+            'software vendors\' published onboarding steps (methods only; no survey numbers are used).</p>')
+    bar = ('<div class="qbar six" data-audit>'
+           f'<div><span class="lab">New owners</span> {k("o.total", len(OW))}</div>'
+           f'<div><span class="lab">Nothing blocking: ready for sign-off</span> {k("o.READY", sum(v == "READY" for v in st.values()))}</div>'
+           f'<div><span class="lab">On hold for an outside approval</span> {k("o.HOLD", sum(v == "HOLD" for v in st.values()))}</div>'
+           f'<div><span class="lab">Blocked</span> {k("o.BLOCKED", sum(v == "BLOCKED" for v in st.values()))}</div>'
+           f'<div><span class="lab">Problems found</span> {k("o.problems", len(issues))}</div>'
+           f'<div><span class="lab">Drafts waiting to be sent</span> {k("o.drafts", len(drafts_fu) + len(drafts_og) + len(drafts_tl))}</div></div>')
+
+    G_TEXT = {
+        "accepted": ("The signed agreement, who owns the home and who may sign for it, every owner's signature, and the insurance: a landlord policy "
+                     f"with at least {k('o.rule.min_liability', R_['insurance']['min_liability'], True)} liability naming Palmquay as additional insured.",
+                     "Palmquay acts for the owner, so it first confirms who owns the home and that everyone who owns it signed (or authorized someone in "
+                     "writing). A county record is a cross-check, not proof of title: after a recent sale the broker reviews the deed or closing papers. "
+                     "A homeowner policy may not cover a rented home, and only the agent can confirm coverage.",
+                     "Compares names across the agreement, the county record, and the signature page; reads the insurance page; quotes each mismatch."),
+        "money": ("The owner's tax documents, the bank account for owner payouts, and any tenant's deposit. The owner reserve "
+                  f"({k('o.rule.reserve', R_['owner_reserve'], True)} in these sample agreements) is owner money for repairs, kept apart from tenant deposits.",
+                  "Rent Palmquay collects is the owner's money, held in a trust account that Florida's real estate rules make the broker answer for. "
+                  "A payment to the wrong account, or the wrong tax treatment, is hard to undo.",
+                  "Checks the bank account is in the owner's name and a W-9 is in the packet; sends a foreign owner's tax question to the Controller; "
+                  "records a transferred deposit as owed, received, and the difference. Never picks a tax form."),
+        "leasing": (f"The association's leasing rules, the lead-paint form for a home built before {k('o.rule.lead_year', R_['lead_year'], year=True)}, keys, "
+                    "and the tenant already living there.",
+                    "A condo association may approve each tenant first; federal rules require the lead-paint disclosure package (the owner's part, "
+                    "any records, the EPA pamphlet, the lease's warning) before a tenant signs; a tenant who's already there keeps the lease and the "
+                    "deposit. For a home with a tenant, ready means the packet review is done; the Property Manager signs only after the "
+                    "outside takeover review (ledger, paid-through date, arrears, notices, repairs). The walk-through, repairs, utilities, rent "
+                    "pricing, and marketing are tracked elsewhere.",
+                    "Reads the association's rules and the county record's year built; compares the lease deposit with what came over."),
+        "entered": ("The setup sheet: every field with the record it came from, the bank shown as the last 4 digits only.",
+                    "Someone types the owner and the home into the management software (for example AppFolio or Buildium; the demo doesn't connect to "
+                    "any). A restricted draft record can be made earlier, with each function turned on as its gate clears, so a wrong account or "
+                    "owner name isn't copied into live use.",
+                    "Drafts the sheet and writes what it found for each gate. It never signs and never enters anything."),
+    }
+    cards = []
+    for i_, g in enumerate(["accepted", "money", "leasing", "entered"], 1):
+        chk, why, ai = G_TEXT[g]
+        cnt = (f'{k(f"o.gate.{g}.ready", gn[g]["ready"])} ready for sign-off · {k(f"o.gate.{g}.hold", gn[g]["hold"])} on hold · '
+               f'{k(f"o.gate.{g}.blocked", gn[g]["blocked"])} blocked') if g in gn else "Drafted for every owner; none entered yet"
+        cards.append(f'<div class="stage"><div class="sname"><span class="snum">{i_}</span> {E(o_gate[g]["name"])}</div><div class="wait">{cnt}</div>'
+                     f'<div class="slab">What\'s checked</div><div>{chk}</div><div class="slab">Why a real office does it</div><div>{E(why)}</div>'
+                     f'<div class="slab">The AI</div><div>{E(ai)}</div><div class="slab">Signs</div><div>{E(o_who(o_gate[g]["role"]))}</div>'
+                     f'<div class="slab">The sign-off allows</div><div>{E(o_gate[g]["allows"])}</div></div>')
+    strip = ('<h2>How Palmquay brings on an owner: four gates</h2><p class="lead">Not one "onboarded" checkbox: each gate has its own person, '
+             'and a problem blocks only the gate it belongs to (a missing W-9 holds owner payouts, not the walk-through). The AI says what it found '
+             'for each gate; the person named signs.</p><div class="stages four">' + "".join(cards) + "</div>")
+
+    rows = []
+    for s, o in OW.items():
+        it = o["intake"]
+        found = "<br>".join(f'{o_code(i["code"])} {o_meaning(i["code"])} <span class="muted">({E(R_["conditions"][i["condition"]].lower())})</span>'
+                            for i in it["issues"]) or "Nothing found"
+        if it["status"] == "READY":
+            nxt = "Each gate's person reviews and signs; then the coordinator enters the setup sheet"
+        else:
+            nxt = f"{E(o_by('Owner Onboarding Coordinator'))} reviews and sends the follow-up; reply due {deadline}"
+            if any(i["condition"] == "professional" for i in it["issues"]):
+                nxt += f"; {E(o_by('Controller'))} decides the tax treatment with the owner's own tax adviser"
+            if it["status"] == "HOLD":
+                nxt = (f"Nothing missing. {E(o_by('Property Manager'))} sends each applicant to the association before move-in; "
+                       f"the follow-up asks for the association manager's contact (draft, reply due {deadline})")
+        rows.append(f'<tr data-owner-row="{s}" data-status="{it["status"]}"><td>{E(o_name(o))}</td><td>{E(o_home(o))}</td>'
+                    f'<td>{chip(it["status"])}</td><td>{found}</td><td>{nxt}</td></tr>')
+    owners_t = ('<h2>The owners</h2><p class="lead">Status as of the demo date, from each owner\'s intake record. READY means the AI found nothing '
+                'blocking; a person still signs every gate.</p><div class="scroll"><table data-audit><thead><tr><th>Owner</th><th>Home</th><th>Status</th>'
+                '<th>What the AI found</th><th>Next</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table></div>")
+
+    mrows = []
+    for s, o in OW.items():
+        cells = []
+        for g in O_GATES:
+            state = o["intake"]["gates"][g]
+            hit = [i["code"] for i in o["intake"]["issues"] if g in i["gates"]]
+            first = o_team.get(o_gate[g]["role"], "").split()[0]
+            note = (' <span class="muted">packet review done; the outside takeover review comes first</span>'
+                    if g == "leasing" and o["takeover"] and state == "ready" else "")
+            cells.append("<td>" + (o_chip("ready", f"Ready for {first}") + note if state == "ready" else
+                                   o_chip(state, "On hold" if state == "hold" else "Blocked") + " " + " ".join(o_code(c) for c in hit)) + "</td>")
+        mrows.append(f"<tr><td>{E(o_name(o))}</td>{''.join(cells)}<td class=\"muted\">After the three sign-offs</td></tr>")
+    foot = "".join(f'<td>{k(f"o.gate.{g}.ready", gn[g]["ready"])} ready · {k(f"o.gate.{g}.hold", gn[g]["hold"])} on hold · '
+                   f'{k(f"o.gate.{g}.blocked", gn[g]["blocked"])} blocked</td>' for g in O_GATES)
+    matrix = ('<h2>Sign-offs by gate</h2><p class="lead">Every sign-off on every setup sheet is blank '
+              f'({k("o.blank", blank)} in all): the AI only says what it found. The names are who signs that gate.</p>'
+              '<div class="scroll"><table data-audit><thead><tr><th>Owner</th>' + "".join(f"<th>{E(o_gate[g]['name'])}<div class=\"muted\">"
+              f"{E(o_who(o_gate[g]['role']))}</div></th>" for g in O_GATES + ["entered"]) + "</tr></thead><tbody>" + "".join(mrows)
+              + f'<tr class="bh-total"><td>Totals</td>{foot}<td></td></tr></tbody></table></div>')
+
+    by_code = {}
+    for i, s in issues:
+        by_code.setdefault(i["code"], []).append(s)
+    crow = "".join(f'<tr><td>{o_code(c)}</td><td>{o_meaning(c)}</td><td>{E(R_["conditions"][R_["issue_codes"][c]["condition"]])}</td>'
+                   f'<td>{E(", ".join(o_gate[g]["name"] for g in R_["issue_codes"][c]["gates"]))}</td>'
+                   f'<td>{E(", ".join(o_name(OW[s]) for s in ss))}</td><td>{E(o_by(R_["issue_codes"][c]["fix"]))}</td>'
+                   f'<td class="num">{k("o.ic." + c, len(ss))}</td></tr>'
+                   for c, ss in sorted(by_code.items()))
+    kinds = "".join(f'<div><span class="lab">{E(lab)}</span> {k("o.cond." + c, sum(i["condition"] == c for i, _ in issues))}</div>'
+                    for c, lab in R_["conditions"].items())
+    problems = ('<h2>Problems found, by cause</h2><p class="lead">Each was planted in the sample packets on purpose and written into a locked answer key '
+                'before the AI ran. The AI says which kind each one is, because each kind has a different fix: chase the owner, ask a professional, '
+                'or wait on an outside approval. Approval isn\'t a kind of problem: it\'s an outcome only a person records, either resolved (the '
+                'problem is gone) or an exception approved (work goes ahead while the problem stays open). None are recorded in this sample run.</p>'
+                f'<div class="qbar" data-audit>{kinds}</div>'
+                '<div class="scroll"><table data-audit><thead><tr><th>Code</th><th>What it means</th><th>Kind</th><th>Blocks</th><th>Owner</th>'
+                '<th>Who resolves it</th><th class="num">Count</th></tr></thead><tbody>' + crow + "</tbody></table></div>")
+
+    trows = []
+    for s, tk in occ.items():
+        if tk["result"] == "MATCH":
+            send_by = table_fields(read(*tk["tenant_letter"].split("/"))).get("Send by", "")
+            what = (f'Matches. A management-change letter is drafted for {E(o_by("Property Manager"))}, with two clocks: who receives notices '
+                    f'for the landlord, how to pay rent, and how to ask for repairs, by {send_by} when management starts; and where the deposit is '
+                    f'held, due {tk["letter_due"]}, {k("o.rule.letter_days", R_["tenant_letter_days"])} days after the deposit moved '
+                    f'({q("company/owner-rules.json", "Fla. Stat. 83.49(2)")} where it applies; counsel decides, and Palmquay sends it either way). '
+                    f'Not ready to send until counsel\'s {q("company/owner-rules.json", "Fla. Stat. 83.49(2)(d)")} wording is in.')
+        else:
+            what = (f'{o_code(tk["result"])} Both amounts are recorded now: {k(f"o.dep.{s}.got", tk["transferred"], True)} received and '
+                    f'{k(f"o.dep.{s}.diff", tk["difference"], True)} open. An email is drafted for {E(o_by("Trust Accountant"))} to the outgoing manager: '
+                    f'a written receipt for the amount received only, and a request for the full tenant accounting, any adjustments the tenant '
+                    f'authorized, and the rest if it\'s owed '
+                    f'({q("company/owner-rules.json", "Fla. Stat. 83.49(7)")}). The deposit isn\'t marked reconciled, and the tenant letter waits.')
+        trows.append(f'<tr><td>{E(o_name(OW[s]))}</td><td>{E(tk["tenant"])}</td><td class="num">{k(f"o.dep.{s}.lease", tk["lease_deposit"], True)}</td>'
+                     f'<td class="num">{k(f"o.dep.{s}.got", tk["transferred"], True)}</td>'
+                     f'<td class="num">{k(f"o.dep.{s}.diff", tk["difference"], True)}</td><td>{what}</td></tr>')
+    tenants = ('<h2>Tenants already living there</h2><p class="lead">'
+               f'{k("o.occupied", len(occ))} of the homes come with a tenant. Florida law says that when the rental agent changes, the tenant\'s '
+               'deposit moves to the new agent "with an accurate accounting showing the amounts to be credited to each tenant account" '
+               f'({q("company/owner-rules.json", "Fla. Stat. 83.49(7)")}). So the AI compares the lease with what came over, and the Trust Accountant '
+               'confirms what the bank received. A real takeover also has a person review the lease\'s amendments, the tenant ledger, the paid-through '
+               'date, arrears, notices, and open repairs; these sample packets carry only the lease and the transfer statement.</p><div class="scroll"><table data-audit><thead><tr><th>Owner</th><th>Tenant</th><th class="num">Deposit '
+               'per the lease</th><th class="num">Came over</th><th class="num">Difference</th><th>What happens</th></tr></thead><tbody>'
+               + "".join(trows) + "</tbody></table></div>")
+
+    WHAT = {"Owner Onboarding Coordinator": (f"Review and send {k('o.followups', len(drafts_fu))} follow-up emails to owners; then enter each "
+                                             "setup sheet after its three sign-offs"),
+            "Broker of Record": "Sign Management accepted for each owner where nothing blocks it",
+            "Trust Accountant": (f"Send {k('o.outgoing', len(drafts_og))} email to an outgoing manager about a short deposit; confirm each owner's "
+                                 "bank account by calling a number Palmquay already had, before releasing payouts; sign Accounting approved where nothing blocks it"),
+            "Property Manager": (f"Send {k('o.letters', len(drafts_tl))} letter to a tenant; sign Leasing-ready where nothing blocks it; "
+                                 "send each applicant for the condo on hold to its association"),
+            "Controller": "Decide a foreign owner's tax treatment with the owner's own tax adviser"}
+    wrows = "".join(f'<tr><td>{E(o_team[r])}</td><td>{E(r)}</td><td class="num">{k("o.wait." + o_slug(r), len(wait.get(r, [])))}</td>'
+                    f'<td>{WHAT[r]}</td></tr>' for r in o_team)
+    waiting_t = ('<h2>Waiting on the new-owner team</h2><p class="lead">Everything the AI stopped for: each unsent draft (its sender), each gate '
+                 'that is ready or on hold (its person), and each question that needs a professional. The count for each gate is in the table above.</p>'
+                 '<div class="scroll"><table data-audit><thead><tr><th>Person</th><th>Role</th><th class="num">Waiting</th><th>What</th></tr></thead><tbody>'
+                 + wrows + f'<tr class="bh-total"><td>Total</td><td></td><td class="num">{k("o.wait.total", sum(len(v) for v in wait.values()))}</td><td></td></tr>'
+                 "</tbody></table></div>")
+
+    open_ = ('<h2>Where it stands today</h2><ul class="plain">'
+             f'<li>Owner payouts are held for every owner until {E(o_by("Trust Accountant"))} confirms each account by calling the owner at a '
+             'number Palmquay already had or confirmed separately (not only the one in the packet, which could be changed along with the bank details).</li>'
+             f'<li>Nothing is entered in the software yet: the {k("o.blank", blank)} sign-offs are blank.</li>'
+             '<li>One tenant\'s deposit is recorded as received and open; it isn\'t marked reconciled until the outgoing manager answers.</li>'
+             f'<li>Every email is a draft for a named person; each follow-up asks for a reply within {k("o.rule.deadline_days", R_["chase_deadline_days"])} '
+             'days, which is Palmquay\'s policy (legal deadlines keep their own clock).</li>'
+             f'<li>Not on this tab: {E(R_["not_on_this_tab"])}</li>'
+             '</ul><h2>What the AI does, and doesn\'t</h2><ul class="plain">'
+             '<li><b>Does:</b> reads each packet and the county record a coordinator saved; lists what\'s there and what isn\'t; compares names, '
+             'dollars, and dates across documents and quotes each one; drafts the follow-ups, the tenant letter, and the setup sheet.</li>'
+             '<li><b>Doesn\'t:</b> sign, send, move money, enter anything in any software, look anything up on its own, choose a tax form, or call a '
+             'title, a bank account, coverage, or a deposit "verified." A missing document is "not found in the packet," never "doesn\'t exist." Rules that rest on law quote it; the rest is Palmquay\'s sample policy in '
+             '<code>company/owner-rules.json</code>. A real office has its broker, counsel, and CPA confirm them.</li></ul>')
+
+    ev_ = []
+    for s, o in OW.items():
+        files_ = o["records"] + [f"owners/{s}/intake.json"] + ([f"owners/{s}/takeover.json"] if o["takeover"] else []) + o["drafts"] + [o["sheet"]]
+        ev_.append(details(f"{E(o_name(o))}: {E(o_home(o))} ({chip(o['intake']['status'])})",
+                           "".join(f"<h4><code>{E(f)}</code></h4>{pre(f)}" for f in files_)))
+    lines_ = read("audit", "owners-log.csv").rstrip("\n").split("\n") if os.path.exists(path("audit", "owners-log.csv")) else []
+    links_ = read("audit", "owners-log.chain.txt").split() if os.path.exists(path("audit", "owners-log.chain.txt")) else []
+    h_, good = hashlib.sha256("timestamp,actor,owner,action,detail,result".encode()).hexdigest(), 0
+    for i_, line in enumerate(lines_[1:]):
+        h_ = hashlib.sha256((h_ + "\n" + line).encode("utf-8")).hexdigest()
+        good += i_ < len(links_) and links_[i_] == h_
+    lrows = "".join(f'<tr><td class="nowrap">{E(r_["timestamp"])}</td><td>{E(r_["actor"])}</td><td>{E(r_["owner"])}</td><td>{E(r_["action"])}</td>'
+                    f'<td>{E(r_["result"])}</td></tr>' for r_ in csv.DictReader(io.StringIO("\n".join(lines_))))
+    nrows = len(lines_) - 1
+    log_ = ('<h2>The new-owner log</h2><p class="lead">Its own append-only log, <code>audit/owners-log.csv</code>: '
+            f'{k("o.rows", nrows)} rows, one per action; the hash chain {"verifies" if good == nrows == len(links_) else "DOES NOT verify"}. '
+            'Kept apart from the four logs the Audit log tab replays.</p>'
+            '<div class="scroll"><table class="log"><thead><tr><th>Time</th><th>Actor</th><th>Owner</th><th>Action</th><th>Result</th></tr></thead>'
+            f"<tbody>{lrows}</tbody></table></div>")
+    return (lead + bar + strip + owners_t + matrix + waiting_t + tenants + problems + open_
+            + "<h2>The records behind each owner</h2>" + "".join(ev_) + log_)
+
+
 def checks():
     rows = []
     what = {"p1": "The fictional company, its rules, the vendors' planted problems, and the locked answer key",
@@ -1010,7 +1312,9 @@ def checks():
              "phase3e": ("Phase 3e", "The AI's reading of the certificate PDFs, checked against a standard PDF tool"),
              "orgchart": ("Org chart", "The department hub on the Overview and the sample-records wording on this page"),
              "phase3f": ("Phase 3f", "The By hand vs. system tab: every count recounted from the raw records, every minute labeled as an assumption, "
-                                     "and one check count everywhere")}
+                                     "and one check count everywhere"),
+             "phase3g": ("Phase 3g", "The New owners tab: every owner recounted from the raw packets against a locked answer key, the drafts, "
+                                     "the setup sheets, the owners log, and every number on that tab")}
     for f, n in SUITE_AFTER:
         name = f[len("check_"):-3]
         label, what_ = after.get(name, (name, "A check script listed in tests/suite.json"))
@@ -1337,7 +1641,7 @@ code,.code{background:var(--soft);padding:1px 4px;border-radius:4px}.id.plain{fo
 .st-BLOCKED i,.st-FAIL i{background:var(--crit)}.st-PERSON i{background:var(--serious)}.st-SUBMITTED i{background:#8f8e88}
 details{background:var(--card);border:1px solid var(--line);border-radius:8px;margin:6px 0;padding:6px 10px}summary{cursor:pointer;padding:2px 0}
 pre{white-space:pre-wrap;font:12px/1.45 Consolas,"Cascadia Mono",monospace;background:#fbfbf9;border:1px solid var(--line);padding:10px;border-radius:6px;max-height:460px;overflow:auto}
-.stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:4px 0 10px}.stage{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:10px 11px;font-size:12.5px}.sname{font-weight:600;font-size:14px}.snum{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;margin-right:4px}.slab{font-size:11px;color:var(--ink2);margin-top:7px}.qbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 10px}.qbar>div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:18px;font-weight:600}.qbar .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-weight:600}.money .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money .arr{color:var(--ink2)}td.nw{white-space:nowrap}tr.stagerow th{background:var(--soft);font-size:12px;letter-spacing:.02em}@media (max-width:760px){.stages,.qbar{grid-template-columns:1fr}}.budget{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}.bnums{display:flex;gap:28px;flex-wrap:wrap;font-size:15px;font-weight:600}
+.stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:4px 0 10px}.stage{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:10px 11px;font-size:12.5px}.sname{font-weight:600;font-size:14px}.snum{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;margin-right:4px}.slab{font-size:11px;color:var(--ink2);margin-top:7px}.qbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 10px}.qbar>div{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:18px;font-weight:600}.qbar .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-weight:600}.money .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.money .arr{color:var(--ink2)}td.nw{white-space:nowrap}tr.stagerow th{background:var(--soft);font-size:12px;letter-spacing:.02em}@media (max-width:760px){.stages,.qbar{grid-template-columns:1fr}}.stages.four{grid-template-columns:repeat(4,minmax(0,1fr))}.qbar.six{grid-template-columns:repeat(6,minmax(0,1fr))}.scroll{overflow-x:auto}@media (max-width:760px){.stages.four,.qbar.six{grid-template-columns:1fr}nav{flex-wrap:wrap}main{padding:6px 14px 48px}header{padding:14px 14px 0}}.budget{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:8px 0}.bnums{display:flex;gap:28px;flex-wrap:wrap;font-size:15px;font-weight:600}
 .bnums .lab{display:block;font-size:12px;font-weight:400;color:var(--ink2)}.meter{position:relative;height:16px;background:var(--soft);border-radius:4px;margin:12px 0 6px}
 .seg{position:absolute;top:0;bottom:0}.seg.committed{left:0;background:var(--accent);border-radius:4px 0 0 4px}
 .seg.pending{background:repeating-linear-gradient(45deg,#d9a03a 0 4px,#f5d58f 4px 8px);border-radius:0 4px 4px 0;border-left:2px solid var(--surface)}
@@ -1422,7 +1726,7 @@ JS = """
 def page():
     stamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     head_tiles = tiles()
-    secs = {"overview": overview(), "byhand": byhand(), "onboarding": onboarding(), "buying": buying(), "checks": checks(), "audit": audit(), "map": diagram()}
+    secs = {"overview": overview(), "byhand": byhand(), "onboarding": onboarding(), "owners": owners_tab(), "buying": buying(), "checks": checks(), "audit": audit(), "map": diagram()}
     nav = "".join(f'<button type="button" data-for="{t}" data-tab-label="{lab}" aria-selected="false">{lab}</button>' for t, lab in TABS)
     body = "".join(f'<section data-tab="{t}" id="tab-{t}"{" class=on" if t == "overview" else ""}>{secs[t]}</section>' for t, _ in TABS)
     body = body.replace('<div class="replay">', '<div class="replay" id="replay" data-rstep="0">')

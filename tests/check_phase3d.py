@@ -296,7 +296,11 @@ def main():
     later = set()
     if os.path.exists(p("tests", "frozen-3e.txt")) and locked.get("tests/frozen-3e.txt") == sha("tests/frozen-3e.txt"):
         later = {ln.split()[1] for ln in read("tests/frozen-3e.txt").splitlines() if ln and not ln.startswith("#")}
-    later_out = re.compile(r"^(vendors/[a-z-]+/documents/coi-check\.json|audit/documents-log\.(csv|chain\.txt))$")
+    # 11/10: Phase 3g (new owners) the same way: files its own locked list names (hash checked against LOCK.txt), plus its stated
+    # outputs, the owners log; tests/check_phase3g.py verifies those. Any other new file still fails here.
+    if os.path.exists(p("tests", "frozen-3g.txt")) and locked.get("tests/frozen-3g.txt") == sha("tests/frozen-3g.txt"):
+        later |= {ln.split()[1] for ln in read("tests/frozen-3g.txt").splitlines() if ln and not ln.startswith("#")}
+    later_out = re.compile(r"^(vendors/[a-z-]+/documents/coi-check\.json|audit/documents-log\.(csv|chain\.txt)|audit/owners-log\.(csv|chain\.txt))$")
     extra = [a for a in added if a not in EXPECTED_NEW and a not in later and not later_out.match(a)]
     absent = [e for e in EXPECTED_NEW if e not in added]
     rec(frozen and not changed and not extra and not absent, "D4 0 earlier records changed; the only new record files are the expected outputs",

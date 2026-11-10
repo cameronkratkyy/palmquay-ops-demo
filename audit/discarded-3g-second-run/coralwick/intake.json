@@ -1,0 +1,48 @@
+{
+ "owner": "coralwick",
+ "name": "Coralwick Rentals LLC",
+ "property": "6032 Driftmark Way, Lakewood Ranch, FL 34202 (fictional)",
+ "county": "Manatee",
+ "property_type": "Townhome",
+ "occupied": false,
+ "date": "2026-11-05",
+ "status": "BLOCKED",
+ "issues": [
+  {
+   "code": "ACH_NAME_MISMATCH",
+   "meaning": "The bank account isn't in the owner's name",
+   "condition": "disagree",
+   "gates": [
+    "money"
+   ],
+   "fix": "Trust Accountant",
+   "evidence": [
+    {
+     "file": "owners/coralwick/documents/agreement.md",
+     "field": "Owner(s) named",
+     "says": "Coralwick Rentals LLC"
+    },
+    {
+     "file": "owners/coralwick/documents/ach.md",
+     "field": "Account holder name(s)",
+     "says": "Derrick Ostrowski"
+    }
+   ]
+  }
+ ],
+ "gates": {
+  "accepted": "ready",
+  "money": "blocked",
+  "leasing": "ready"
+ },
+ "documents_read": [
+  "owners/coralwick/documents/ach.md",
+  "owners/coralwick/documents/agreement.md",
+  "owners/coralwick/documents/association.md",
+  "owners/coralwick/documents/county-record.md",
+  "owners/coralwick/documents/insurance.md",
+  "owners/coralwick/documents/w9.md",
+  "owners/coralwick/owner.md"
+ ],
+ "note": "The county record is one the Owner Onboarding Coordinator saved to the folder; the AI compared names and didn't look anything up."
+}
