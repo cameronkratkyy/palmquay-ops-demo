@@ -1,0 +1,21 @@
+{
+ "_note": "Phase 3g answer key, written by hand 11/10/2026 from the brief before tools/owners.py or any owner skill existed, then locked in tests/LOCK.txt. Fictional company, sample records. Gate states: ready (the AI found nothing blocking; the gate's person reviews and signs), hold (only an outside approval pending), blocked.",
+ "demo_date": "2026-11-05",
+ "owners": {
+  "whitlock": {"status": "BLOCKED", "issues": ["AGREEMENT_UNSIGNED_OWNER", "LEAD_DISCLOSURE_MISSING"], "gates": {"accepted": "blocked", "money": "ready", "leasing": "blocked"}},
+  "petrakis": {"status": "BLOCKED", "issues": ["OWNER_NOT_ON_COUNTY_RECORD"], "gates": {"accepted": "blocked", "money": "ready", "leasing": "ready"}},
+  "fontaine": {"status": "BLOCKED", "issues": ["FOREIGN_TAX_REVIEW"], "gates": {"accepted": "ready", "money": "blocked", "leasing": "ready"}},
+  "coralwick": {"status": "BLOCKED", "issues": ["ACH_NAME_MISMATCH"], "gates": {"accepted": "ready", "money": "blocked", "leasing": "ready"}},
+  "haddad": {"status": "BLOCKED", "issues": ["DEPOSIT_SHORT", "INSURANCE_NOT_LANDLORD"], "gates": {"accepted": "blocked", "money": "blocked", "leasing": "blocked"}},
+  "varma": {"status": "BLOCKED", "issues": ["MANAGER_NOT_ADDITIONAL_INSURED", "MISSING_W9"], "gates": {"accepted": "blocked", "money": "blocked", "leasing": "ready"}},
+  "brandt": {"status": "READY", "issues": [], "gates": {"accepted": "ready", "money": "ready", "leasing": "ready"}},
+  "marsh": {"status": "HOLD", "issues": ["ASSOCIATION_APPROVAL"], "gates": {"accepted": "ready", "money": "ready", "leasing": "hold"}}
+ },
+ "takeovers": {
+  "haddad": {"lease_deposit": 2400, "transferred": 2200, "difference": 200, "result": "DEPOSIT_SHORT", "tenant_letter": false, "outgoing_draft": true},
+  "brandt": {"lease_deposit": 2100, "transferred": 2100, "difference": 0, "result": "MATCH", "received_on": "2026-11-04", "tenant_letter": true, "letter_due": "2026-12-04"}
+ },
+ "follow_ups": {"owners": ["coralwick", "fontaine", "haddad", "marsh", "petrakis", "varma", "whitlock"], "deadline": "2026-11-12"},
+ "totals": {"owners": 8, "READY": 1, "HOLD": 1, "BLOCKED": 6, "problems": 10, "owner_follow_ups": 7, "outgoing_manager_drafts": 1, "tenant_letters": 1, "occupied": 2,
+            "gates_ready": 13, "gates_hold": 1, "gates_blocked": 10}
+}

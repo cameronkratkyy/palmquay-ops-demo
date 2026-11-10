@@ -1,0 +1,68 @@
+{
+ "owner": "whitlock",
+ "name": "Gregory Whitlock; Ana Whitlock",
+ "property": "2217 Saltwhistle Ln, Sarasota, FL 34232 (fictional)",
+ "county": "Sarasota",
+ "property_type": "Single-family house",
+ "occupied": false,
+ "date": "2026-11-05",
+ "status": "BLOCKED",
+ "issues": [
+  {
+   "code": "AGREEMENT_UNSIGNED_OWNER",
+   "meaning": "An owner on the county record hasn't signed the agreement",
+   "condition": "incomplete",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Owner Onboarding Coordinator",
+   "evidence": [
+    {
+     "file": "owners/whitlock/documents/county-record.md",
+     "field": "Owner(s) of record",
+     "says": "WHITLOCK GREGORY; WHITLOCK ANA"
+    },
+    {
+     "file": "owners/whitlock/documents/agreement.md",
+     "field": "Signatures",
+     "says": "| Ana Whitlock | Ana Whitlock | Owner |"
+    }
+   ]
+  },
+  {
+   "code": "LEAD_DISCLOSURE_MISSING",
+   "meaning": "Built before 1978, no lead-paint disclosure",
+   "condition": "missing",
+   "gates": [
+    "leasing"
+   ],
+   "fix": "Property Manager",
+   "evidence": [
+    {
+     "file": "owners/whitlock/documents/county-record.md",
+     "field": "Year built",
+     "says": "1971"
+    },
+    {
+     "file": "owners/whitlock/documents/lead-disclosure.md",
+     "field": "(not in the packet)",
+     "says": ""
+    }
+   ]
+  }
+ ],
+ "gates": {
+  "accepted": "blocked",
+  "money": "ready",
+  "leasing": "blocked"
+ },
+ "documents_read": [
+  "owners/whitlock/documents/ach.md",
+  "owners/whitlock/documents/agreement.md",
+  "owners/whitlock/documents/county-record.md",
+  "owners/whitlock/documents/insurance.md",
+  "owners/whitlock/documents/w9.md",
+  "owners/whitlock/owner.md"
+ ],
+ "note": "The county record is one the Owner Onboarding Coordinator saved to the folder; the AI compared names and didn't look anything up."
+}

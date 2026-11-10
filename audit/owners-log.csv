@@ -1,0 +1,27 @@
+timestamp,actor,owner,action,detail,result
+2026-11-10T10:32:46,owner-assistant,brandt,owner_intake,"owners/brandt/intake.json; 0 problem(s): none; gates accepted ready, money ready, leasing ready",READY
+2026-11-10T10:32:46,owner-assistant,coralwick,owner_intake,"owners/coralwick/intake.json; 1 problem(s): ACH_NAME_MISMATCH; gates accepted ready, money blocked, leasing ready",BLOCKED
+2026-11-10T10:32:46,owner-assistant,fontaine,owner_intake,"owners/fontaine/intake.json; 1 problem(s): FOREIGN_TAX_REVIEW; gates accepted ready, money blocked, leasing ready",BLOCKED
+2026-11-10T10:32:46,owner-assistant,haddad,owner_intake,"owners/haddad/intake.json; 2 problem(s): DEPOSIT_SHORT, INSURANCE_NOT_LANDLORD; gates accepted blocked, money blocked, leasing blocked",BLOCKED
+2026-11-10T10:32:46,owner-assistant,marsh,owner_intake,"owners/marsh/intake.json; 1 problem(s): ASSOCIATION_APPROVAL; gates accepted ready, money ready, leasing hold",HOLD
+2026-11-10T10:32:46,owner-assistant,petrakis,owner_intake,"owners/petrakis/intake.json; 1 problem(s): OWNER_NOT_ON_COUNTY_RECORD; gates accepted blocked, money ready, leasing ready",BLOCKED
+2026-11-10T10:32:46,owner-assistant,varma,owner_intake,"owners/varma/intake.json; 2 problem(s): MANAGER_NOT_ADDITIONAL_INSURED, MISSING_W9; gates accepted blocked, money blocked, leasing ready",BLOCKED
+2026-11-10T10:32:46,owner-assistant,whitlock,owner_intake,"owners/whitlock/intake.json; 2 problem(s): AGREEMENT_UNSIGNED_OWNER, LEAD_DISCLOSURE_MISSING; gates accepted blocked, money ready, leasing blocked",BLOCKED
+2026-11-10T10:32:46,owner-assistant,brandt,takeover,"owners/brandt/takeover.json; lease $2,100, transferred $2,100 on 2026-11-04; draft owners/brandt/drafts/2026-11-05-tenant-letter.md","MATCH; tenant letter drafted (due 2026-12-04), not sent"
+2026-11-10T10:32:46,owner-assistant,haddad,takeover,"owners/haddad/takeover.json; lease $2,400, transferred $2,200 on 2026-11-03; draft owners/haddad/drafts/2026-11-05-deposit-outgoing-manager.md","DEPOSIT_SHORT; $200 open; outgoing-manager draft written, not sent; no tenant letter until it reconciles"
+2026-11-10T10:32:46,owner-assistant,coralwick,owner_chase,"owners/coralwick/drafts/2026-11-05-follow-up.md; ACH_NAME_MISMATCH; deadline 2026-11-12; reviewer Talia Brooks, Owner Onboarding Coordinator","BLOCKED; follow-up drafted, not sent"
+2026-11-10T10:32:46,owner-assistant,fontaine,owner_chase,"owners/fontaine/drafts/2026-11-05-follow-up.md; FOREIGN_TAX_REVIEW; deadline 2026-11-12; reviewer Talia Brooks, Owner Onboarding Coordinator","BLOCKED; follow-up drafted, not sent"
+2026-11-10T10:32:46,owner-assistant,haddad,owner_chase,"owners/haddad/drafts/2026-11-05-follow-up.md; DEPOSIT_SHORT, INSURANCE_NOT_LANDLORD; deadline 2026-11-12; reviewer Talia Brooks, Owner Onboarding Coordinator","BLOCKED; follow-up drafted, not sent"
+2026-11-10T10:32:46,owner-assistant,marsh,owner_chase,"owners/marsh/drafts/2026-11-05-follow-up.md; ASSOCIATION_APPROVAL; deadline 2026-11-12; reviewer Talia Brooks, Owner Onboarding Coordinator","HOLD; follow-up drafted, not sent"
+2026-11-10T10:32:46,owner-assistant,petrakis,owner_chase,"owners/petrakis/drafts/2026-11-05-follow-up.md; OWNER_NOT_ON_COUNTY_RECORD; deadline 2026-11-12; reviewer Talia Brooks, Owner Onboarding Coordinator","BLOCKED; follow-up drafted, not sent"
+2026-11-10T10:32:46,owner-assistant,varma,owner_chase,"owners/varma/drafts/2026-11-05-follow-up.md; MANAGER_NOT_ADDITIONAL_INSURED, MISSING_W9; deadline 2026-11-12; reviewer Talia Brooks, Owner Onboarding Coordinator","BLOCKED; follow-up drafted, not sent"
+2026-11-10T10:32:46,owner-assistant,whitlock,owner_chase,"owners/whitlock/drafts/2026-11-05-follow-up.md; AGREEMENT_UNSIGNED_OWNER, LEAD_DISCLOSURE_MISSING; deadline 2026-11-12; reviewer Talia Brooks, Owner Onboarding Coordinator","BLOCKED; follow-up drafted, not sent"
+2026-11-10T10:32:46,owner-assistant,brandt,owner_setup,"owners/brandt/setup-sheet.md; gates accepted ready, money ready, leasing ready",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:32:46,owner-assistant,coralwick,owner_setup,"owners/coralwick/setup-sheet.md; gates accepted ready, money blocked, leasing ready",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:32:46,owner-assistant,fontaine,owner_setup,"owners/fontaine/setup-sheet.md; gates accepted ready, money blocked, leasing ready",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:32:46,owner-assistant,haddad,owner_setup,"owners/haddad/setup-sheet.md; gates accepted blocked, money blocked, leasing blocked",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:32:46,owner-assistant,marsh,owner_setup,"owners/marsh/setup-sheet.md; gates accepted ready, money ready, leasing hold",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:32:46,owner-assistant,petrakis,owner_setup,"owners/petrakis/setup-sheet.md; gates accepted blocked, money ready, leasing ready",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:32:46,owner-assistant,varma,owner_setup,"owners/varma/setup-sheet.md; gates accepted blocked, money blocked, leasing ready",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:32:46,owner-assistant,whitlock,owner_setup,"owners/whitlock/setup-sheet.md; gates accepted blocked, money ready, leasing blocked",DRAFTED; not entered in any software; 4 sign-offs blank
+2026-11-10T10:33:56,owner-assistant,all owners,checker_review,reviews/phase3b/2026-11-10-22-new-owners.md; recorded by owner-assistant,overall PASS

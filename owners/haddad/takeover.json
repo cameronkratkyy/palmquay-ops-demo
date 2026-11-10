@@ -1,0 +1,16 @@
+{
+ "owner": "haddad",
+ "tenant": "Marco Ellison",
+ "lease_deposit": 2400,
+ "transferred": 2200,
+ "difference": 200,
+ "result": "DEPOSIT_SHORT",
+ "received_on": "2026-11-03",
+ "from": "Tidewell Rentals (fictional), the outgoing manager",
+ "lease": "owners/haddad/tenant/lease.md",
+ "transfer": "owners/haddad/tenant/deposit-transfer.md",
+ "tenant_letter": null,
+ "letter_due": null,
+ "outgoing_draft": "owners/haddad/drafts/2026-11-05-deposit-outgoing-manager.md",
+ "rule": "Fla. Stat. 83.49(7): on a change in the rental agent, the deposit and an accurate accounting move to the new agent."
+}

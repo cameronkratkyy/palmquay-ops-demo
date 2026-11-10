@@ -1,6 +1,6 @@
 # The operations dashboard (fictional company, sample records)
 
-One offline page that shows the whole demo on one screen: what's waiting on people, every vendor, the furnishing project, the checks, and the audit log. It's built from the records in this folder: every number in its tiles and tables comes from a record and is recounted by a test. The Map tab's diagram is drawn by hand (`docs/diagram.html`).
+One offline page that shows the whole demo on one screen: what's waiting on people, every vendor, the new property owners, the furnishing project, the checks, and the audit log. It's built from the records in this folder: every number in its tiles and tables comes from a record and is recounted by a test. The Map tab's diagram is drawn by hand (`docs/diagram.html`).
 
 **Open it:** double-click `dashboard/index.html`. It's a file on this PC: no server, no internet, no sign-in.
 **Rebuild it** after any record changes: `python -I -X utf8 dashboard/build.py` (about 5 seconds; it also runs the Phase 1, 2, 3a, 3c, and 3d checks live).
@@ -12,6 +12,7 @@ One offline page that shows the whole demo on one screen: what's waiting on peop
 | Overview | The tiles, every decision waiting on a person (with options and the AI's suggestion), and every problem caught, by cause | Control tower, exception queue, failure analysis |
 | By hand vs. system | The same work counted two ways: every touch a coordinator makes by hand (emails, checks, lookups, retyped fields, packets, supplier tasks, sign-offs) next to what a person still makes with the system, by step and by kind, with minutes a viewer can change | Process mapping, before-and-after analysis |
 | Onboarding | Each vendor's status, blocker, screen, approvers, and days waiting; insurance and licenses that ended or end soon; conflict-of-interest and exclusion screening; the record behind each vendor | Pipeline tracking, compliance monitoring, vendor due diligence |
+| New owners | Bringing on a homeowner's rental (Phase 3g): the four gates and who signs each, every owner's status and problems, the sign-off matrix, what waits on the new-owner team, tenants already living there and their deposits, problems by cause and kind, what's still open, the records, and the owners log | Client onboarding, know-your-client checks, security deposit reconciliation, approval gates |
 | Buying | The furnishing project's budget, the seven buying steps and what each caught, deliveries, invoices, what people already decided, and the controls from a real procurement packet (approval request, running totals, close-out) | Procure-to-pay (P2P), FF&E procurement, contract close-out |
 | Checks | The phase checks for Phases 1, 2, 3a, 3c, and 3d, run when the page was built (3c and 3d without their own older-phase steps, so the page and the Phase 3b check never call each other); the checker's reviews; guardrail counts | Acceptance testing, maker-checker review |
 | Audit log | A replay that rebuilds the board from the four logs (onboarding, procurement, controls, exceptions) one row at a time, the hash chains, and every row | Audit trail, event replay |
@@ -35,6 +36,9 @@ A decision is listed when its record shows a person hasn't acted yet:
 14. Each shipping-credit draft in `projects/unit-4b/exceptions/` whose first line says "not sent": the Facilities Manager sends it.
 
 "Since" is the date on the record that created the decision: a draft's or packet's date; for the screening decisions, the disclosure's signing date or the exclusion list's "as of" date; for the justifications and the certification, the date the order was approved; for a reply to a supplier, the date of the supplier's notice. The AI's suggestion is only a suggestion; the named person decides.
+
+## Rule: waiting on the new-owner team (New owners tab)
+Kept on its own tab, apart from the Overview's list (the owners log isn't one of the four logs the replay rebuilds). Counted per person: each draft in `owners/*/drafts/` whose status says not sent (its sender: follow-ups the Owner Onboarding Coordinator, the outgoing-manager email the Trust Accountant, the tenant letter the Property Manager); each gate on an owner's intake that is ready or on hold (that gate's person in `company/owner-rules.json`); and each problem whose kind is "needs a professional's decision" (the person the rules name). `tests/check_phase3g.py` recounts the same rule from the raw packets.
 
 ## Rule: By hand vs. system
 Every count on this tab comes from the records by the rule written for its step (`tests/check_phase3f.py` states each rule and recounts it from the raw records). "With the system" counts what a person still does: reviewing and sending the AI's drafts, reading its flags, supplier tasks, sign-offs, and anything the system doesn't do yet (quote requests). The minutes are assumptions, one per kind of touch and the same on both sides, kept in `dashboard/by-hand.json` and labeled "not measured"; the page's own script recomputes the minute totals when a viewer changes them. Waiting time, getting records into the folder, extra reminders, and rework aren't counted on either side.

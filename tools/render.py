@@ -18,7 +18,7 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BROWSERS = [r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Google\Chrome\Application\chrome.exe"]
-TABS = ["overview", "byhand", "onboarding", "buying", "checks", "audit", "map"]
+TABS = ["overview", "byhand", "onboarding", "owners", "buying", "checks", "audit", "map"]
 
 
 def browser():

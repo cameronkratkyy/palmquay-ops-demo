@@ -29,7 +29,7 @@
 2. **People approve.** The AI never sends, signs, orders, or pays: 0 times in 34 audit log rows. *Human in the loop.*
 3. **A second AI, the checker.** Set up to only read, it reviews the work, with planted mistakes mixed in to prove it's really reading. *Maker-checker review, least privilege.*
 4. **Audit log.** One row per action, hash-chained, so editing a past row shows. *Audit trail, tamper evidence.*
-5. **Tests with a locked answer key.** The right answers were written and locked before the first run. 85 of 85 checks pass, and self-tests plant breaks in a throwaway copy to prove the checks catch them. *Acceptance tests, evals, mutation testing.*
+5. **Tests with a locked answer key.** The right answers were written and locked before the first run. 94 of 94 checks pass, and self-tests plant breaks in a throwaway copy to prove the checks catch them. *Acceptance tests, evals, mutation testing.*
 
 **Numbers you can say:** 8 vendors, 6 planted problems, all caught · 7 buying steps, 13 planted problems, all caught · 3 steps from a real packet, 6 more problems, all caught · 21 decisions waiting on people · a test recounts every number in the dashboard's tiles and tables.
 

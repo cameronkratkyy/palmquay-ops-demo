@@ -1,0 +1,52 @@
+{
+ "owner": "petrakis",
+ "name": "Nadia Petrakis",
+ "property": "4410 Kestrelwood Ct, Sarasota, FL 34238 (fictional)",
+ "county": "Sarasota",
+ "property_type": "Single-family house",
+ "occupied": false,
+ "date": "2026-11-05",
+ "status": "BLOCKED",
+ "issues": [
+  {
+   "code": "OWNER_NOT_ON_COUNTY_RECORD",
+   "meaning": "The county record shows a different owner than the agreement",
+   "condition": "disagree",
+   "gates": [
+    "accepted"
+   ],
+   "fix": "Broker of Record",
+   "evidence": [
+    {
+     "file": "owners/petrakis/documents/agreement.md",
+     "field": "Owner(s) named",
+     "says": "Nadia Petrakis"
+    },
+    {
+     "file": "owners/petrakis/documents/county-record.md",
+     "field": "Owner(s) of record",
+     "says": "HALVORSEN DALE"
+    },
+    {
+     "file": "owners/petrakis/documents/county-record.md",
+     "field": "Last sale recorded",
+     "says": "2018-02-09"
+    }
+   ]
+  }
+ ],
+ "gates": {
+  "accepted": "blocked",
+  "money": "ready",
+  "leasing": "ready"
+ },
+ "documents_read": [
+  "owners/petrakis/documents/ach.md",
+  "owners/petrakis/documents/agreement.md",
+  "owners/petrakis/documents/county-record.md",
+  "owners/petrakis/documents/insurance.md",
+  "owners/petrakis/documents/w9.md",
+  "owners/petrakis/owner.md"
+ ],
+ "note": "The county record is one the Owner Onboarding Coordinator saved to the folder; the AI compared names and didn't look anything up."
+}
