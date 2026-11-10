@@ -418,11 +418,11 @@ def main():
     rec("Built" in row and len(mapped) == len(pieces), "R8 README: 3c built, every new piece mapped with a 'Designed and directed' line",
         f"3c row: '{row[:70]}'; {len(mapped)} of {len(pieces)} pieces mapped; missing {[x for x in pieces if x not in mapped]}")
 
-    # R9 every new input is visibly fake
+    # R9 every new input is visibly marked as sample
     files = NEW_INPUTS + sorted(os.path.relpath(f, ROOT).replace("\\", "/") for f in glob.glob(p("vendors", "*", "disclosures", "*.md")))
     # stricter after the first self-test (11/6): the standard line itself, not any "(fictional)" elsewhere in the file
     unmarked = [f for f in files if "Fake document made for a demo" not in read(f)]
-    rec(len(files) >= 11 and not unmarked, "R9 every new input file is marked fake", f"{len(files)} files; unmarked {unmarked}")
+    rec(len(files) >= 11 and not unmarked, "R9 every new input file is marked as sample", f"{len(files)} files; unmarked {unmarked}")
     n = sum(ok for ok, _ in results)
     print(f"\nRESULT: {n} of {len(results)} checks PASS")
     return 0 if n == len(results) == 11 else 1

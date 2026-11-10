@@ -1,4 +1,4 @@
-# The operations dashboard (fictional company, fake data)
+# The operations dashboard (fictional company, sample records)
 
 One offline page that shows the whole demo on one screen: what's waiting on people, every vendor, the furnishing project, the checks, and the audit log. It's built from the records in this folder: every number in its tiles and tables comes from a record and is recounted by a test. The Map tab's diagram is drawn by hand (`docs/diagram.html`).
 

@@ -191,8 +191,8 @@ def run(root):
            for k, val in fields(os.path.join(root, "vendors", s, "documents", doc + ".md")).items()
            if k in ("Taxpayer ID", "Policy number", "License number")]
     bad_ids = [i for i in ids if "XX" not in i[1] and "DEMO" not in i[1]]
-    rec(not hits and not bad_ids and files > 0 and ids, "C6 no personal words; every ID is visibly fake",
-        f"{files} files scanned for {len(BANNED)} words: {len(hits)} hits {hits}; {len(ids)} IDs, {len(bad_ids)} not marked fake")
+    rec(not hits and not bad_ids and files > 0 and ids, "C6 no personal words; every ID is visibly marked as sample",
+        f"{files} files scanned for {len(BANNED)} words: {len(hits)} hits {hits}; {len(ids)} IDs, {len(bad_ids)} not marked as sample")
 
     # C7 README teaching map
     rp = os.path.join(root, "README.md")
