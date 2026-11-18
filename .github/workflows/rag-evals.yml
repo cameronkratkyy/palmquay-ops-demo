@@ -1,0 +1,44 @@
+# Retrieval evals for the RAG assistant (rag/): keyword, meaning (embeddings), hybrid, and re-ranked search,
+# scored on 20 fixed questions with pass rules set before the first run. Runs on every push that touches rag/.
+name: rag-evals
+on:
+  push:
+    paths: ["rag/**", ".github/workflows/rag-evals.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RAG_MODEL_DIR: ${{ github.workspace }}/.models/all-MiniLM-L6-v2
+      RAG_RERANK_DIR: ${{ github.workspace }}/.models/ms-marco-MiniLM-L6-v2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Keyword search eval (standard library only)
+        run: python -I -X utf8 rag/eval_retrieval.py
+      - name: Libraries for the two models
+        run: pip install numpy onnxruntime tokenizers
+      - name: Model cache
+        uses: actions/cache@v4
+        with:
+          path: .models
+          key: rag-models-v1
+      - name: Download the two small public models from Hugging Face (about 180 MB, cached after the first run)
+        run: |
+          set -e
+          dl() { mkdir -p "$(dirname "$2")"; [ -s "$2" ] || curl -sSfL -o "$2" "$1"; }
+          E=https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main
+          R=https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2/resolve/main
+          dl "$E/onnx/model.onnx" "$RAG_MODEL_DIR/onnx/model.onnx"
+          dl "$E/tokenizer.json" "$RAG_MODEL_DIR/tokenizer.json"
+          dl "$R/onnx/model.onnx" "$RAG_RERANK_DIR/onnx/model.onnx"
+          dl "$R/tokenizer.json" "$RAG_RERANK_DIR/tokenizer.json"
+      - name: Keyword vs meaning vs hybrid
+        run: python -I -X utf8 rag/eval_compare.py
+      - name: Hybrid vs re-ranked
+        run: python -I -X utf8 rag/eval_rerank.py

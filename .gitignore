@@ -2,3 +2,6 @@
 tests/private_paths.json
 __pycache__/
 *.pyc
+
+# Local query log written by rag/rag.py (latency per search); not part of the demo
+rag/runs.jsonl

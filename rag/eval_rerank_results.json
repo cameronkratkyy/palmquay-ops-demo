@@ -1,0 +1,54 @@
+{
+  "results": {
+    "bm25": {
+      "exact": {
+        "recall@1": 1.0,
+        "recall@3": 1.0,
+        "MRR": 1.0
+      },
+      "paraphrase": {
+        "recall@1": 0.25,
+        "recall@3": 0.5,
+        "MRR": 0.33
+      },
+      "median_ms": 0.13
+    },
+    "hybrid": {
+      "exact": {
+        "recall@1": 1.0,
+        "recall@3": 1.0,
+        "MRR": 1.0
+      },
+      "paraphrase": {
+        "recall@1": 0.75,
+        "recall@3": 0.75,
+        "MRR": 0.75
+      },
+      "median_ms": 1.9449999999999998
+    },
+    "rerank": {
+      "exact": {
+        "recall@1": 1.0,
+        "recall@3": 1.0,
+        "MRR": 1.0
+      },
+      "paraphrase": {
+        "recall@1": 1.0,
+        "recall@3": 1.0,
+        "MRR": 1.0
+      },
+      "median_ms": 299.64
+    }
+  },
+  "misses": {
+    "bm25": [
+      "Who hands over the house keys when we take over a home?",
+      "Which bug-control company lied on its paperwork?"
+    ],
+    "hybrid": [
+      "Which bug-control company lied on its paperwork?"
+    ]
+  },
+  "pass": true,
+  "win": true
+}

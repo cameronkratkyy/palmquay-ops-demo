@@ -1,0 +1,25 @@
+{
+  "_about": "Retrieval eval set for Palmquay's RAG assistant (fictional company, sample records). Each question names the one file that holds its answer. 'kind' = exact (shares words with the answer) or paraphrase (different words, same meaning; keyword search is expected to struggle). Pass rule, set before the first run (11/18): exact questions recall@3 >= 0.80.",
+  "questions": [
+    {"q": "Who approves work over $10,000?", "file": "company/people.md", "kind": "exact"},
+    {"q": "Who gives the last sign-off on work over $50,000?", "file": "company/people.md", "kind": "exact"},
+    {"q": "Who gives the first sign-off on every vendor?", "file": "company/people.md", "kind": "exact"},
+    {"q": "Who signs each management agreement?", "file": "company/owner-team.md", "kind": "exact"},
+    {"q": "Who confirms where owner payouts go?", "file": "company/owner-team.md", "kind": "exact"},
+    {"q": "Who handles a foreign owner's tax treatment?", "file": "company/owner-team.md", "kind": "exact"},
+    {"q": "Who sends every follow-up to owners?", "file": "company/owner-team.md", "kind": "exact"},
+    {"q": "Who handles keys and the lead-paint disclosure?", "file": "company/owner-team.md", "kind": "exact"},
+    {"q": "Why was Gulfpine Pest Solutions debarred?", "file": "company/exclusion-list.md", "kind": "exact"},
+    {"q": "Until when is Brenton Ashgrove suspended?", "file": "company/exclusion-list.md", "kind": "exact"},
+    {"q": "What is the orders email for Mangrove Home Supply?", "file": "company/approved-suppliers.md", "kind": "exact"},
+    {"q": "Which furniture suppliers are approved?", "file": "company/approved-suppliers.md", "kind": "exact"},
+    {"q": "Which certificate has a policy number that differs from the typed record?", "file": "docs/certificates.md", "kind": "exact"},
+    {"q": "Did Bayvane Plumbing's insurance certificate match the typed record?", "file": "docs/certificates.md", "kind": "exact"},
+    {"q": "What did the screening find for Keystone Coast Furniture?", "file": "controls/screen.md", "kind": "exact"},
+    {"q": "What are the five controls that make the demo trustworthy?", "file": "docs/explainer.md", "kind": "exact"},
+    {"q": "Which company is banned from contracts for not paying its workers?", "file": "company/exclusion-list.md", "kind": "paraphrase"},
+    {"q": "Who okays very large jobs on the legal side?", "file": "company/people.md", "kind": "paraphrase"},
+    {"q": "Who hands over the house keys when we take over a home?", "file": "company/owner-team.md", "kind": "paraphrase"},
+    {"q": "Which bug-control company lied on its paperwork?", "file": "company/exclusion-list.md", "kind": "paraphrase"}
+  ]
+}
