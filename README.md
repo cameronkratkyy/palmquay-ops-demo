@@ -128,6 +128,17 @@ A management company's owner asks first what the work means for the money it mak
 
 Run the Phase 3h check: `python -I -X utf8 tests/check_phase3h.py` (add `--selftest` to prove it can fail). It recounts every dollar in cents from the inputs and every number in the four money sections.
 
+## RAG: finding the right company document before answering
+Before an assistant answers a question about Palmquay ("which pest vendor falsified its certificates?"), it has to find the right page in the company's documents. `rag/` builds that retrieval step and measures it on 20 fixed questions (16 that reuse the documents' words, 4 reworded), with pass rules written before the first run:
+
+| Retriever | How it ranks | Reworded questions found in the top 3 | Top-1 | Median time |
+|---|---|---|---|---|
+| Keyword (BM25) | rare words shared with the question | 2 of 4 | 1 of 4 | 0.1 ms |
+| Hybrid | keyword + meaning (all-MiniLM-L6-v2 embeddings), merged by reciprocal rank fusion | 3 of 4 | 3 of 4 | 2 ms |
+| Hybrid + re-rank | a cross-encoder (ms-marco-MiniLM-L6-v2) re-reads the top 20 with the question | 4 of 4 | 4 of 4 | 300 ms |
+
+All three find all 16 word-matched questions. Both models run locally with ONNX Runtime; nothing leaves the machine. The `rag-evals` workflow re-runs every eval on each push that touches `rag/`. Run them: `python -I -X utf8 rag/eval_retrieval.py`, then `rag/eval_compare.py` and `rag/eval_rerank.py` (these two need `pip install numpy onnxruntime tokenizers` and the two models). Honest limit: 4 reworded questions is a small test set.
+
 ## How each piece maps (for interviews)
 | Piece | Original in the private system | Industry term | What it shows a hiring manager | Resume line |
 |---|---|---|---|---|
