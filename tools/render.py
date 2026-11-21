@@ -1,7 +1,8 @@
 """Render the Phase 3b pictures with the headless browser already on this PC (Edge, else Chrome). No install, no network.
 
     python -I -X utf8 tools/render.py              everything below
-    python -I -X utf8 tools/render.py dashboard    dashboard/screenshot-<tab>.png, one per tab (plus the replay at its last row)
+    python -I -X utf8 tools/render.py dashboard    dashboard/screenshot-<tab>.png, one per tab (plus the replay at its last row, and the
+                                                   Approve tab and the audit log after a person decides)
     python -I -X utf8 tools/render.py diagram      docs/diagram.png (2x, for LinkedIn Featured) + docs/diagram.pdf (1 page)
     python -I -X utf8 tools/render.py explainer    docs/explainer.html + docs/explainer.pdf, from docs/explainer.md
 
@@ -18,7 +19,7 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BROWSERS = [r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Google\Chrome\Application\chrome.exe"]
-TABS = ["overview", "byhand", "onboarding", "owners", "buying", "checks", "audit", "map"]
+TABS = ["overview", "approve", "byhand", "onboarding", "owners", "buying", "checks", "audit", "map"]
 
 
 def browser():
@@ -57,6 +58,16 @@ def report(p):
     return True
 
 
+# 11/20 (Phase 3i): the Approve tab after a person decides. The clicks run in a throwaway copy of the page (this small script added
+# before </body>), so the shipped page carries no test code; the picture shows what a viewer sees after making the same clicks:
+# Dana Reyes approves the policy-number fix, Tom Becker rejects the bill hold with a reason, and the check runs again.
+AP_CLICKS = """<script>(function(){function q(s,r){return (r||document).querySelector(s);}
+q('[data-ap-reset]').click();var f=q('[data-ap-card="vendor-fernhollow"]'),b=q('[data-ap-card="buy-keystone"]');
+q('[data-ap-approve]',f).click();q('[data-ap-reject]',b).click();
+q('[data-ap-reason]',b).value='Keystone already emailed a corrected invoice; entering that one instead';q('[data-ap-confirm]',b).click();
+q('[data-ap-run]').click();f.click();%swindow.scrollTo(0,0);})();</script>"""
+
+
 def dashboard():
     page = os.path.join(ROOT, "dashboard", "index.html")
     ok = True
@@ -66,6 +77,16 @@ def dashboard():
         if os.path.exists(out):
             os.remove(out)
         headless([f"--screenshot={out}", "--window-size=1440,1600", "--force-device-scale-factor=1", url(page, frag)])
+        ok &= report(out)
+    html_text = open(page, encoding="utf-8").read()
+    for name, extra, frag in (("approve-landed", "", "#tab=approve"), ("audit-decisions", "q('nav button[data-for=\"audit\"]').click();", "#tab=audit")):
+        out = os.path.join(ROOT, "dashboard", f"screenshot-{name}.png")
+        if os.path.exists(out):
+            os.remove(out)
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = os.path.join(tmp, "index.html")
+            open(copy, "w", encoding="utf-8").write(html_text.replace("</body>", AP_CLICKS % extra + "</body>", 1))
+            headless([f"--screenshot={out}", "--window-size=1440,1600", "--force-device-scale-factor=1", url(copy, frag)])
         ok &= report(out)
     return ok
 

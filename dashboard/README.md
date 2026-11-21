@@ -4,7 +4,7 @@ One offline page that shows the whole demo on one screen: what's waiting on peop
 
 **Open it:** double-click `dashboard/index.html`. It's a file on this PC: no server, no internet, no sign-in.
 **Rebuild it** after any record changes: `python -I -X utf8 dashboard/build.py` (about 5 seconds; it also runs the Phase 1, 2, 3a, 3c, and 3d checks live).
-**Pictures:** `python -I -X utf8 tools/render.py dashboard` saves one screenshot per tab as `dashboard/screenshot-<tab>.png`.
+**Pictures:** `python -I -X utf8 tools/render.py dashboard` saves one screenshot per tab as `dashboard/screenshot-<tab>.png`, plus `screenshot-approve-landed.png` and `screenshot-audit-decisions.png`: the Approve tab and the audit log after a person decides (the clicks run in a throwaway copy of the page, so the shipped page carries no test code).
 
 ## The tabs
 | Tab | What it shows | Industry term |
@@ -17,6 +17,7 @@ One offline page that shows the whole demo on one screen: what's waiting on peop
 | Checks | The phase checks for Phases 1, 2, 3a, 3c, and 3d, run when the page was built (3c and 3d without their own older-phase steps, so the page and the Phase 3b check never call each other); the checker's reviews; guardrail counts | Acceptance testing, maker-checker review |
 | Audit log | A replay that rebuilds the board from the four logs (onboarding, procurement, controls, exceptions) one row at a time, the hash chains, and every row | Audit trail, event replay |
 | Map | The one-page diagram (`docs/diagram.html`) | System architecture |
+| Approve and watch it land | Five problems the system caught, each with the proof side by side and a drafted fix; Approve makes the change land in a record on a sample software screen and logs it, Reject needs a reason; run the check again, the stuck list, and a reset | Human-in-the-loop approval queue, idempotent re-runs, audit trail |
 
 ## Rules: what counts as "waiting on people"
 A decision is listed when its record shows a person hasn't acted yet:
@@ -42,6 +43,12 @@ Kept on its own tab, apart from the Overview's list (the owners log isn't one of
 
 ## Rule: By hand vs. system
 Every count on this tab comes from the records by the rule written for its step (`tests/check_phase3f.py` states each rule and recounts it from the raw records). "With the system" counts what a person still does: reviewing and sending the AI's drafts, reading its flags, supplier tasks, sign-offs, and anything the system doesn't do yet (quote requests). The minutes are assumptions, one per kind of touch and the same on both sides, kept in `dashboard/by-hand.json` and labeled "not measured"; the page's own script recomputes the minute totals when a viewer changes them. Waiting time, getting records into the folder, extra reminders, and rework aren't counted on either side.
+
+## Rule: Approve and watch it land
+- **The cards** are five problems the records already show, each tied to a locked answer key: a county record that still shows the seller, a tenant's deposit that came over short, and a payout account not in the owner's name (Phase 3g); a typed policy number that differs from the certificate PDF (Phase 3e); an invoice for more lamps, at a higher price, than were ordered (Phase 3a). Each card's values come from the records; the person who decides comes from `company/people.md` or `company/owner-team.md`.
+- **The record** on the right is a sample screen, labeled as one; it stands in for the office's own software and copies no real product's name or look. Each changing field holds its value as typed from the paperwork and its value after the fix; both are written into the page when it's built, and Approve only shows the second. Nothing is written to a record file or a log file.
+- **Decisions** are kept in the viewer's browser (local storage) and listed in the "Decisions made on this page" table on the Audit log tab, with the time on the viewer's computer. Reject needs a reason. Reset demo clears them.
+- **The fingerprint** of a problem is the first 16 hex characters of SHA-256 over the card's id and each evidence line `file|field|value`, joined by line breaks. Running the check again compares each fingerprint with the decisions: a decided one is skipped ("already decided"), one never seen is new, the rest still wait. A changed record makes a new fingerprint. `tests/check_phase3i.py` works out the same fingerprints from the raw records and presses the buttons in a headless browser.
 
 ## Rule: the check count
 `tests/suite.json` lists every check script and how many checks it runs. The Checks tile shows that total; the build re-runs the Phase 1, 2, 3a, 3c, and 3d checks and shows their result; the rest test this page itself or the PDFs, so they run after the build (and every one runs on each push).

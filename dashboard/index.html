@@ -42,7 +42,49 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 input[data-min]{width:64px;font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:4px;text-align:right;background:var(--surface)}
 td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
-</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-10 11:26 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
+.ap-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:6px 0 14px}
+.ap-btn{font:inherit;font-weight:600;padding:7px 14px;border-radius:6px;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
+.ap-btn:focus-visible,.ap-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ap-btn.ok{background:#1e7d46;border-color:#1e7d46;color:#fff}
+.ap-btn.no{background:#fff;border-color:#c0392b;color:#a1271b}.ap-btn.ghost{background:transparent}
+.ap-runout{flex:1;min-width:260px;font-size:13px;padding:4px 6px;border-radius:6px}.ap-runout.pulse{animation:apPulse 1.4s ease-out}
+.ap-msg{flex:1 1 100%;color:#a1271b;font-weight:600;font-size:13px}.ap-msg:empty{display:none}
+.ap-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}.ap-grid h3{font-size:14px;margin:4px 0 6px}
+.ap-pill{display:inline-block;min-width:22px;padding:0 7px;border-radius:10px;background:var(--soft);border:1px solid var(--line);font-size:12px;text-align:center}
+.ap-sub{font-size:12.5px;color:var(--ink2);margin:0 0 8px}
+.ap-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:8px;padding:11px 13px;margin:0 0 10px;cursor:pointer}
+.ap-card.on{box-shadow:0 0 0 2px var(--accent)}.ap-card[data-state=approved]{border-left-color:var(--good)}.ap-card[data-state=rejected]{border-left-color:#8f8e88}
+.ap-card:not([data-state=pending]) .ap-who,.ap-card:not([data-state=pending]) .ap-found,.ap-card:not([data-state=pending]) .ap-proof,
+.ap-card:not([data-state=pending]) .ap-fix,.ap-card:not([data-state=pending]) .ap-actions{display:none}
+.ap-head{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.ap-title{font-size:14.5px}
+.ap-area{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);background:var(--soft);border-radius:4px;padding:1px 6px}
+.ap-who{font-size:12px;color:var(--ink2);margin:3px 0 6px}.ap-found,.ap-fix{margin:6px 0;font-size:13.5px}
+.ap-proof{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.ap-side{background:#fbfbf9;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12.5px}.ap-lab{font-weight:600;margin-bottom:2px}
+code.ap-file{display:block;font-size:10.5px;color:var(--ink2);background:none;padding:0;margin:0 0 3px;word-break:break-all}
+details.ap-files{background:none;border:0;margin:4px 0 0;padding:0}details.ap-files summary{font-size:11px;color:var(--ink2);padding:0}
+.ap-err{flex:1 1 100%;color:#a1271b;font-weight:600;font-size:12.5px}.ap-err:empty{display:none}
+.ap-kv{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line);padding:3px 0}.ap-k{color:var(--ink2)}.ap-v{font-weight:600;text-align:right}
+.ap-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.ap-rejectbox{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}.ap-rejectbox[hidden]{display:none}
+.ap-why{flex:1 1 100%;font-size:12.5px;font-weight:600}.ap-why textarea{display:block;width:100%;min-height:52px;margin-top:4px;font:inherit;font-weight:400;padding:6px 8px;border:1px solid var(--line);border-radius:6px}
+.ap-why textarea.err{border-color:#c0392b;box-shadow:0 0 0 2px #f6d5d0}.ap-outcome{font-size:12.5px;margin-top:4px}.ap-outcome:empty{display:none}
+.ap-ok{color:#1e7d46;font-weight:600}.ap-no{color:#8a2a1f;font-weight:600}
+.ap-panel{border:1px solid #c9d2dc;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(20,40,60,.08)}
+.sw-bar{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;background:#2f3e4e;color:#fff;padding:9px 12px}
+.sw-pill{font-size:11px;font-weight:600;color:#2f3e4e;background:#cfdbe6;border-radius:10px;padding:1px 8px}
+.sw-note{flex:1 1 100%;font-size:11.5px;color:#cfdbe6}.sw-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:10px 12px;border-bottom:1px solid #e3e8ee;background:#f5f7f9}
+.sw-type{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#56697c}.sw-sub{font-size:12px;color:#56697c;flex:1 1 100%}
+.ap-banner{font-size:12.5px;padding:7px 12px;background:#f5f7f9;color:#56697c;border-bottom:1px solid #e3e8ee}
+.ap-banner.ok{background:#e6f5ea;color:#1e5e35;font-weight:600}.ap-banner.no{background:#f4f1ee;color:#5e4a3a}
+table.sw-fields{border:0;border-radius:0;margin:0}.sw-fields td{font-size:13px;padding:8px 12px}.sw-fields td:first-child{color:#56697c;width:40%}
+.ap-rec .ap-after{display:none}.ap-rec[data-state=landed] .ap-before{display:none}
+.ap-rec[data-state=landed] .ap-after{display:inline;background:#e6f5ea;border-radius:3px;padding:1px 4px;font-weight:600}
+.ap-rec.flash .ap-after{animation:apLand 1.8s ease-out}.ap-rec.flash .ap-banner{animation:apLand 1.8s ease-out}
+@keyframes apLand{0%{background:#ffe08a}100%{background:#e6f5ea}}@keyframes apPulse{0%{background:#fff4d6}100%{background:transparent}}
+.sw-foot{font-size:11.5px;color:#56697c;margin:0;padding:8px 12px;border-top:1px solid #e3e8ee}
+.ap-box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-top:12px}.ap-box h4{margin:2px 0 6px}
+.ap-stuck,.ap-mini{margin:0 0 4px;padding-left:18px;font-size:12.5px}.ap-stuck li,.ap-mini li{margin:3px 0}.ap-empty{font-size:12.5px;margin:0}
+@media (max-width:1000px){.ap-grid{grid-template-columns:1fr}.ap-proof{grid-template-columns:1fr}}
+</style></head><body data-rendered="0" data-errors="0"><header><div class="top"><h1>Palmquay Properties &middot; AI operations dashboard</h1><div class="stamp">Fictional company with sample records. Built 2026-11-20 16:48 from those records; a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div>
 </div>
 <div class="tiles" data-audit><div class="tile"><div class="lab">Vendors</div>
 <div class="big"><span class="n" data-k="v.total">8</span></div>
@@ -61,7 +103,7 @@ td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 <div class="small"><span class="n" data-k="i.onb">6</span> onboarding · <span class="n" data-k="i.buy">13</span> buying · <span class="n" data-k="i.ctl">6</span> controls</div>
 </div>
 <div class="tile"><div class="lab">Checks in the suite</div>
-<div class="big"><span class="n" data-k="c.suite">102</span></div>
+<div class="big"><span class="n" data-k="c.suite">108</span></div>
 <div class="small"><span class="n" data-k="c.pass">53</span> of <span class="n" data-k="c.total">53</span> re-run at build <span class="chip st-PASS"><i aria-hidden="true">&#10003;</i>PASS</span> · all run on each push</div>
 </div>
 <div class="tile"><div class="lab">Audit log rows</div>
@@ -73,7 +115,7 @@ td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 <div class="small"><span class="n" data-k="g.drafts">9</span> drafts unsent · <span class="n" data-k="g.blank">9</span> sign-offs blank</div>
 </div>
 </div>
-<nav><button type="button" data-for="overview" data-tab-label="Overview" aria-selected="false">Overview</button><button type="button" data-for="byhand" data-tab-label="By hand vs. system" aria-selected="false">By hand vs. system</button><button type="button" data-for="onboarding" data-tab-label="Onboarding" aria-selected="false">Onboarding</button><button type="button" data-for="owners" data-tab-label="New owners" aria-selected="false">New owners</button><button type="button" data-for="buying" data-tab-label="Buying" aria-selected="false">Buying</button><button type="button" data-for="checks" data-tab-label="Checks" aria-selected="false">Checks</button><button type="button" data-for="audit" data-tab-label="Audit log" aria-selected="false">Audit log</button><button type="button" data-for="map" data-tab-label="Map" aria-selected="false">Map</button></nav></header><main><section data-tab="overview" id="tab-overview" class=on><h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, Florida. Manages 14 commercial and apartment buildings in Sarasota and Manatee counties. Each department has one owner and the AI helpers whose work lands on them: the AI drafts and checks, and the person decides.</p><div class="org" data-org data-hub><div class="people"><div class="person" data-person="Lena Ortiz" style="--pc:#1d6fa5"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Lena Ortiz</div>
+<nav><button type="button" data-for="overview" data-tab-label="Overview" aria-selected="false">Overview</button><button type="button" data-for="approve" data-tab-label="Approve and watch it land" aria-selected="false">Approve and watch it land</button><button type="button" data-for="byhand" data-tab-label="By hand vs. system" aria-selected="false">By hand vs. system</button><button type="button" data-for="onboarding" data-tab-label="Onboarding" aria-selected="false">Onboarding</button><button type="button" data-for="owners" data-tab-label="New owners" aria-selected="false">New owners</button><button type="button" data-for="buying" data-tab-label="Buying" aria-selected="false">Buying</button><button type="button" data-for="checks" data-tab-label="Checks" aria-selected="false">Checks</button><button type="button" data-for="audit" data-tab-label="Audit log" aria-selected="false">Audit log</button><button type="button" data-for="map" data-tab-label="Map" aria-selected="false">Map</button></nav></header><main><section data-tab="overview" id="tab-overview" class=on><h2>Who works at Palmquay</h2><p class="lead">Palmquay Properties, a fictional property management company based in Sarasota, Florida. Manages 14 commercial and apartment buildings in Sarasota and Manatee counties. Each department has one owner and the AI helpers whose work lands on them: the AI drafts and checks, and the person decides.</p><div class="org" data-org data-hub><div class="people"><div class="person" data-person="Lena Ortiz" style="--pc:#1d6fa5"><svg class="avatar" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="var(--pc)"/><circle cx="20" cy="15" r="7" fill="#fff" fill-opacity=".92"/><path d="M7 35c2.5-7.5 7.5-10.5 13-10.5S30.5 27.5 33 35" fill="#fff" fill-opacity=".92"/></svg><div class="pname">Lena Ortiz</div>
 <div class="title">Property Manager</div>
 <div class="dept">Property management</div>
 <div class="does">Asked for Unit 4B to be furnished ($5,200 budget)</div>
@@ -442,7 +484,157 @@ td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 <td>Gulfweave Furnishings</td>
 <td class="num"><span class="n" data-k="ic.CLAIM_CONTRADICTED">1</span></td>
 </tr>
-</tbody></table></section><section data-tab="byhand" id="tab-byhand"><h2>By hand vs. with the system</h2><p class="lead">This view is illustrative: it takes the same work as the rest of this dashboard (<span class="n" data-k="v.total">8</span> contractors and furnishing order <span class="id">PQ-1042</span>), and counts it two ways, done by hand and done with the system. Each count comes from the sample records by a written rule for each step. The system takes over the checking, looking up, retyping, and assembling; people still send every email, sign every approval, and decide every flagged problem.</p><div class="bh-head" data-audit><div class="bh-row"><div class="bh-lab">By hand</div>
+</tbody></table></section><section data-tab="approve" id="tab-approve"><h2>Approve and watch it land</h2><p class="lead">A working demo with sample records. Each card is a problem the system caught in Palmquay's paperwork: what it found, the proof side by side, and the fix it drafted. Nothing changes until the person named on the card decides. <b>Approve</b>, and the fix lands in the record on the right (a sample screen standing in for the office's own software) and a row goes in the audit log. <b>Reject</b>, and the record stays as it was; the reason goes in the log. Then run the check again: anything already decided is skipped, so it never comes back.</p><div class="ap-bar"><button type="button" class="ap-btn" data-ap-run>&#8635; Run the check again</button><button type="button" class="ap-btn ghost" data-ap-reset>Reset demo</button><div class="ap-runout" data-ap-runout aria-live="polite"></div>
+<div class="ap-msg" data-ap-msg role="alert"></div>
+</div>
+<div class="ap-grid"><div class="ap-col"><h3>Waiting on a person <span class="ap-pill" data-ap-count></span></h3><p class="ap-sub" data-audit>The check found <span class="n" data-k="ap.cards">5</span> problems in the sample records. Click a card to see its record.</p><div class="ap-queue" data-ap-queue data-audit><article class="ap-card" tabindex="0" data-ap-card="owner-petrakis" data-fp="be0caab2172bc756" data-decider="Gail Mercer" data-role="Broker of Record" data-since="2026-11-05" data-title="The county record still shows the seller" data-subject="Owner: Nadia Petrakis" data-change="Setup status: Ready for setup → On hold until the recorded deed or closing statement arrives" data-code="OWNER_NOT_ON_COUNTY_RECORD" data-state="pending"><div class="ap-head"><span class="ap-area">New owner</span><b class="ap-title">The county record still shows the seller</b></div>
+<div class="ap-who">Decides: <b>Gail Mercer</b>, Broker of Record &middot; waiting since 2026-11-05</div>
+<p class="ap-found"><b>What the system found:</b> The management agreement says <span class="src" data-src="owners/petrakis/documents/agreement.md" title="Quoted from owners/petrakis/documents/agreement.md">Nadia Petrakis</span> owns <span class="src" data-src="owners/petrakis/owner.md" title="Quoted from owners/petrakis/owner.md">4410 Kestrelwood Ct, Sarasota, FL 34238 (fictional)</span>. The county record the coordinator saved still lists <span class="src" data-src="owners/petrakis/documents/county-record.md" title="Quoted from owners/petrakis/documents/county-record.md">HALVORSEN DALE</span>, with the last sale recorded <span class="src" data-src="owners/petrakis/documents/county-record.md" title="Quoted from owners/petrakis/documents/county-record.md">2018-02-09</span>. The owner wrote that the home was bought on <span class="src" data-src="owners/petrakis/owner.md" title="Quoted from owners/petrakis/owner.md">2026-10-16</span>.</p><div class="ap-proof"><div class="ap-side"><div class="ap-lab">What the owner gave us</div>
+<div class="ap-kv"><span class="ap-k">Owner(s) named</span><span class="ap-v"><span class="src" data-src="owners/petrakis/documents/agreement.md" title="Quoted from owners/petrakis/documents/agreement.md">Nadia Petrakis</span></span></div>
+<div class="ap-kv"><span class="ap-k">Bought the home (owner&#x27;s words)</span><span class="ap-v"><span class="src" data-src="owners/petrakis/owner.md" title="Quoted from owners/petrakis/owner.md">2026-10-16</span></span></div>
+<details class="ap-files"><summary>Source files</summary><code class="ap-file" data-file="owners/petrakis/documents/agreement.md">owners/petrakis/documents/agreement.md</code><code class="ap-file" data-file="owners/petrakis/owner.md">owners/petrakis/owner.md</code></details></div>
+<div class="ap-side ap-side-b"><div class="ap-lab">County property record</div>
+<div class="ap-kv"><span class="ap-k">Owner(s) of record</span><span class="ap-v"><span class="src" data-src="owners/petrakis/documents/county-record.md" title="Quoted from owners/petrakis/documents/county-record.md">HALVORSEN DALE</span></span></div>
+<div class="ap-kv"><span class="ap-k">Last sale recorded</span><span class="ap-v"><span class="src" data-src="owners/petrakis/documents/county-record.md" title="Quoted from owners/petrakis/documents/county-record.md">2018-02-09</span></span></div>
+<details class="ap-files"><summary>Source file</summary><code class="ap-file" data-file="owners/petrakis/documents/county-record.md">owners/petrakis/documents/county-record.md</code></details></div>
+</div>
+<p class="ap-fix"><b>Drafted fix:</b> Put the setup on hold, and have Talia Brooks send the owner the follow-up that's already drafted, asking for the recorded deed or the closing statement. The county may not have caught up with a sale this recent.</p><div class="ap-actions"><button type="button" class="ap-btn ok" data-ap-approve>&#10003; Approve as Gail Mercer</button><button type="button" class="ap-btn no" data-ap-reject>Reject</button></div>
+<div class="ap-rejectbox" hidden><label class="ap-why">Why reject? Required: it goes in the audit log.<textarea data-ap-reason placeholder="For example: the owner already mailed the deed"></textarea></label><button type="button" class="ap-btn no" data-ap-confirm>Confirm reject</button><button type="button" class="ap-btn ghost" data-ap-cancel>Cancel</button><div class="ap-err" role="alert"></div>
+</div>
+<div class="ap-outcome" data-ap-outcome></div>
+</article><article class="ap-card" tabindex="0" data-ap-card="owner-haddad" data-fp="1b056baa7783d025" data-decider="Owen Pratt" data-role="Trust Accountant" data-since="2026-11-05" data-title="Part of the tenant&#x27;s deposit didn&#x27;t come over" data-subject="Tenant: Marco Ellison" data-change="Security deposit held: $2,400 → $2,200; still owed by Tidewell Rentals: $200" data-code="DEPOSIT_SHORT" data-state="pending"><div class="ap-head"><span class="ap-area">New owner</span><b class="ap-title">Part of the tenant&#x27;s deposit didn&#x27;t come over</b></div>
+<div class="ap-who">Decides: <b>Owen Pratt</b>, Trust Accountant &middot; waiting since 2026-11-05</div>
+<p class="ap-found"><b>What the system found:</b> The signed lease says Marco Ellison paid a <span class="n" data-k="ap.haddad.lease">$2,400</span> security deposit. The outgoing manager, <span class="src" data-src="owners/haddad/tenant/deposit-transfer.md" title="Quoted from owners/haddad/tenant/deposit-transfer.md">Tidewell Rentals</span>, sent <span class="n" data-k="ap.haddad.moved">$2,200</span>.</p><div class="ap-proof"><div class="ap-side"><div class="ap-lab">Signed lease</div>
+<div class="ap-kv"><span class="ap-k">Tenant</span><span class="ap-v"><span class="src" data-src="owners/haddad/tenant/lease.md" title="Quoted from owners/haddad/tenant/lease.md">Marco Ellison</span></span></div>
+<div class="ap-kv"><span class="ap-k">Security deposit</span><span class="ap-v"><span class="src" data-src="owners/haddad/tenant/lease.md" title="Quoted from owners/haddad/tenant/lease.md">$2,400</span></span></div>
+<details class="ap-files"><summary>Source file</summary><code class="ap-file" data-file="owners/haddad/tenant/lease.md">owners/haddad/tenant/lease.md</code></details></div>
+<div class="ap-side ap-side-b"><div class="ap-lab">Deposit sent by the outgoing manager</div>
+<div class="ap-kv"><span class="ap-k">From</span><span class="ap-v"><span class="src" data-src="owners/haddad/tenant/deposit-transfer.md" title="Quoted from owners/haddad/tenant/deposit-transfer.md">Tidewell Rentals</span></span></div>
+<div class="ap-kv"><span class="ap-k">Security deposit transferred</span><span class="ap-v"><span class="src" data-src="owners/haddad/tenant/deposit-transfer.md" title="Quoted from owners/haddad/tenant/deposit-transfer.md">$2,200</span></span></div>
+<div class="ap-kv"><span class="ap-k">Transferred on</span><span class="ap-v"><span class="src" data-src="owners/haddad/tenant/deposit-transfer.md" title="Quoted from owners/haddad/tenant/deposit-transfer.md">2026-11-03</span></span></div>
+<details class="ap-files"><summary>Source file</summary><code class="ap-file" data-file="owners/haddad/tenant/deposit-transfer.md">owners/haddad/tenant/deposit-transfer.md</code></details></div>
+</div>
+<p class="ap-fix"><b>Drafted fix:</b> Record the <span class="n" data-k="ap.haddad.moved">$2,200</span> that came over, mark <span class="n" data-k="ap.haddad.short">$200</span> as still owed by the outgoing manager, and have Owen Pratt send them the drafted request for the difference.</p><div class="ap-actions"><button type="button" class="ap-btn ok" data-ap-approve>&#10003; Approve as Owen Pratt</button><button type="button" class="ap-btn no" data-ap-reject>Reject</button></div>
+<div class="ap-rejectbox" hidden><label class="ap-why">Why reject? Required: it goes in the audit log.<textarea data-ap-reason placeholder="For example: the owner already mailed the deed"></textarea></label><button type="button" class="ap-btn no" data-ap-confirm>Confirm reject</button><button type="button" class="ap-btn ghost" data-ap-cancel>Cancel</button><div class="ap-err" role="alert"></div>
+</div>
+<div class="ap-outcome" data-ap-outcome></div>
+</article><article class="ap-card" tabindex="0" data-ap-card="owner-coralwick" data-fp="e6fba15f5c86ec1b" data-decider="Owen Pratt" data-role="Trust Accountant" data-since="2026-11-05" data-title="The payout bank account isn&#x27;t in the owner&#x27;s name" data-subject="Owner: Coralwick Rentals LLC" data-change="Owner payouts: On → Paused until the bank account is in the owner&#x27;s name" data-code="ACH_NAME_MISMATCH" data-state="pending"><div class="ap-head"><span class="ap-area">New owner</span><b class="ap-title">The payout bank account isn&#x27;t in the owner&#x27;s name</b></div>
+<div class="ap-who">Decides: <b>Owen Pratt</b>, Trust Accountant &middot; waiting since 2026-11-05</div>
+<p class="ap-found"><b>What the system found:</b> The management agreement names <span class="src" data-src="owners/coralwick/documents/agreement.md" title="Quoted from owners/coralwick/documents/agreement.md">Coralwick Rentals LLC</span> as the owner. The direct-deposit form is for an account in the name <span class="src" data-src="owners/coralwick/documents/ach.md" title="Quoted from owners/coralwick/documents/ach.md">Derrick Ostrowski</span>. Rent belongs to the owner, so it goes into the owner's account unless the owner says otherwise in writing.</p><div class="ap-proof"><div class="ap-side"><div class="ap-lab">Management agreement</div>
+<div class="ap-kv"><span class="ap-k">Owner(s) named</span><span class="ap-v"><span class="src" data-src="owners/coralwick/documents/agreement.md" title="Quoted from owners/coralwick/documents/agreement.md">Coralwick Rentals LLC</span></span></div>
+<details class="ap-files"><summary>Source file</summary><code class="ap-file" data-file="owners/coralwick/documents/agreement.md">owners/coralwick/documents/agreement.md</code></details></div>
+<div class="ap-side ap-side-b"><div class="ap-lab">Direct-deposit form</div>
+<div class="ap-kv"><span class="ap-k">Account holder name(s)</span><span class="ap-v"><span class="src" data-src="owners/coralwick/documents/ach.md" title="Quoted from owners/coralwick/documents/ach.md">Derrick Ostrowski</span></span></div>
+<div class="ap-kv"><span class="ap-k">Supporting proof</span><span class="ap-v"><span class="src" data-src="owners/coralwick/documents/ach.md" title="Quoted from owners/coralwick/documents/ach.md">Voided check showing the name(s): Derrick Ostrowski</span></span></div>
+<details class="ap-files"><summary>Source file</summary><code class="ap-file" data-file="owners/coralwick/documents/ach.md">owners/coralwick/documents/ach.md</code></details></div>
+</div>
+<p class="ap-fix"><b>Drafted fix:</b> Pause owner payouts until bank details in the name Coralwick Rentals LLC arrive, or the owner's written OK for this account. Talia Brooks sends the drafted follow-up, and Owen Pratt confirms by phone at the number Palmquay already had.</p><div class="ap-actions"><button type="button" class="ap-btn ok" data-ap-approve>&#10003; Approve as Owen Pratt</button><button type="button" class="ap-btn no" data-ap-reject>Reject</button></div>
+<div class="ap-rejectbox" hidden><label class="ap-why">Why reject? Required: it goes in the audit log.<textarea data-ap-reason placeholder="For example: the owner already mailed the deed"></textarea></label><button type="button" class="ap-btn no" data-ap-confirm>Confirm reject</button><button type="button" class="ap-btn ghost" data-ap-cancel>Cancel</button><div class="ap-err" role="alert"></div>
+</div>
+<div class="ap-outcome" data-ap-outcome></div>
+</article><article class="ap-card" tabindex="0" data-ap-card="vendor-fernhollow" data-fp="5dedd6a8f9bd74ea" data-decider="Dana Reyes" data-role="Facilities Manager" data-since="2026-11-09" data-title="The typed policy number doesn&#x27;t match the certificate" data-subject="Vendor: Fernhollow Grounds LLC" data-change="Insurance policy number: DEMO-GL-0004 → DEMO-GL-0040" data-code="DIFFERENCES_FOR_A_PERSON" data-state="pending"><div class="ap-head"><span class="ap-area">Contractor</span><b class="ap-title">The typed policy number doesn&#x27;t match the certificate</b></div>
+<div class="ap-who">Decides: <b>Dana Reyes</b>, Facilities Manager &middot; waiting since 2026-11-09</div>
+<p class="ap-found"><b>What the system found:</b> Someone typed the insurance policy number as <span class="src id" data-src="vendors/fernhollow-grounds/documents/coi.md" title="Quoted from vendors/fernhollow-grounds/documents/coi.md">DEMO-GL-0004</span>. The certificate PDF itself says <span class="src id" data-src="vendors/fernhollow-grounds/documents/coi-check.json" title="Quoted from vendors/fernhollow-grounds/documents/coi-check.json">DEMO-GL-0040</span>: two digits swapped. Every other field on the certificate matches.</p><div class="ap-proof"><div class="ap-side"><div class="ap-lab">Insurance certificate (the PDF, read by the system)</div>
+<div class="ap-kv"><span class="ap-k">Policy number</span><span class="ap-v"><span class="src id" data-src="vendors/fernhollow-grounds/documents/coi-check.json" title="Quoted from vendors/fernhollow-grounds/documents/coi-check.json">DEMO-GL-0040</span></span></div>
+<div class="ap-kv"><span class="ap-k">Insurer</span><span class="ap-v"><span class="src" data-src="vendors/fernhollow-grounds/documents/coi-check.json" title="Quoted from vendors/fernhollow-grounds/documents/coi-check.json">Demo Mutual Insurance Co. (fictional)</span></span></div>
+<details class="ap-files"><summary>Source files</summary><code class="ap-file" data-file="vendors/fernhollow-grounds/documents/coi.pdf">vendors/fernhollow-grounds/documents/coi.pdf</code><code class="ap-file" data-file="vendors/fernhollow-grounds/documents/coi-check.json">vendors/fernhollow-grounds/documents/coi-check.json</code></details></div>
+<div class="ap-side ap-side-b"><div class="ap-lab">Typed vendor record</div>
+<div class="ap-kv"><span class="ap-k">Policy number</span><span class="ap-v"><span class="src id" data-src="vendors/fernhollow-grounds/documents/coi.md" title="Quoted from vendors/fernhollow-grounds/documents/coi.md">DEMO-GL-0004</span></span></div>
+<div class="ap-kv"><span class="ap-k">Insurer</span><span class="ap-v"><span class="src" data-src="vendors/fernhollow-grounds/documents/coi.md" title="Quoted from vendors/fernhollow-grounds/documents/coi.md">Demo Mutual Insurance Co. (fictional)</span></span></div>
+<details class="ap-files"><summary>Source file</summary><code class="ap-file" data-file="vendors/fernhollow-grounds/documents/coi.md">vendors/fernhollow-grounds/documents/coi.md</code></details></div>
+</div>
+<p class="ap-fix"><b>Drafted fix:</b> Change the policy number in the vendor record to <span class="id">DEMO-GL-0040</span>, the number on the certificate. The certificate is the source; nothing else changes.</p><div class="ap-actions"><button type="button" class="ap-btn ok" data-ap-approve>&#10003; Approve as Dana Reyes</button><button type="button" class="ap-btn no" data-ap-reject>Reject</button></div>
+<div class="ap-rejectbox" hidden><label class="ap-why">Why reject? Required: it goes in the audit log.<textarea data-ap-reason placeholder="For example: the owner already mailed the deed"></textarea></label><button type="button" class="ap-btn no" data-ap-confirm>Confirm reject</button><button type="button" class="ap-btn ghost" data-ap-cancel>Cancel</button><div class="ap-err" role="alert"></div>
+</div>
+<div class="ap-outcome" data-ap-outcome></div>
+</article><article class="ap-card" tabindex="0" data-ap-card="buy-keystone" data-fp="dd08a9c351376c2e" data-decider="Tom Becker" data-role="Finance (Controller)" data-since="2026-11-12" data-title="Billed for more lamps, at a higher price, than were ordered" data-subject="Bill INV-KC-3307" data-change="Amount to pay: $872 → $713; held back $159; on hold until a corrected invoice arrives" data-code="PRICE_MISMATCH, QTY_MISMATCH" data-state="pending"><div class="ap-head"><span class="ap-area">Buying</span><b class="ap-title">Billed for more lamps, at a higher price, than were ordered</b></div>
+<div class="ap-who">Decides: <b>Tom Becker</b>, Finance (Controller) &middot; waiting since 2026-11-12</div>
+<p class="ap-found"><b>What the system found:</b> <span class="src" data-src="projects/unit-4b/invoices/INV-KC-3307.md" title="Quoted from projects/unit-4b/invoices/INV-KC-3307.md">Keystone Coast Furniture</span> billed <span class="n" data-k="ap.kc.billed_qty">3</span> floor lamps at <span class="n" data-k="ap.kc.billed_price">$139</span> each. The approved order was <span class="n" data-k="ap.kc.order_qty">2</span> at <span class="n" data-k="ap.kc.order_price">$129</span>, and <span class="n" data-k="ap.kc.received">2</span> arrived.</p><div class="ap-proof"><div class="ap-side"><div class="ap-lab">Invoice <span class="id">INV-KC-3307</span></div>
+<div class="ap-kv"><span class="ap-k">Floor lamps billed</span><span class="ap-v"><span class="n" data-k="ap.kc.billed_qty">3</span> at <span class="n" data-k="ap.kc.billed_price">$139</span></span></div>
+<div class="ap-kv"><span class="ap-k">Total due</span><span class="ap-v"><span class="n" data-k="ap.kc.billed">$872</span></span></div>
+<details class="ap-files"><summary>Source file</summary><code class="ap-file" data-file="projects/unit-4b/invoices/INV-KC-3307.md">projects/unit-4b/invoices/INV-KC-3307.md</code></details></div>
+<div class="ap-side ap-side-b"><div class="ap-lab">Approved order <span class="id">PQ-1042</span> and what arrived</div>
+<div class="ap-kv"><span class="ap-k">Floor lamps ordered</span><span class="ap-v"><span class="n" data-k="ap.kc.order_qty">2</span> at <span class="n" data-k="ap.kc.order_price">$129</span></span></div>
+<div class="ap-kv"><span class="ap-k">Floor lamps received</span><span class="ap-v"><span class="n" data-k="ap.kc.received">2</span></span></div>
+<div class="ap-kv"><span class="ap-k">The invoice should total</span><span class="ap-v"><span class="n" data-k="ap.kc.expected">$713</span></span></div>
+<details class="ap-files"><summary>Source files</summary><code class="ap-file" data-file="projects/unit-4b/approved/po-PQ-1042.md">projects/unit-4b/approved/po-PQ-1042.md</code><code class="ap-file" data-file="projects/unit-4b/received/receipt-2026-11-12.md">projects/unit-4b/received/receipt-2026-11-12.md</code></details></div>
+</div>
+<p class="ap-fix"><b>Drafted fix:</b> Hold the bill. Approve paying <span class="n" data-k="ap.kc.expected">$713</span> (the order's prices for what arrived, plus the rug and delivery) once Keystone Coast Furniture sends a corrected invoice; the other <span class="n" data-k="ap.kc.diff">$159</span> isn't owed. Nothing is paid here: a person releases payments.</p><div class="ap-actions"><button type="button" class="ap-btn ok" data-ap-approve>&#10003; Approve as Tom Becker</button><button type="button" class="ap-btn no" data-ap-reject>Reject</button></div>
+<div class="ap-rejectbox" hidden><label class="ap-why">Why reject? Required: it goes in the audit log.<textarea data-ap-reason placeholder="For example: the owner already mailed the deed"></textarea></label><button type="button" class="ap-btn no" data-ap-confirm>Confirm reject</button><button type="button" class="ap-btn ghost" data-ap-cancel>Cancel</button><div class="ap-err" role="alert"></div>
+</div>
+<div class="ap-outcome" data-ap-outcome></div>
+</article><p class="ap-none" data-ap-none hidden>Nothing is waiting on a person. Run the check again, or reset the demo to start over.</p></div>
+<h3>Decided <span class="ap-pill" data-ap-dcount></span></h3><div class="ap-decided" data-ap-decided></div>
+</div>
+<aside class="ap-aside"><h3>The record in the office's software</h3><div class="ap-panel" data-ap-panel data-audit><div class="sw-bar"><b>Sample property software</b><span class="sw-pill">Sample screen</span><span class="sw-note">A sample screen for this working demo, not a real product. It stands in for the office's own software.</span></div>
+<div class="ap-rec" data-ap-rec="owner-petrakis" data-state="typed"><div class="sw-head"><span class="sw-type">Owner</span><b>Nadia Petrakis</b><span class="sw-sub"><span class="src" data-src="owners/petrakis/owner.md" title="Quoted from owners/petrakis/owner.md">4410 Kestrelwood Ct, Sarasota, FL 34238 (fictional)</span></span></div>
+<div class="ap-banner" data-ap-banner></div>
+<table class="sw-fields"><tbody><tr data-ap-field="same"><td>Owner name</td>
+<td>Nadia Petrakis</td>
+</tr>
+<tr data-ap-field><td>Ownership check</td>
+<td><span class="ap-before">Not checked</span><span class="ap-after">County record shows <span class="src" data-src="owners/petrakis/documents/county-record.md" title="Quoted from owners/petrakis/documents/county-record.md">HALVORSEN DALE</span></span></td>
+</tr>
+<tr data-ap-field><td>Setup status</td>
+<td><span class="ap-before">Ready for setup</span><span class="ap-after">On hold until the recorded deed or closing statement arrives</span></td>
+</tr>
+<tr data-ap-field><td>Next step</td>
+<td><span class="ap-before">Enter the property and start managing it</span><span class="ap-after">Talia Brooks sends the drafted follow-up to the owner</span></td>
+</tr>
+</tbody></table></div>
+<div class="ap-rec" data-ap-rec="owner-haddad" data-state="typed" hidden><div class="sw-head"><span class="sw-type">Tenant ledger</span><b>Marco Ellison</b><span class="sw-sub"><span class="src" data-src="owners/haddad/owner.md" title="Quoted from owners/haddad/owner.md">1340 Lanternfish Cir, Venice, FL 34293 (fictional)</span></span></div>
+<div class="ap-banner" data-ap-banner></div>
+<table class="sw-fields"><tbody><tr data-ap-field><td>Security deposit held</td>
+<td><span class="ap-before"><span class="n" data-k="ap.haddad.lease">$2,400</span></span><span class="ap-after"><span class="n" data-k="ap.haddad.moved">$2,200</span></span></td>
+</tr>
+<tr data-ap-field><td>Still owed by the outgoing manager</td>
+<td><span class="ap-before">Nothing</span><span class="ap-after"><span class="n" data-k="ap.haddad.short">$200</span></span></td>
+</tr>
+<tr data-ap-field><td>Deposit status</td>
+<td><span class="ap-before">Not reconciled</span><span class="ap-after">Short; Owen Pratt sends the drafted request to Tidewell Rentals</span></td>
+</tr>
+</tbody></table></div>
+<div class="ap-rec" data-ap-rec="owner-coralwick" data-state="typed" hidden><div class="sw-head"><span class="sw-type">Owner</span><b>Coralwick Rentals LLC</b><span class="sw-sub"><span class="src" data-src="owners/coralwick/owner.md" title="Quoted from owners/coralwick/owner.md">6032 Driftmark Way, Lakewood Ranch, FL 34202 (fictional)</span></span></div>
+<div class="ap-banner" data-ap-banner></div>
+<table class="sw-fields"><tbody><tr data-ap-field="same"><td>Payout account holder</td>
+<td>Derrick Ostrowski</td>
+</tr>
+<tr data-ap-field><td>Owner payouts</td>
+<td><span class="ap-before">On</span><span class="ap-after">Paused until the account is in the owner's name</span></td>
+</tr>
+<tr data-ap-field><td>Next step</td>
+<td><span class="ap-before">Pay the owner each month</span><span class="ap-after">Talia Brooks sends the drafted follow-up; Owen Pratt confirms by phone</span></td>
+</tr>
+</tbody></table></div>
+<div class="ap-rec" data-ap-rec="vendor-fernhollow" data-state="typed" hidden><div class="sw-head"><span class="sw-type">Vendor</span><b>Fernhollow Grounds LLC</b><span class="sw-sub">Landscaping</span></div>
+<div class="ap-banner" data-ap-banner></div>
+<table class="sw-fields"><tbody><tr data-ap-field><td>Insurance policy number</td>
+<td><span class="ap-before"><span class="id">DEMO-GL-0004</span></span><span class="ap-after"><span class="id">DEMO-GL-0040</span></span></td>
+</tr>
+<tr data-ap-field="same"><td>Insurer</td>
+<td>Demo Mutual Insurance Co. (fictional)</td>
+</tr>
+<tr data-ap-field><td>Certificate check</td>
+<td><span class="ap-before">Not compared with the PDF</span><span class="ap-after">Matches the certificate</span></td>
+</tr>
+</tbody></table></div>
+<div class="ap-rec" data-ap-rec="buy-keystone" data-state="typed" hidden><div class="sw-head"><span class="sw-type">Bill</span><b>Keystone Coast Furniture</b><span class="sw-sub"><span class="id">INV-KC-3307</span> &middot; order <span class="id">PQ-1042</span></span></div>
+<div class="ap-banner" data-ap-banner></div>
+<table class="sw-fields"><tbody><tr data-ap-field><td>Amount to pay</td>
+<td><span class="ap-before"><span class="n" data-k="ap.kc.billed">$872</span></span><span class="ap-after"><span class="n" data-k="ap.kc.expected">$713</span>, after a corrected invoice</span></td>
+</tr>
+<tr data-ap-field><td>Held back</td>
+<td><span class="ap-before">Nothing</span><span class="ap-after"><span class="n" data-k="ap.kc.diff">$159</span></span></td>
+</tr>
+<tr data-ap-field><td>Status</td>
+<td><span class="ap-before">Ready to pay</span><span class="ap-after">On hold until the corrected invoice arrives</span></td>
+</tr>
+</tbody></table></div>
+<p class="sw-foot">Approve changes only this sample screen and the audit log, in this browser. People still send every email, sign every approval, and release every payment.</p></div>
+<div class="ap-box"><h4>Stuck: still waiting on a person</h4><ul class="ap-stuck" data-ap-stuck></ul><p class="ap-empty muted" data-ap-stuck-none hidden>Nothing is stuck.</p></div>
+<div class="ap-box"><h4>Latest in the audit log</h4><ul class="ap-mini" data-ap-mini></ul><a href="#tab=audit">See the full audit log</a></div>
+</aside></div>
+</section><section data-tab="byhand" id="tab-byhand"><h2>By hand vs. with the system</h2><p class="lead">This view is illustrative: it takes the same work as the rest of this dashboard (<span class="n" data-k="v.total">8</span> contractors and furnishing order <span class="id">PQ-1042</span>), and counts it two ways, done by hand and done with the system. Each count comes from the sample records by a written rule for each step. The system takes over the checking, looking up, retyping, and assembling; people still send every email, sign every approval, and decide every flagged problem.</p><div class="bh-head" data-audit><div class="bh-row"><div class="bh-lab">By hand</div>
 <div class="bh-bar" role="img" aria-label="By hand: 458 touches"><span class="bh-seg same" style="width:4.80%" title="Same both ways"></span><span class="bh-seg gone" style="width:95.20%" title="By hand only"></span></div>
 <div class="bh-num"><span class="n" data-k="bh.total.h">458</span> touches</div>
 </div>
@@ -5211,7 +5403,7 @@ Palmquay Properties (fictional)</pre></details><details><summary><code>projects/
 | INV-GW-5521 | MATCH | as ordered |  |  |
 | INV-KC-3307 | HOLD | $872 | $713 | $159 |
 
-Payment is approved by Finance (?). The assistant flags differences and never marks an invoice paid.</pre></details></section><section data-tab="checks" id="tab-checks"><h2>Acceptance checks</h2><p class="lead">Each check was written before the work it tests, recomputes every result its own way, and prints what it counted. A check that can't fail proves nothing, so each check script also has a self-test that plants breaks in a throwaway copy. The suite has <span class="n" data-k="c.suite">102</span> checks, and every one runs on each push. The first rows were re-run when this page was built; the rest test this page itself or the PDFs, so they run after it.</p><table data-audit><thead><tr><th>Phase</th>
+Payment is approved by Finance (?). The assistant flags differences and never marks an invoice paid.</pre></details></section><section data-tab="checks" id="tab-checks"><h2>Acceptance checks</h2><p class="lead">Each check was written before the work it tests, recomputes every result its own way, and prints what it counted. A check that can't fail proves nothing, so each check script also has a self-test that plants breaks in a throwaway copy. The suite has <span class="n" data-k="c.suite">108</span> checks, and every one runs on each push. The first rows were re-run when this page was built; the rest test this page itself or the PDFs, so they run after it.</p><table data-audit><thead><tr><th>Phase</th>
 <th>What it checks</th>
 <th>Result</th>
 </tr>
@@ -5259,21 +5451,25 @@ Payment is approved by Finance (?). The assistant flags differences and never ma
 <td>The business side of the New owners tab: the acceptance review, the month&#x27;s statements and payment batch, the trust reconciliation, and the firm&#x27;s numbers, recounted to the cent from the inputs</td>
 <td><span class="n" data-k="c.suite.phase3h">8</span> checks, run after the build and on every push</td>
 </tr>
+<tr><td><span class="id plain">Phase 3i</span></td>
+<td>The Approve and watch it land tab: every value recounted from the raw records, each problem&#x27;s fingerprint worked out its own way, and the buttons pressed in a headless browser</td>
+<td><span class="n" data-k="c.suite.phase3i">6</span> checks, run after the build and on every push</td>
+</tr>
 </tbody></table><details><summary>Phase 1: every line it printed (0.2 s)</summary><pre>PASS - C1 outside the vault, no CLAUDE.md above it - root &lt;demo folder&gt;; inside vault False (vault path from the private file); CLAUDE.md in parents []
 PASS - C2 CLAUDE.md states every rule and matches rules.json - 34 of 34 found; missing []
 PASS - C3 8 vendors, each with its record and exactly the key&#x27;s documents - 8 folders, 8 records, 8 of 8 document sets match
 PASS - C4 recomputed from the documents = answer key - 8 of 8 match; mismatches {}
 PASS - C4b the key covers every planted problem + a clean small and a clean large job - 6 of 6 problem types; clean small [&#x27;kestrelbay-air-heat&#x27;]; clean large [&#x27;skyquay-lift-fire&#x27;]
 PASS - C5 answer key unchanged since it was locked - lock 973099662faf..., now 973099662faf...
-PASS - C6 no personal words; every ID is visibly marked as sample - 488 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked as sample
-PASS - C7 README maps each piece (industry term + resume line) - 69 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;, &#x27;`dashboard/by-hand.json` + the By hand vs. system tab&#x27;, &#x27;`tests/check_phase3f.py`&#x27;, &#x27;`tools/make_owners.py`&#x27;, &#x27;`company/owner-rules.json`&#x27;, &#x27;`tools/owners.py`&#x27;, &#x27;`/owner-intake` skill&#x27;, &#x27;`/takeover` skill&#x27;, &#x27;`/owner-chase` skill&#x27;, &#x27;`/owner-setup` skill&#x27;, &#x27;`tests/check_phase3g.py`&#x27;, &#x27;`audit/owners-log.csv`&#x27;, &#x27;`money/inputs/`&#x27;, &#x27;`tools/money.py`&#x27;, &#x27;`tests/check_phase3h.py`&#x27;, &#x27;`tests/suite.json`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (7.3 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
+PASS - C6 no personal words; every ID is visibly marked as sample - 498 files scanned for 11 words: 0 hits []; 21 IDs, 0 not marked as sample
+PASS - C7 README maps each piece (industry term + resume line) - 71 filled 5-column rows in the mapping table (want 8+): [&#x27;`CLAUDE.md`&#x27;, &#x27;`company/rules.json`&#x27;, &#x27;`company/people.md`&#x27;, &#x27;`vendors/&lt;name&gt;/`&#x27;, &#x27;`tools/make_vendors.py`&#x27;, &#x27;`tests/answer-key.json` + `LOCK.txt`&#x27;, &#x27;`tests/check_phase1.py`&#x27;, &#x27;`--selftest`&#x27;, &#x27;`audit/audit-log.csv` + `audit-log.chain.txt`&#x27;, &#x27;`/intake` skill&#x27;, &#x27;`/chase` skill&#x27;, &#x27;`/route` skill&#x27;, &#x27;`/status` skill&#x27;, &#x27;`.claude/agents/compliance-checker.md`&#x27;, &#x27;`tests/checker-copies/` + `reviews/`&#x27;, &#x27;`tools/onboard.py`&#x27;, &#x27;`tests/check_phase2.py`&#x27;, &#x27;`projects/unit-4b/`&#x27;, &#x27;`tools/make_project.py`&#x27;, &#x27;`tools/project.py`&#x27;, &#x27;`tests/check_phase3a.py`&#x27;, &#x27;`audit/procurement-log.csv`&#x27;, &#x27;`/scope` skill&#x27;, &#x27;`/source` skill&#x27;, &#x27;`/quote` skill&#x27;, &#x27;`/approve` skill&#x27;, &#x27;`/change` skill&#x27;, &#x27;`/deliver` skill&#x27;, &#x27;`/match` skill&#x27;, &#x27;`dashboard/build.py` + `dashboard/index.html`&#x27;, &#x27;`docs/diagram.png` + `docs/diagram.pdf`&#x27;, &#x27;`docs/video-script.md`&#x27;, &#x27;`docs/explainer.md` + `docs/explainer.pdf`&#x27;, &#x27;`tools/render.py`&#x27;, &#x27;`tests/check_phase3b.py`&#x27;, &#x27;`tools/make_controls.py`&#x27;, &#x27;`tools/controls.py`&#x27;, &#x27;`tests/check_phase3c.py`&#x27;, &#x27;`audit/controls-log.csv`&#x27;, &#x27;`company/exclusion-list.md`&#x27;, &#x27;`/screen` skill&#x27;, &#x27;`/request` skill&#x27;, &#x27;`/closeout` skill&#x27;, &#x27;`tools/exceptions.py`&#x27;, &#x27;`tests/check_phase3d.py`&#x27;, &#x27;`audit/exceptions-log.csv`&#x27;, &#x27;`/revise` skill&#x27;, &#x27;`/credit` skill&#x27;, &#x27;`/certs` skill&#x27;, &#x27;`tools/certs.py`&#x27;, &#x27;`tools/make_certs.py`&#x27;, &#x27;`tests/check_phase3e.py`&#x27;, &#x27;`audit/documents-log.csv`&#x27;, &#x27;`.github/workflows/checks.yml`&#x27;, &#x27;`dashboard/by-hand.json` + the By hand vs. system tab&#x27;, &#x27;`tests/check_phase3f.py`&#x27;, &#x27;`tools/make_owners.py`&#x27;, &#x27;`company/owner-rules.json`&#x27;, &#x27;`tools/owners.py`&#x27;, &#x27;`/owner-intake` skill&#x27;, &#x27;`/takeover` skill&#x27;, &#x27;`/owner-chase` skill&#x27;, &#x27;`/owner-setup` skill&#x27;, &#x27;`tests/check_phase3g.py`&#x27;, &#x27;`audit/owners-log.csv`&#x27;, &#x27;`money/inputs/`&#x27;, &#x27;`tools/money.py`&#x27;, &#x27;`tests/check_phase3h.py`&#x27;, &#x27;The Approve and watch it land tab (`dashboard/build.py`)&#x27;, &#x27;`tests/check_phase3i.py`&#x27;, &#x27;`tests/suite.json`&#x27;]</pre></details><details><summary>Phase 2: every line it printed (8.1 s)</summary><pre>PASS - P1 /intake results = locked answer key (issues, status, approvers) + Stage filled - 8 of 8 intake.json match; 8 of 8 Stage lines start with the status; mismatches {}
 PASS - P1b /status prints one correct line per vendor - exit 0; 8 lines; 8 of 8 right (stage, status, blocker, days waiting); problems {} 
 PASS - P2 /chase: 1 good draft per BLOCKED/HOLD vendor, 0 sends - 6 of 6 drafts pass (vendor, item, why, deadline 2026-11-12, how to send, .example contact, no threats, no unsupported facts); 0 drafts for READY vendors []; sends 0 (audit rows marked sent 0, network imports []); problems {}
 PASS - P3 /route: packet for each READY vendor, approvers in order, sign-offs blank - 2 of 2 packets pass; packets for vendors not READY []; approvers {&#x27;kestrelbay-air-heat&#x27;: [&#x27;Facilities Manager&#x27;], &#x27;skyquay-lift-fire&#x27;: [&#x27;Facilities Manager&#x27;, &#x27;Procurement Lead&#x27;, &#x27;Legal&#x27;, &#x27;Finance&#x27;]}; problems {}
 PASS - P4 read-only compliance-checker reviewed everything and caught both plants - agent tools [&#x27;Glob&#x27;, &#x27;Grep&#x27;, &#x27;Read&#x27;]; latest review reviews/2026-11-05-02-all-vendors.md: 18 files, 18 unchanged since review; 16 of 16 real files marked OK by the checker; planted wrong deadline caught True; planted missed name mismatch caught True; problems []
 PASS - P5 audit log: 1 row per action, append-only (hash chain) - 18 rows; 18 actions taken (8 intake + 6 chase drafts + 2 route packets + 2 checker reviews); chain 18 of 18 rows verify; problems []
-PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 488 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
-PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 69 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (7.3 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
+PASS - P6 Phase 1 still 8 of 8; 0 personal words; 0 web addresses but .example - Phase 1: RESULT: 8 of 8 checks PASS, 4 of 4 self-test breaks caught, exit 0; 498 files scanned for 11 words: 0 hits []; non-.example addresses 0 []
+PASS - P7 README status + mapping cover the Phase 2 pieces, no overclaims - 7 of 7 new pieces mapped (term + resume line) []; resume lines not &#x27;designed/directed&#x27; []; overclaims []; 71 mapping rows; problems []</pre></details><details><summary>Phase 3a: every line it printed (8.2 s)</summary><pre>PASS - Q0 answer key unchanged since it was locked - lock 6af3d376441e..., now 6af3d376441e...
 PASS - Q0b recomputed from the inputs = answer key (the data really has the planted problems) - 7 activities recomputed; differ from key []; PO total recomputed 4898 vs stated 4898; error none
 PASS - Q1 /scope: brief = key; every request field in brief.md; nothing invented - projects/unit-4b/out/brief.json: = key; 16 of 16 request fields in brief.md; invented measurement False
 PASS - Q2 /source: late items and the in-time alternative = key - projects/unit-4b/out/source.json: = key
@@ -5327,7 +5523,9 @@ python -I -X utf8 tests/check_phase3f.py --selftest
 python -I -X utf8 tests/check_phase3g.py
 python -I -X utf8 tests/check_phase3g.py --selftest
 python -I -X utf8 tests/check_phase3h.py
-python -I -X utf8 tests/check_phase3h.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">6</span>.</p><table data-audit><thead><tr><th>When</th>
+python -I -X utf8 tests/check_phase3h.py --selftest
+python -I -X utf8 tests/check_phase3i.py
+python -I -X utf8 tests/check_phase3i.py --selftest</pre></details><h2>The checker: a second AI, set up to only read</h2><p class="lead">It reviews the first AI's work blind, against the rules. Its definition gives it read and search tools only. In the Phase 1-3a reviews that limit was an instruction, not enforced; the Phase 3c review ran as a separate agent with no write tools. Each review records how it ran. The first buying review also found one real gap: a rule's wording didn't cover a substitute's order date (the answers were right); the rule was clarified and the second review ran on the same files. Each review mixed in a copy with a planted mistake to prove it was really reading. Reviews logged: <span class="n" data-k="a.reviews">6</span>.</p><table data-audit><thead><tr><th>When</th>
 <th>Subject</th>
 <th>What it reviewed</th>
 <th>Result</th>
@@ -5374,7 +5572,14 @@ python -I -X utf8 tests/check_phase3h.py --selftest</pre></details><h2>The check
 <tr><td>Approval lines left blank on the purchase request and change request</td>
 <td class="num"><span class="n" data-k="g.blank_lines">2</span></td>
 </tr>
-</tbody></table></section><section data-tab="audit" id="tab-audit"><h2>Replay the run</h2><p class="lead">The page rebuilds the board from the audit log, one row at a time. Press play, or drag. The log is append-only by rule and hash-chained: editing any past row breaks every link after it.</p><div class="replay" id="replay" data-rstep="0"><div class="controls"><button id="play" type="button">&#9654; Play</button><input id="step" type="range" min="0" value="0" aria-label="Replay step"><span id="steplabel" class="muted"></span></div>
+</tbody></table></section><section data-tab="audit" id="tab-audit"><h2>Decisions made on this page</h2><p class="lead">Each Approve or Reject on the "Approve and watch it land" tab adds a row here. These rows stay in this browser only (a working demo with sample records). The logs below are the system's own files, where each row is locked to the one before it.</p><table class="log" data-ap-log><thead><tr><th>Time (this computer)</th>
+<th>Who</th>
+<th>Subject</th>
+<th>Action</th>
+<th>Result</th>
+<th>Detail</th>
+</tr>
+</thead><tbody data-ap-logbody></tbody></table><h2>Replay the run</h2><p class="lead">The page rebuilds the board from the audit log, one row at a time. Press play, or drag. The log is append-only by rule and hash-chained: editing any past row breaks every link after it.</p><div class="replay" id="replay" data-rstep="0"><div class="controls"><button id="play" type="button">&#9654; Play</button><input id="step" type="range" min="0" value="0" aria-label="Replay step"><span id="steplabel" class="muted"></span></div>
 <div id="nowevent" class="nowevent"></div>
 <div class="board"><div><h4>Vendors</h4><div id="rvendors" class="rgrid"></div>
 </div>
@@ -5766,7 +5971,7 @@ python -I -X utf8 tests/check_phase3h.py --selftest</pre></details><h2>The check
     <div class="dg-ctrl"><b>People approve</b>The AI never sends, signs, orders, or pays. It stops and asks.<span class="dg-term">human in the loop, segregation of duties</span></div>
     <div class="dg-ctrl"><b>A second AI, the checker</b>Set up to only read, it reviews the work, with planted mistakes mixed in.<span class="dg-term">maker-checker review, least privilege by design</span></div>
     <div class="dg-ctrl"><b>Audit log</b>Every action is one row. Rows are hash-chained, so an edit shows.<span class="dg-term">audit trail, tamper evidence</span></div>
-    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 102 of 102 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
+    <div class="dg-ctrl"><b>Tests first</b>Answers locked before the first run; 108 of 108 checks pass; planted breaks prove the checks catch errors.<span class="dg-term">acceptance tests, evals, mutation testing</span></div>
     <div class="dg-ctrl"><b>One screen</b>A dashboard rebuilt from the records; a test recounts every number in its tiles and tables.<span class="dg-term">observability, reconciliation</span></div>
   </div>
 
@@ -5829,5 +6034,90 @@ python -I -X utf8 tests/check_phase3h.py --selftest</pre></details><h2>The check
     ['h','s'].forEach(function(sd){set('bh.min.'+sd,tot[sd]);set('bh.hours.'+sd,rnd(tot[sd]/60));});
     sec.setAttribute('data-bh-js','1');}
   inputs.forEach(function(i){i.addEventListener('input',calc);});calc();
+})();
+
+(function(){
+  var sec=document.querySelector('section[data-tab="approve"]');if(!sec)return;
+  var KEY='palmquay-approve-demo-v1',mem=null;
+  function fresh(){return {runs:0,seen:[],decided:{},log:[],last:null};}
+  function load(){try{var t=window.localStorage.getItem(KEY);return t?JSON.parse(t):null;}catch(e){return mem;}}
+  function save(){mem=JSON.parse(JSON.stringify(st));try{window.localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return [].slice.call((r||document).querySelectorAll(s));}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function stamp(){var d=new Date();function p(n){return (n<10?'0':'')+n;}
+    return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());}
+  var cards=qa('[data-ap-card]',sec),queue=q('[data-ap-queue]',sec),done=q('[data-ap-decided]',sec),runout=q('[data-ap-runout]',sec),
+      msg=q('[data-ap-msg]',sec),stuck=q('[data-ap-stuck]',sec),mini=q('[data-ap-mini]',sec),logbody=q('[data-ap-logbody]'),info={},order=[];
+  cards.forEach(function(c){var id=c.getAttribute('data-ap-card');order.push(id);
+    info[id]={el:c,fp:c.getAttribute('data-fp'),who:c.getAttribute('data-decider'),role:c.getAttribute('data-role'),title:c.getAttribute('data-title'),
+      subject:c.getAttribute('data-subject'),since:c.getAttribute('data-since'),change:c.getAttribute('data-change'),rec:q('[data-ap-rec="'+id+'"]',sec)};});
+  var st=load(),sel=null,flash=null;
+  if(!st||!st.decided||!st.seen||!st.log)st=fresh();
+  function decision(id){return st.decided[info[id].fp]||null;}
+  // The check runs again on the same records. Each problem carries a fingerprint made from its files, fields, and values;
+  // one this browser already decided is skipped, so it never comes back. A changed record makes a new fingerprint, and shows as new.
+  function scan(){var n={found:order.length,neu:0,decided:0,waiting:0};
+    order.forEach(function(id){var fp=info[id].fp;if(st.decided[fp]){n.decided++;return;}
+      if(st.seen.indexOf(fp)<0){st.seen.push(fp);n.neu++;}n.waiting++;});
+    st.runs++;n.run=st.runs;st.last=n;save();}
+  function showRun(){var n=st.last||{found:0,neu:0,decided:0,waiting:0,run:0};
+    ['found','neu','decided','waiting','run'].forEach(function(x){runout.setAttribute('data-'+(x==='neu'?'new':x),String(n[x]));});
+    runout.innerHTML=n.run<=1?('<b>Check run '+n.run+'</b> on the sample records: '+n.found+' problems found, '+n.neu+' new. Each one waits for the person named on its card.')
+      :('<b>Check run '+n.run+'</b> on the same records: '+n.found+' found · <b>'+n.neu+' new</b> · <b>'+n.decided+' already decided</b>, skipped so nobody is asked again · '
+        +n.waiting+' still waiting on a person');}
+  function place(box,ids){var cur=[].slice.call(box.children).filter(function(x){return x.hasAttribute('data-ap-card');}).map(function(x){return x.getAttribute('data-ap-card');});
+    if(cur.join()!==ids.join())ids.forEach(function(id){box.appendChild(info[id].el);});}
+  function render(){
+    var pend=order.filter(function(id){return !decision(id);}),dec=order.filter(function(id){return !!decision(id);});
+    if(!sel||!info[sel])sel=pend[0]||order[0];
+    dec.sort(function(a,b){return decision(a).at<decision(b).at?-1:decision(a).at>decision(b).at?1:0;});
+    place(queue,pend);place(done,dec);
+    var none=q('[data-ap-none]',sec);if(none){none.hidden=pend.length>0;queue.appendChild(none);}
+    order.forEach(function(id){var c=info[id],d=decision(id),el=c.el;
+      el.setAttribute('data-state',d?d.action:'pending');el.classList.toggle('on',id===sel);
+      if(d)q('.ap-rejectbox',el).hidden=true;
+      q('[data-ap-outcome]',el).innerHTML=d?((d.action==='approved'?'<span class="ap-ok">✓ Approved</span> by ':'<span class="ap-no">✕ Rejected</span> by ')+esc(d.by)+' · '+esc(d.at)
+        +(d.why?' · reason: “'+esc(d.why)+'”':'')):'';
+      q('[data-ap-outcome]',el).title=d?'Fingerprint '+c.fp+': if the same problem shows up again, it is skipped':'';
+      var r=c.rec;if(!r)return;
+      r.setAttribute('data-state',d&&d.action==='approved'?'landed':'typed');r.hidden=id!==sel;r.classList.toggle('flash',id===flash);
+      var bn=q('[data-ap-banner]',r);
+      bn.className='ap-banner'+(d?(d.action==='approved'?' ok':' no'):'');
+      bn.innerHTML=d?(d.action==='approved'?'✓ Updated '+esc(d.at)+' by '+esc(d.by)+'. The change is in the audit log.'
+        :'Rejected '+esc(d.at)+' by '+esc(d.by)+'. The record was left as typed. Reason: “'+esc(d.why)+'”')
+        :'As typed from the paperwork. Nothing changes until '+esc(c.who)+' decides.';});
+    q('[data-ap-count]',sec).textContent=String(pend.length);q('[data-ap-dcount]',sec).textContent=String(dec.length);
+    stuck.innerHTML=pend.map(function(id){var c=info[id];return '<li><b>'+esc(c.who)+'</b>, '+esc(c.role)+': '+esc(c.title)+' <span class="muted">(waiting since '+esc(c.since)+')</span></li>';}).join('');
+    q('[data-ap-stuck-none]',sec).hidden=pend.length>0;
+    var rows=st.log;
+    if(logbody)logbody.innerHTML=rows.length?rows.map(function(r){return '<tr data-ap-row><td class="nowrap">'+esc(r.at)+'</td><td>'+esc(r.who)+'</td><td>'+esc(r.subject)
+      +'</td><td>'+esc(r.action)+'</td><td>'+esc(r.result)+'</td><td class="muted small">'+esc(r.detail)+'</td></tr>';}).join('')
+      :'<tr class="ap-empty"><td colspan="6" class="muted">No decisions yet. Approve or reject a card on the Approve and watch it land tab, and its row appears here.</td></tr>';
+    mini.innerHTML=rows.length?rows.slice(-3).reverse().map(function(r){return '<li><span class="muted">'+esc(r.at.slice(11))+'</span> '+esc(r.who)+' · <code>'+esc(r.action)+'</code> · '+esc(r.subject)+'</li>';}).join('')
+      :'<li class="muted">No decisions yet.</li>';
+    showRun();flash=null;}
+  function decide(id,action,why){var c=info[id];if(decision(id))return;var at=stamp();
+    st.decided[c.fp]={id:id,action:action,why:why||'',at:at,by:c.who+', '+c.role};
+    st.log.push({at:at,who:c.who+', '+c.role,subject:c.subject,action:action==='approved'?'approve_fix':'reject_fix',
+      result:action==='approved'?'Record updated':'Record left as typed',detail:action==='approved'?c.change:'Reason: '+why});
+    save();sel=id;flash=id;msg.textContent='';render();}
+  cards.forEach(function(el){var id=el.getAttribute('data-ap-card'),box=q('.ap-rejectbox',el),reason=q('[data-ap-reason]',el);
+    el.addEventListener('click',function(e){if(e.target.closest('button,textarea,a'))return;sel=id;render();});
+    el.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target===el){e.preventDefault();sel=id;render();}});
+    q('[data-ap-approve]',el).addEventListener('click',function(){decide(id,'approved','');});
+    q('[data-ap-reject]',el).addEventListener('click',function(){sel=id;render();box.hidden=false;reason.focus();});
+    q('[data-ap-cancel]',el).addEventListener('click',function(){box.hidden=true;reason.classList.remove('err');q('.ap-err',el).textContent='';msg.textContent='';});
+    q('[data-ap-confirm]',el).addEventListener('click',function(){var why=reason.value.trim();
+      if(!why){reason.classList.add('err');msg.textContent='A reject needs a reason. Write it in the box under the card, then confirm: it goes in the audit log.';
+        q('.ap-err',el).textContent='Write a reason first: it goes in the audit log.';return;}
+      reason.classList.remove('err');q('.ap-err',el).textContent='';decide(id,'rejected',why);});});
+  q('[data-ap-run]',sec).addEventListener('click',function(){scan();msg.textContent='';render();
+    runout.classList.remove('pulse');void runout.offsetWidth;runout.classList.add('pulse');});
+  q('[data-ap-reset]',sec).addEventListener('click',function(){st=fresh();sel=null;msg.textContent='';
+    qa('.ap-rejectbox',sec).forEach(function(b){b.hidden=true;});qa('.ap-err',sec).forEach(function(e){e.textContent='';});qa('[data-ap-reason]',sec).forEach(function(t){t.value='';t.classList.remove('err');});
+    scan();render();});
+  if(!st.runs)scan();
+  render();sec.setAttribute('data-ap-js','1');
 })();
 </script></body></html>

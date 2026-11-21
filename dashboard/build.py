@@ -48,7 +48,7 @@ MEANING = {
     "CLAIM_CONTRADICTED": "A supplier said all delivered; the receipt disagrees",
     "MISSING_DISCLOSURE": "No conflict-of-interest disclosure", "PAID_SOLICITATION": "Someone was paid to help win the work",
     "FORMAL_BID_REQUIRED": "Too large for quotes: needs a formal bid", "FUNDS_SHORT": "The budget line doesn't cover it"}
-TABS = [("overview", "Overview"), ("byhand", "By hand vs. system"), ("onboarding", "Onboarding"), ("owners", "New owners"), ("buying", "Buying"), ("checks", "Checks"),
+TABS = [("overview", "Overview"), ("approve", "Approve and watch it land"), ("byhand", "By hand vs. system"), ("onboarding", "Onboarding"), ("owners", "New owners"), ("buying", "Buying"), ("checks", "Checks"),
         ("audit", "Audit log"), ("map", "Map")]
 
 K = {}  # every tagged fact on the page: key -> value
@@ -1443,7 +1443,9 @@ def checks():
              "phase3g": ("Phase 3g", "The New owners tab: every owner recounted from the raw packets against a locked answer key, the drafts, "
                                      "the setup sheets, the owners log, and every number on that tab"),
              "phase3h": ("Phase 3h", "The business side of the New owners tab: the acceptance review, the month's statements and payment batch, "
-                                     "the trust reconciliation, and the firm's numbers, recounted to the cent from the inputs")}
+                                     "the trust reconciliation, and the firm's numbers, recounted to the cent from the inputs"),
+             "phase3i": ("Phase 3i", "The Approve and watch it land tab: every value recounted from the raw records, each problem's fingerprint "
+                                     "worked out its own way, and the buttons pressed in a headless browser")}
     for f, n in SUITE_AFTER:
         name = f[len("check_"):-3]
         label, what_ = after.get(name, (name, "A check script listed in tests/suite.json"))
@@ -1719,7 +1721,7 @@ def audit():
                         f'<td>{E(r["action"])}</td><td>{E(r["result"])}</td><td class="muted small">{E(r["detail"])}</td></tr>')
     table = ('<h2>Every row</h2><table class="log"><thead><tr><th>Time</th><th>Actor</th><th>Subject</th><th>Action</th><th>Result</th>'
              '<th>Detail</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table>")
-    return head + chain_t + table
+    return ap_log() + head + chain_t + table
 
 
 def diagram():
@@ -1747,6 +1749,217 @@ if ctl_rows:
 if exc_rows:
     racts += [{"action": "packet_revision", "skill": "/revise", "name": "A change during sign-off"},
               {"action": "freight_credit", "skill": "/credit", "name": "Shipping credit for a late delivery"}]
+
+# ------------------------------------------------------------- Approve and watch it land (Phase 3i, 11/20) -------------------------------------------------------------
+# Five problems the system already caught, one card each, for the person named on the card to decide. The record panel is a sample
+# screen standing in for the office's own software: Approve makes the drafted change land there and adds a row to the page's own
+# decision table on the Audit log tab (kept in this browser only); Reject leaves the record and logs the reason. "Run the check again"
+# compares each problem's fingerprint with what this browser already decided. Rules: dashboard/README.md ("Rule: Approve and watch
+# it land"); tests/check_phase3i.py recounts every value from the records and presses the buttons in a headless browser.
+AP_ORDER = ["owner-petrakis", "owner-haddad", "owner-coralwick", "vendor-fernhollow", "buy-keystone"]
+
+
+def ap_fp(card, evidence):
+    """The first 16 hex characters of SHA-256 over the card id and each evidence line 'file|field|value'."""
+    return hashlib.sha256("\n".join([card] + [f"{f}|{fld}|{v}" for f, fld, v in evidence]).encode("utf-8")).hexdigest()[:16]
+
+
+def ap_side(label, refs, rows, second=False):
+    return (f'<div class="ap-side{" ap-side-b" if second else ""}"><div class="ap-lab">{label}</div>'
+            + "".join(f'<div class="ap-kv"><span class="ap-k">{E(l)}</span><span class="ap-v">{v}</span></div>' for l, v in rows)
+            + '<details class="ap-files"><summary>Source file' + ("s" if len(refs) > 1 else "") + "</summary>"
+            + "".join(f'<code class="ap-file" data-file="{r}">{E(r)}</code>' for r in refs) + "</details></div>")
+
+
+def ap_cards():
+    tf = lambda rel: table_fields(read(*rel.split("/")))
+    C = []
+
+    # 1. A new owner whose county record still shows the seller (Phase 3g)
+    A, CR, OWF = "owners/petrakis/documents/agreement.md", "owners/petrakis/documents/county-record.md", "owners/petrakis/owner.md"
+    ag, cr, ow = tf(A), tf(CR), tf(OWF)
+    owner, seller, sold, bought = ag["Owner(s) named"], cr["Owner(s) of record"], cr["Last sale recorded"], ow["Bought the home"].split(" (")[0]
+    coord = o_team["Owner Onboarding Coordinator"]
+    C.append({"id": "owner-petrakis", "area": "New owner", "code": "OWNER_NOT_ON_COUNTY_RECORD", "title": "The county record still shows the seller",
+              "subject": f"Owner: {owner}", "role": "Broker of Record", "who": o_team["Broker of Record"], "since": jread("owners", "petrakis", "intake.json")["date"],
+              "found": (f'The management agreement says {q(A, owner)} owns {q(OWF, ow["Property address"])}. The county record the coordinator saved '
+                        f'still lists {q(CR, seller)}, with the last sale recorded {q(CR, sold)}. The owner wrote that the home was bought on {q(OWF, bought)}.'),
+              "sides": [("What the owner gave us", [A, OWF], [("Owner(s) named", q(A, owner)), ("Bought the home (owner's words)", q(OWF, bought))]),
+                        ("County property record", [CR], [("Owner(s) of record", q(CR, seller)), ("Last sale recorded", q(CR, sold))])],
+              "fix": (f"Put the setup on hold, and have {E(coord)} send the owner the follow-up that's already drafted, asking for the recorded deed "
+                      "or the closing statement. The county may not have caught up with a sale this recent."),
+              "change": "Setup status: Ready for setup → On hold until the recorded deed or closing statement arrives",
+              "rec": {"type": "Owner", "name": owner, "sub": q(OWF, ow["Property address"]), "fields": [
+                  ("same", "Owner name", E(owner)),
+                  ("chg", "Ownership check", "Not checked", f"County record shows {q(CR, seller)}"),
+                  ("chg", "Setup status", "Ready for setup", "On hold until the recorded deed or closing statement arrives"),
+                  ("chg", "Next step", "Enter the property and start managing it", f"{E(coord)} sends the drafted follow-up to the owner")]},
+              "evidence": [(A, "Owner(s) named", owner), (CR, "Owner(s) of record", seller), (CR, "Last sale recorded", sold)]})
+
+    # 2. A tenant's deposit that came over short from the outgoing manager (Phase 3g)
+    L, T_, OW2 = "owners/haddad/tenant/lease.md", "owners/haddad/tenant/deposit-transfer.md", "owners/haddad/owner.md"
+    lease, mv = tf(L), tf(T_)
+    d1, d2 = dollars(lease["Security deposit"]), dollars(mv["Security deposit transferred"])
+    tenant, outgoing, ta = lease["Tenant"], mv["From"].split(" (")[0], o_team["Trust Accountant"]
+    C.append({"id": "owner-haddad", "area": "New owner", "code": "DEPOSIT_SHORT", "title": "Part of the tenant's deposit didn't come over",
+              "subject": f"Tenant: {tenant}", "role": "Trust Accountant", "who": ta, "since": jread("owners", "haddad", "intake.json")["date"],
+              "found": (f'The signed lease says {E(tenant)} paid a {k("ap.haddad.lease", d1, True)} security deposit. The outgoing manager, '
+                        f'{q(T_, outgoing)}, sent {k("ap.haddad.moved", d2, True)}.'),
+              "sides": [("Signed lease", [L], [("Tenant", q(L, tenant)), ("Security deposit", q(L, lease["Security deposit"]))]),
+                        ("Deposit sent by the outgoing manager", [T_], [("From", q(T_, outgoing)), ("Security deposit transferred", q(T_, mv["Security deposit transferred"])),
+                                                                       ("Transferred on", q(T_, mv["Transferred on"]))])],
+              "fix": (f'Record the {k("ap.haddad.moved", d2, True)} that came over, mark {k("ap.haddad.short", d1 - d2, True)} as still owed by the outgoing '
+                      f"manager, and have {E(ta)} send them the drafted request for the difference."),
+              "change": f"Security deposit held: ${d1:,} → ${d2:,}; still owed by {outgoing}: ${d1 - d2:,}",
+              "rec": {"type": "Tenant ledger", "name": tenant, "sub": q(OW2, tf(OW2)["Property address"]), "fields": [
+                  ("chg", "Security deposit held", k("ap.haddad.lease", d1, True), k("ap.haddad.moved", d2, True)),
+                  ("chg", "Still owed by the outgoing manager", "Nothing", k("ap.haddad.short", d1 - d2, True)),
+                  ("chg", "Deposit status", "Not reconciled", f"Short; {E(ta)} sends the drafted request to {E(outgoing)}")]},
+              "evidence": [(L, "Security deposit", lease["Security deposit"]), (T_, "Security deposit transferred", mv["Security deposit transferred"])]})
+
+    # 3. Owner payouts set up to an account in someone else's name (Phase 3g)
+    A3, ACH, OW3 = "owners/coralwick/documents/agreement.md", "owners/coralwick/documents/ach.md", "owners/coralwick/owner.md"
+    ag3, ach = tf(A3), tf(ACH)
+    llc, holder = ag3["Owner(s) named"], ach["Account holder name(s)"]
+    C.append({"id": "owner-coralwick", "area": "New owner", "code": "ACH_NAME_MISMATCH", "title": "The payout bank account isn't in the owner's name",
+              "subject": f"Owner: {llc}", "role": "Trust Accountant", "who": ta, "since": jread("owners", "coralwick", "intake.json")["date"],
+              "found": (f"The management agreement names {q(A3, llc)} as the owner. The direct-deposit form is for an account in the name {q(ACH, holder)}. "
+                        "Rent belongs to the owner, so it goes into the owner's account unless the owner says otherwise in writing."),
+              "sides": [("Management agreement", [A3], [("Owner(s) named", q(A3, llc))]),
+                        ("Direct-deposit form", [ACH], [("Account holder name(s)", q(ACH, holder)), ("Supporting proof", q(ACH, ach["Supporting proof"]))])],
+              "fix": (f"Pause owner payouts until bank details in the name {E(llc)} arrive, or the owner's written OK for this account. {E(coord)} sends the "
+                      f"drafted follow-up, and {E(ta)} confirms by phone at the number Palmquay already had."),
+              "change": "Owner payouts: On → Paused until the bank account is in the owner's name",
+              "rec": {"type": "Owner", "name": llc, "sub": q(OW3, tf(OW3)["Property address"]), "fields": [
+                  ("same", "Payout account holder", E(holder)),
+                  ("chg", "Owner payouts", "On", "Paused until the account is in the owner's name"),
+                  ("chg", "Next step", "Pay the owner each month", f"{E(coord)} sends the drafted follow-up; {E(ta)} confirms by phone")]},
+              "evidence": [(A3, "Owner(s) named", llc), (ACH, "Account holder name(s)", holder)]})
+
+    # 4. A contractor's insurance policy number typed wrong (Phase 3e)
+    TY, CK, PDF, VR = ("vendors/fernhollow-grounds/documents/coi.md", "vendors/fernhollow-grounds/documents/coi-check.json",
+                       "vendors/fernhollow-grounds/documents/coi.pdf", "vendors/fernhollow-grounds/vendor.md")
+    chk, typ, vr = jread(*CK.split("/")), tf(TY), tf(VR)
+    diff = next(d for d in chk["differences"] if d["field"] == "Policy number")
+    cert, typed, insurer = diff["certificate"], typ["Policy number"], chk["fields_read"]["Insurer"]
+    C.append({"id": "vendor-fernhollow", "area": "Contractor", "code": "DIFFERENCES_FOR_A_PERSON", "title": "The typed policy number doesn't match the certificate",
+              "subject": f"Vendor: {vr['Legal name']}", "role": "Facilities Manager", "who": people["Facilities Manager"], "since": chk["run"]["at"][:10],
+              "found": (f'Someone typed the insurance policy number as {q(TY, typed, "src id")}. The certificate PDF itself says {q(CK, cert, "src id")}: '
+                        "two digits swapped. Every other field on the certificate matches."),
+              "sides": [("Insurance certificate (the PDF, read by the system)", [PDF, CK], [("Policy number", q(CK, cert, "src id")), ("Insurer", q(CK, insurer))]),
+                        ("Typed vendor record", [TY], [("Policy number", q(TY, typed, "src id")), ("Insurer", q(TY, insurer))])],
+              "fix": f"Change the policy number in the vendor record to {ident(cert)}, the number on the certificate. The certificate is the source; nothing else changes.",
+              "change": f"Insurance policy number: {typed} → {cert}",
+              "rec": {"type": "Vendor", "name": vr["Legal name"], "sub": E(vr["Trade"].capitalize()), "fields": [
+                  ("chg", "Insurance policy number", ident(typed), ident(cert)),
+                  ("same", "Insurer", E(insurer)),
+                  ("chg", "Certificate check", "Not compared with the PDF", "Matches the certificate")]},
+              "evidence": [(PDF, "Policy number", cert), (TY, "Policy number", typed)]})
+
+    # 5. An invoice for more lamps, at a higher price, than were ordered (Phase 3a)
+    INV, PO, RC = "projects/unit-4b/invoices/INV-KC-3307.md", "projects/unit-4b/approved/po-PQ-1042.md", "projects/unit-4b/received/receipt-2026-11-12.md"
+    it = read(*INV.split("/"))
+    lf, rows = line_fields(it), table_rows(it, "SKU")
+    po = {r["SKU"]: r for r in table_rows(read(*PO.split("/")), "SKU")}
+    rc = {r["SKU"]: r for r in table_rows(read(*RC.split("/")), "SKU")}
+    lamp = next(r for r in rows if r["SKU"] == "KC-LMP-14N")
+    qb, pb, qo, pr, qr = int(lamp["Qty"]), dollars(lamp["Unit price"]), int(po["KC-LMP-14N"]["Qty"]), dollars(po["KC-LMP-14N"]["Unit price"]), int(rc["KC-LMP-14N"]["Qty received"])
+    billed = dollars(lf["Total due"])
+    should = sum(int(po[r["SKU"]]["Qty"]) * dollars(po[r["SKU"]]["Unit price"]) for r in rows) + dollars(lf["Freight"])
+    sup, fin = lf["Supplier"], people["Finance"]
+    C.append({"id": "buy-keystone", "area": "Buying", "code": "PRICE_MISMATCH, QTY_MISMATCH", "title": "Billed for more lamps, at a higher price, than were ordered",
+              "subject": f"Bill {lf['Invoice number']}", "role": "Finance (Controller)", "who": fin, "since": lf["Invoice date"],
+              "found": (f'{q(INV, sup)} billed {k("ap.kc.billed_qty", qb)} floor lamps at {k("ap.kc.billed_price", pb, True)} each. The approved order was '
+                        f'{k("ap.kc.order_qty", qo)} at {k("ap.kc.order_price", pr, True)}, and {k("ap.kc.received", qr)} arrived.'),
+              "sides": [(f"Invoice {ident(lf['Invoice number'])}", [INV], [("Floor lamps billed", f'{k("ap.kc.billed_qty", qb)} at {k("ap.kc.billed_price", pb, True)}'),
+                                                                        ("Total due", k("ap.kc.billed", billed, True))]),
+                        (f"Approved order {ident(lf['Purchase order'])} and what arrived", [PO, RC],
+                         [("Floor lamps ordered", f'{k("ap.kc.order_qty", qo)} at {k("ap.kc.order_price", pr, True)}'), ("Floor lamps received", k("ap.kc.received", qr)),
+                          ("The invoice should total", k("ap.kc.expected", should, True))])],
+              "fix": (f'Hold the bill. Approve paying {k("ap.kc.expected", should, True)} (the order\'s prices for what arrived, plus the rug and delivery) once '
+                      f'{E(sup)} sends a corrected invoice; the other {k("ap.kc.diff", billed - should, True)} isn\'t owed. Nothing is paid here: a person releases payments.'),
+              "change": f"Amount to pay: ${billed:,} → ${should:,}; held back ${billed - should:,}; on hold until a corrected invoice arrives",
+              "rec": {"type": "Bill", "name": sup, "sub": f"{ident(lf['Invoice number'])} &middot; order {ident(lf['Purchase order'])}", "fields": [
+                  ("chg", "Amount to pay", k("ap.kc.billed", billed, True), f'{k("ap.kc.expected", should, True)}, after a corrected invoice'),
+                  ("chg", "Held back", "Nothing", k("ap.kc.diff", billed - should, True)),
+                  ("chg", "Status", "Ready to pay", "On hold until the corrected invoice arrives")]},
+              "evidence": [(INV, "KC-LMP-14N", f"{qb} x ${pb:,}"), (PO, "KC-LMP-14N", f"{qo} x ${pr:,}"), (RC, "KC-LMP-14N", str(qr))]})
+
+    for c in C:
+        c["fp"] = ap_fp(c["id"], c["evidence"])
+    if [c["id"] for c in C] != AP_ORDER:
+        raise SystemExit("build error: approve cards out of order")
+    return C
+
+
+def ap_card(c):
+    sides = "".join(ap_side(lab, refs, rows, i == 1) for i, (lab, refs, rows) in enumerate(c["sides"]))
+    return (f'<article class="ap-card" tabindex="0" data-ap-card="{c["id"]}" data-fp="{c["fp"]}" data-decider="{E(c["who"])}" data-role="{E(c["role"])}" '
+            f'data-since="{c["since"]}" data-title="{E(c["title"])}" data-subject="{E(c["subject"])}" data-change="{E(c["change"])}" data-code="{E(c["code"])}" '
+            'data-state="pending">'
+            f'<div class="ap-head"><span class="ap-area">{E(c["area"])}</span><b class="ap-title">{E(c["title"])}</b></div>'
+            f'<div class="ap-who">Decides: <b>{E(c["who"])}</b>, {E(c["role"])} &middot; waiting since {c["since"]}</div>'
+            f'<p class="ap-found"><b>What the system found:</b> {c["found"]}</p>'
+            f'<div class="ap-proof">{sides}</div>'
+            f'<p class="ap-fix"><b>Drafted fix:</b> {c["fix"]}</p>'
+            f'<div class="ap-actions"><button type="button" class="ap-btn ok" data-ap-approve>&#10003; Approve as {E(c["who"])}</button>'
+            '<button type="button" class="ap-btn no" data-ap-reject>Reject</button></div>'
+            '<div class="ap-rejectbox" hidden><label class="ap-why">Why reject? Required: it goes in the audit log.'
+            '<textarea data-ap-reason placeholder="For example: the owner already mailed the deed"></textarea></label>'
+            '<button type="button" class="ap-btn no" data-ap-confirm>Confirm reject</button>'
+            '<button type="button" class="ap-btn ghost" data-ap-cancel>Cancel</button><div class="ap-err" role="alert"></div></div>'
+            '<div class="ap-outcome" data-ap-outcome></div></article>')
+
+
+def ap_record(c, first):
+    r = c["rec"]
+    rows = ""
+    for f in r["fields"]:
+        if f[0] == "same":
+            rows += f'<tr data-ap-field="same"><td>{E(f[1])}</td><td>{f[2]}</td></tr>'
+        else:
+            rows += f'<tr data-ap-field><td>{E(f[1])}</td><td><span class="ap-before">{f[2]}</span><span class="ap-after">{f[3]}</span></td></tr>'
+    return (f'<div class="ap-rec" data-ap-rec="{c["id"]}" data-state="typed"{"" if first else " hidden"}>'
+            f'<div class="sw-head"><span class="sw-type">{E(r["type"])}</span><b>{E(r["name"])}</b><span class="sw-sub">{r["sub"]}</span></div>'
+            '<div class="ap-banner" data-ap-banner></div>'
+            f'<table class="sw-fields"><tbody>{rows}</tbody></table></div>')
+
+
+def approve_tab():
+    C = ap_cards()
+    lead = ('<h2>Approve and watch it land</h2>'
+            '<p class="lead">A working demo with sample records. Each card is a problem the system caught in Palmquay\'s paperwork: what it found, '
+            'the proof side by side, and the fix it drafted. Nothing changes until the person named on the card decides. <b>Approve</b>, and the fix '
+            'lands in the record on the right (a sample screen standing in for the office\'s own software) and a row goes in the audit log. '
+            '<b>Reject</b>, and the record stays as it was; the reason goes in the log. Then run the check again: anything already decided is skipped, '
+            'so it never comes back.</p>')
+    bar = ('<div class="ap-bar"><button type="button" class="ap-btn" data-ap-run>&#8635; Run the check again</button>'
+           '<button type="button" class="ap-btn ghost" data-ap-reset>Reset demo</button>'
+           '<div class="ap-runout" data-ap-runout aria-live="polite"></div><div class="ap-msg" data-ap-msg role="alert"></div></div>')
+    left = ('<div class="ap-col"><h3>Waiting on a person <span class="ap-pill" data-ap-count></span></h3>'
+            f'<p class="ap-sub" data-audit>The check found {k("ap.cards", len(C))} problems in the sample records. Click a card to see its record.</p>'
+            '<div class="ap-queue" data-ap-queue data-audit>' + "".join(ap_card(c) for c in C)
+            + '<p class="ap-none" data-ap-none hidden>Nothing is waiting on a person. Run the check again, or reset the demo to start over.</p></div>'
+            '<h3>Decided <span class="ap-pill" data-ap-dcount></span></h3><div class="ap-decided" data-ap-decided></div></div>')
+    panel = ('<aside class="ap-aside"><h3>The record in the office\'s software</h3><div class="ap-panel" data-ap-panel data-audit>'
+             '<div class="sw-bar"><b>Sample property software</b><span class="sw-pill">Sample screen</span>'
+             '<span class="sw-note">A sample screen for this working demo, not a real product. It stands in for the office\'s own software.</span></div>'
+             + "".join(ap_record(c, i == 0) for i, c in enumerate(C))
+             + '<p class="sw-foot">Approve changes only this sample screen and the audit log, in this browser. People still send every email, sign every '
+               'approval, and release every payment.</p></div>'
+             '<div class="ap-box"><h4>Stuck: still waiting on a person</h4><ul class="ap-stuck" data-ap-stuck></ul>'
+             '<p class="ap-empty muted" data-ap-stuck-none hidden>Nothing is stuck.</p></div>'
+             '<div class="ap-box"><h4>Latest in the audit log</h4><ul class="ap-mini" data-ap-mini></ul>'
+             '<a href="#tab=audit">See the full audit log</a></div></aside>')
+    return lead + bar + f'<div class="ap-grid">{left}{panel}</div>'
+
+
+def ap_log():
+    return ('<h2>Decisions made on this page</h2><p class="lead">Each Approve or Reject on the "Approve and watch it land" tab adds a row here. These rows '
+            'stay in this browser only (a working demo with sample records). The logs below are the system\'s own files, where each row is locked to the one before it.</p>'
+            '<table class="log" data-ap-log><thead><tr><th>Time (this computer)</th><th>Who</th><th>Subject</th><th>Action</th><th>Result</th><th>Detail</th></tr></thead>'
+            '<tbody data-ap-logbody></tbody></table>')
+
 
 CSS = """
 :root{--bg:#f4f4f1;--surface:#fcfcfb;--card:#fff;--ink:#0b0b0b;--ink2:#52514e;--line:#e2e1dc;--accent:#1d5a85;--good:#0ca30c;--warn:#fab219;--serious:#ec835a;--crit:#d03b3b;--soft:#f1f0ec}
@@ -1792,6 +2005,48 @@ ul.plain{padding-left:18px}.replay{background:var(--card);border:1px solid var(-
 input[data-min]{width:64px;font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:4px;text-align:right;background:var(--surface)}
 td.basis{font-size:12px;color:var(--ink2)}tr.bh-total td{background:var(--soft)}
 @media (max-width:1180px){.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}header{position:static}.board{grid-template-columns:1fr}}
+.ap-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:6px 0 14px}
+.ap-btn{font:inherit;font-weight:600;padding:7px 14px;border-radius:6px;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
+.ap-btn:focus-visible,.ap-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.ap-btn.ok{background:#1e7d46;border-color:#1e7d46;color:#fff}
+.ap-btn.no{background:#fff;border-color:#c0392b;color:#a1271b}.ap-btn.ghost{background:transparent}
+.ap-runout{flex:1;min-width:260px;font-size:13px;padding:4px 6px;border-radius:6px}.ap-runout.pulse{animation:apPulse 1.4s ease-out}
+.ap-msg{flex:1 1 100%;color:#a1271b;font-weight:600;font-size:13px}.ap-msg:empty{display:none}
+.ap-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}.ap-grid h3{font-size:14px;margin:4px 0 6px}
+.ap-pill{display:inline-block;min-width:22px;padding:0 7px;border-radius:10px;background:var(--soft);border:1px solid var(--line);font-size:12px;text-align:center}
+.ap-sub{font-size:12.5px;color:var(--ink2);margin:0 0 8px}
+.ap-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:8px;padding:11px 13px;margin:0 0 10px;cursor:pointer}
+.ap-card.on{box-shadow:0 0 0 2px var(--accent)}.ap-card[data-state=approved]{border-left-color:var(--good)}.ap-card[data-state=rejected]{border-left-color:#8f8e88}
+.ap-card:not([data-state=pending]) .ap-who,.ap-card:not([data-state=pending]) .ap-found,.ap-card:not([data-state=pending]) .ap-proof,
+.ap-card:not([data-state=pending]) .ap-fix,.ap-card:not([data-state=pending]) .ap-actions{display:none}
+.ap-head{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.ap-title{font-size:14.5px}
+.ap-area{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink2);background:var(--soft);border-radius:4px;padding:1px 6px}
+.ap-who{font-size:12px;color:var(--ink2);margin:3px 0 6px}.ap-found,.ap-fix{margin:6px 0;font-size:13.5px}
+.ap-proof{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.ap-side{background:#fbfbf9;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12.5px}.ap-lab{font-weight:600;margin-bottom:2px}
+code.ap-file{display:block;font-size:10.5px;color:var(--ink2);background:none;padding:0;margin:0 0 3px;word-break:break-all}
+details.ap-files{background:none;border:0;margin:4px 0 0;padding:0}details.ap-files summary{font-size:11px;color:var(--ink2);padding:0}
+.ap-err{flex:1 1 100%;color:#a1271b;font-weight:600;font-size:12.5px}.ap-err:empty{display:none}
+.ap-kv{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed var(--line);padding:3px 0}.ap-k{color:var(--ink2)}.ap-v{font-weight:600;text-align:right}
+.ap-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.ap-rejectbox{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}.ap-rejectbox[hidden]{display:none}
+.ap-why{flex:1 1 100%;font-size:12.5px;font-weight:600}.ap-why textarea{display:block;width:100%;min-height:52px;margin-top:4px;font:inherit;font-weight:400;padding:6px 8px;border:1px solid var(--line);border-radius:6px}
+.ap-why textarea.err{border-color:#c0392b;box-shadow:0 0 0 2px #f6d5d0}.ap-outcome{font-size:12.5px;margin-top:4px}.ap-outcome:empty{display:none}
+.ap-ok{color:#1e7d46;font-weight:600}.ap-no{color:#8a2a1f;font-weight:600}
+.ap-panel{border:1px solid #c9d2dc;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(20,40,60,.08)}
+.sw-bar{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;background:#2f3e4e;color:#fff;padding:9px 12px}
+.sw-pill{font-size:11px;font-weight:600;color:#2f3e4e;background:#cfdbe6;border-radius:10px;padding:1px 8px}
+.sw-note{flex:1 1 100%;font-size:11.5px;color:#cfdbe6}.sw-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:10px 12px;border-bottom:1px solid #e3e8ee;background:#f5f7f9}
+.sw-type{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#56697c}.sw-sub{font-size:12px;color:#56697c;flex:1 1 100%}
+.ap-banner{font-size:12.5px;padding:7px 12px;background:#f5f7f9;color:#56697c;border-bottom:1px solid #e3e8ee}
+.ap-banner.ok{background:#e6f5ea;color:#1e5e35;font-weight:600}.ap-banner.no{background:#f4f1ee;color:#5e4a3a}
+table.sw-fields{border:0;border-radius:0;margin:0}.sw-fields td{font-size:13px;padding:8px 12px}.sw-fields td:first-child{color:#56697c;width:40%}
+.ap-rec .ap-after{display:none}.ap-rec[data-state=landed] .ap-before{display:none}
+.ap-rec[data-state=landed] .ap-after{display:inline;background:#e6f5ea;border-radius:3px;padding:1px 4px;font-weight:600}
+.ap-rec.flash .ap-after{animation:apLand 1.8s ease-out}.ap-rec.flash .ap-banner{animation:apLand 1.8s ease-out}
+@keyframes apLand{0%{background:#ffe08a}100%{background:#e6f5ea}}@keyframes apPulse{0%{background:#fff4d6}100%{background:transparent}}
+.sw-foot{font-size:11.5px;color:#56697c;margin:0;padding:8px 12px;border-top:1px solid #e3e8ee}
+.ap-box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-top:12px}.ap-box h4{margin:2px 0 6px}
+.ap-stuck,.ap-mini{margin:0 0 4px;padding-left:18px;font-size:12.5px}.ap-stuck li,.ap-mini li{margin:3px 0}.ap-empty{font-size:12.5px;margin:0}
+@media (max-width:1000px){.ap-grid{grid-template-columns:1fr}.ap-proof{grid-template-columns:1fr}}
 """
 
 JS = """
@@ -1852,10 +2107,98 @@ JS = """
 """
 
 
+APPROVE_JS = r"""
+(function(){
+  var sec=document.querySelector('section[data-tab="approve"]');if(!sec)return;
+  var KEY='palmquay-approve-demo-v1',mem=null;
+  function fresh(){return {runs:0,seen:[],decided:{},log:[],last:null};}
+  function load(){try{var t=window.localStorage.getItem(KEY);return t?JSON.parse(t):null;}catch(e){return mem;}}
+  function save(){mem=JSON.parse(JSON.stringify(st));try{window.localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+  function q(s,r){return (r||document).querySelector(s);}
+  function qa(s,r){return [].slice.call((r||document).querySelectorAll(s));}
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function stamp(){var d=new Date();function p(n){return (n<10?'0':'')+n;}
+    return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());}
+  var cards=qa('[data-ap-card]',sec),queue=q('[data-ap-queue]',sec),done=q('[data-ap-decided]',sec),runout=q('[data-ap-runout]',sec),
+      msg=q('[data-ap-msg]',sec),stuck=q('[data-ap-stuck]',sec),mini=q('[data-ap-mini]',sec),logbody=q('[data-ap-logbody]'),info={},order=[];
+  cards.forEach(function(c){var id=c.getAttribute('data-ap-card');order.push(id);
+    info[id]={el:c,fp:c.getAttribute('data-fp'),who:c.getAttribute('data-decider'),role:c.getAttribute('data-role'),title:c.getAttribute('data-title'),
+      subject:c.getAttribute('data-subject'),since:c.getAttribute('data-since'),change:c.getAttribute('data-change'),rec:q('[data-ap-rec="'+id+'"]',sec)};});
+  var st=load(),sel=null,flash=null;
+  if(!st||!st.decided||!st.seen||!st.log)st=fresh();
+  function decision(id){return st.decided[info[id].fp]||null;}
+  // The check runs again on the same records. Each problem carries a fingerprint made from its files, fields, and values;
+  // one this browser already decided is skipped, so it never comes back. A changed record makes a new fingerprint, and shows as new.
+  function scan(){var n={found:order.length,neu:0,decided:0,waiting:0};
+    order.forEach(function(id){var fp=info[id].fp;if(st.decided[fp]){n.decided++;return;}
+      if(st.seen.indexOf(fp)<0){st.seen.push(fp);n.neu++;}n.waiting++;});
+    st.runs++;n.run=st.runs;st.last=n;save();}
+  function showRun(){var n=st.last||{found:0,neu:0,decided:0,waiting:0,run:0};
+    ['found','neu','decided','waiting','run'].forEach(function(x){runout.setAttribute('data-'+(x==='neu'?'new':x),String(n[x]));});
+    runout.innerHTML=n.run<=1?('<b>Check run '+n.run+'</b> on the sample records: '+n.found+' problems found, '+n.neu+' new. Each one waits for the person named on its card.')
+      :('<b>Check run '+n.run+'</b> on the same records: '+n.found+' found · <b>'+n.neu+' new</b> · <b>'+n.decided+' already decided</b>, skipped so nobody is asked again · '
+        +n.waiting+' still waiting on a person');}
+  function place(box,ids){var cur=[].slice.call(box.children).filter(function(x){return x.hasAttribute('data-ap-card');}).map(function(x){return x.getAttribute('data-ap-card');});
+    if(cur.join()!==ids.join())ids.forEach(function(id){box.appendChild(info[id].el);});}
+  function render(){
+    var pend=order.filter(function(id){return !decision(id);}),dec=order.filter(function(id){return !!decision(id);});
+    if(!sel||!info[sel])sel=pend[0]||order[0];
+    dec.sort(function(a,b){return decision(a).at<decision(b).at?-1:decision(a).at>decision(b).at?1:0;});
+    place(queue,pend);place(done,dec);
+    var none=q('[data-ap-none]',sec);if(none){none.hidden=pend.length>0;queue.appendChild(none);}
+    order.forEach(function(id){var c=info[id],d=decision(id),el=c.el;
+      el.setAttribute('data-state',d?d.action:'pending');el.classList.toggle('on',id===sel);
+      if(d)q('.ap-rejectbox',el).hidden=true;
+      q('[data-ap-outcome]',el).innerHTML=d?((d.action==='approved'?'<span class="ap-ok">✓ Approved</span> by ':'<span class="ap-no">✕ Rejected</span> by ')+esc(d.by)+' · '+esc(d.at)
+        +(d.why?' · reason: “'+esc(d.why)+'”':'')):'';
+      q('[data-ap-outcome]',el).title=d?'Fingerprint '+c.fp+': if the same problem shows up again, it is skipped':'';
+      var r=c.rec;if(!r)return;
+      r.setAttribute('data-state',d&&d.action==='approved'?'landed':'typed');r.hidden=id!==sel;r.classList.toggle('flash',id===flash);
+      var bn=q('[data-ap-banner]',r);
+      bn.className='ap-banner'+(d?(d.action==='approved'?' ok':' no'):'');
+      bn.innerHTML=d?(d.action==='approved'?'✓ Updated '+esc(d.at)+' by '+esc(d.by)+'. The change is in the audit log.'
+        :'Rejected '+esc(d.at)+' by '+esc(d.by)+'. The record was left as typed. Reason: “'+esc(d.why)+'”')
+        :'As typed from the paperwork. Nothing changes until '+esc(c.who)+' decides.';});
+    q('[data-ap-count]',sec).textContent=String(pend.length);q('[data-ap-dcount]',sec).textContent=String(dec.length);
+    stuck.innerHTML=pend.map(function(id){var c=info[id];return '<li><b>'+esc(c.who)+'</b>, '+esc(c.role)+': '+esc(c.title)+' <span class="muted">(waiting since '+esc(c.since)+')</span></li>';}).join('');
+    q('[data-ap-stuck-none]',sec).hidden=pend.length>0;
+    var rows=st.log;
+    if(logbody)logbody.innerHTML=rows.length?rows.map(function(r){return '<tr data-ap-row><td class="nowrap">'+esc(r.at)+'</td><td>'+esc(r.who)+'</td><td>'+esc(r.subject)
+      +'</td><td>'+esc(r.action)+'</td><td>'+esc(r.result)+'</td><td class="muted small">'+esc(r.detail)+'</td></tr>';}).join('')
+      :'<tr class="ap-empty"><td colspan="6" class="muted">No decisions yet. Approve or reject a card on the Approve and watch it land tab, and its row appears here.</td></tr>';
+    mini.innerHTML=rows.length?rows.slice(-3).reverse().map(function(r){return '<li><span class="muted">'+esc(r.at.slice(11))+'</span> '+esc(r.who)+' · <code>'+esc(r.action)+'</code> · '+esc(r.subject)+'</li>';}).join('')
+      :'<li class="muted">No decisions yet.</li>';
+    showRun();flash=null;}
+  function decide(id,action,why){var c=info[id];if(decision(id))return;var at=stamp();
+    st.decided[c.fp]={id:id,action:action,why:why||'',at:at,by:c.who+', '+c.role};
+    st.log.push({at:at,who:c.who+', '+c.role,subject:c.subject,action:action==='approved'?'approve_fix':'reject_fix',
+      result:action==='approved'?'Record updated':'Record left as typed',detail:action==='approved'?c.change:'Reason: '+why});
+    save();sel=id;flash=id;msg.textContent='';render();}
+  cards.forEach(function(el){var id=el.getAttribute('data-ap-card'),box=q('.ap-rejectbox',el),reason=q('[data-ap-reason]',el);
+    el.addEventListener('click',function(e){if(e.target.closest('button,textarea,a'))return;sel=id;render();});
+    el.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target===el){e.preventDefault();sel=id;render();}});
+    q('[data-ap-approve]',el).addEventListener('click',function(){decide(id,'approved','');});
+    q('[data-ap-reject]',el).addEventListener('click',function(){sel=id;render();box.hidden=false;reason.focus();});
+    q('[data-ap-cancel]',el).addEventListener('click',function(){box.hidden=true;reason.classList.remove('err');q('.ap-err',el).textContent='';msg.textContent='';});
+    q('[data-ap-confirm]',el).addEventListener('click',function(){var why=reason.value.trim();
+      if(!why){reason.classList.add('err');msg.textContent='A reject needs a reason. Write it in the box under the card, then confirm: it goes in the audit log.';
+        q('.ap-err',el).textContent='Write a reason first: it goes in the audit log.';return;}
+      reason.classList.remove('err');q('.ap-err',el).textContent='';decide(id,'rejected',why);});});
+  q('[data-ap-run]',sec).addEventListener('click',function(){scan();msg.textContent='';render();
+    runout.classList.remove('pulse');void runout.offsetWidth;runout.classList.add('pulse');});
+  q('[data-ap-reset]',sec).addEventListener('click',function(){st=fresh();sel=null;msg.textContent='';
+    qa('.ap-rejectbox',sec).forEach(function(b){b.hidden=true;});qa('.ap-err',sec).forEach(function(e){e.textContent='';});qa('[data-ap-reason]',sec).forEach(function(t){t.value='';t.classList.remove('err');});
+    scan();render();});
+  if(!st.runs)scan();
+  render();sec.setAttribute('data-ap-js','1');
+})();
+"""
+
+
 def page():
     stamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
     head_tiles = tiles()
-    secs = {"overview": overview(), "byhand": byhand(), "onboarding": onboarding(), "owners": owners_tab(), "buying": buying(), "checks": checks(), "audit": audit(), "map": diagram()}
+    secs = {"overview": overview(), "approve": approve_tab(), "byhand": byhand(), "onboarding": onboarding(), "owners": owners_tab(), "buying": buying(), "checks": checks(), "audit": audit(), "map": diagram()}
     nav = "".join(f'<button type="button" data-for="{t}" data-tab-label="{lab}" aria-selected="false">{lab}</button>' for t, lab in TABS)
     body = "".join(f'<section data-tab="{t}" id="tab-{t}"{" class=on" if t == "overview" else ""}>{secs[t]}</section>' for t, _ in TABS)
     body = body.replace('<div class="replay">', '<div class="replay" id="replay" data-rstep="0">')
@@ -1870,7 +2213,7 @@ def page():
             f'a test recounts every number in its tiles and tables. <a href="../video/">Watch the walkthrough</a></div></div>'
             f"{head_tiles}<nav>{nav}</nav></header><main>{body}</main>"
             + data("replay-data", events) + data("replay-vendors", rvendors) + data("replay-acts", racts)
-            + f"<script>{JS}</script></body></html>")
+            + f"<script>{JS}{APPROVE_JS}</script></body></html>")
 
 
 def main():
