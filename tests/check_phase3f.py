@@ -501,9 +501,12 @@ def f6():
     c = git("rev-list", "--count", h)
     dates = git("log", "--format=%ad", "--date=short", h).stdout.split()
     real_n = int(c.stdout.strip()) if c.returncode == 0 and c.stdout.strip().isdigit() else None
-    ok = real_n == n and len(set(dates)) == d and dates and min(dates) == start
+    # The commit must be in this branch's history, not just a leftover object in the local store:
+    # after a history rewrite, an old ID still resolves on the author's machine but not in a fresh clone (CI).
+    on_branch = git("merge-base", "--is-ancestor", h, "HEAD").returncode == 0
+    ok = on_branch and real_n == n and len(set(dates)) == d and dates and min(dates) == start
     rec(ok, "F6 the README's how-it-was-built line matches git",
-        f"README: starts {start}, {n} commits on {d} days through {h}; git: {real_n} commits on {len(set(dates))} days "
+        f"README: starts {start}, {n} commits on {d} days through {h}; in HEAD's history: {on_branch}; git: {real_n} commits on {len(set(dates))} days "
         f"({sorted(set(dates))}), first {min(dates) if dates else 'none'}{'' if c.returncode == 0 else '; git: ' + (c.stderr.strip()[:120])}")
 
 
